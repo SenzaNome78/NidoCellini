@@ -1,0 +1,120 @@
+
+
+@import "..\\assets\\web-fonts-with-css\\css\\fontawesome-all.css";
+
+
+.navbar-brand {
+	padding: 0.4em;
+}
+
+.logo {
+    margin: 0;
+}
+
+.CelliniRounded {
+	border-radius: 0.5em !important;
+	/* border-radius: 1em 0.5em 2em 1em !important; */
+ }
+
+
+/* Stili della barra di navigazione */
+.navbar-light .navbar-nav .active > .nav-link
+{
+	color:#ffffff;
+	background: #138496;
+	/* background: #6d7fcc; */
+}
+
+.navbar-light .navbar-nav .show > .nav-link{
+	color: white;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+	color: white;
+	background: rgb(2,117,216);
+}
+
+.navbar-light .navbar-nav .nav-link{
+	
+	border-radius: 0.5em !important;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+	color: white;
+	text-decoration: none;
+	background-color: rgb(2,117,216);
+}
+
+/* Modal */
+.stileModalErrore{
+	background-color: rgba(255, 0, 0, 0.616);
+	color: white;
+}
+
+.stileModalSuccesso
+{
+	background-color: rgba(0, 117, 0, 0.616);
+	color: white;
+	/* border: 1px solid green; */
+    /* padding: 10px; */
+	/* box-shadow: 5px 10px 10px 10px green inset; */
+}
+
+/* Tooltip  */
+.tooltip-inner {
+
+
+
+    max-width: 200px;
+    padding: 3px 8px;
+    color: rgb(187, 0, 0);
+    text-align: center;
+	background-color: rgb(248, 248, 248);
+	
+	border-style: groove;
+	border-style: groove;
+    border-color: rgba(255, 19, 19, 0.945);
+    border-width: 2px;
+    border-radius: 0.25rem; 
+}
+
+.NuovoBambinoLabel{
+	font-size: 1.2em;
+	font-weight: bold;
+	margin: 0.5em;
+	padding-top: 0.2em
+}
+
+.NuovoBambinoInput{
+	font-size: 1.2em;
+	margin: 0.5em;
+}
+
+.rowLista{
+	border-color: rgba(111, 111, 111, 0.5);
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	padding: 0.2em;
+	
+	margin-bottom: 0.30em;
+	margin-left: 0.30em;
+	margin-right: 0.30em;
+	margin-left: 0.30em;
+}
+
+.ContentLista{
+	border-color: rgba(111, 111, 111, 0.5);
+	border-width: 0.3px;
+	border-style: solid;
+	padding: 0px;
+	margin: 0px;
+}
+
+.form-control::-moz-placeholder {
+	color: rgba(124, 124, 124, 0.5);
+}
+.form-control:-ms-input-placeholder {
+	color: rgba(124, 124, 124, 0.5);
+}
+.form-control::-webkit-input-placeholder {
+	color: rgba(124, 124, 124, 0.5);
+}
