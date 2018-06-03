@@ -52,9 +52,6 @@ $('#btnRegBadge').on('click', function () {
 				}	
 				else if (badgeRegStatus == "N")// Registrazione badge non avvenuta
 				{
-					
-					$Aggiunta3
-					$(Prova2);
 					$('#newBadgeModalBody').addClass('stileModalErrore');
 					$('#newBadgeModalBody').html(testoModalErroreBadge);
 					$('#newBadgeModalBody').removeClass('stileModalSuccesso');
