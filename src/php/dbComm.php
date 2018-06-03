@@ -84,11 +84,8 @@
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-      $tableName        = $_POST["paramTable"];
+      $tableName        = $_POST["paramTableForInsert"];
       $insertNewUserSql = "INSERT INTO " . $tableName . " (";
-
-      echo $_POST["paramInsertUser"];
-      echo $_POST["paramTable"];
 
       $recordsToInsert = "";
       $fieldsToInsert  = "";
@@ -104,7 +101,11 @@
       $fieldsToInsert  = rtrim($fieldsToInsert, ", ");
 
       $insertNewUserSql .= $recordsToInsert . ") VALUES (" . $fieldsToInsert . ")";
-      $db->exec($insertNewUserSql);
+      $tableExists      = $db->query("SHOW TABLES");
+      if ($tableExists === true)
+      {
+          $db->exec($insertNewUserSql);
+      }
   }
 
   function AddRandomRecords()

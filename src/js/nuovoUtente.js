@@ -1,15 +1,19 @@
 "use strict";
 
-var pageName = location.pathname.split("/").slice(-1)[0]
+const PHPURL = ".\\php\\dbComm.php";
 
-var testoModalAttesa = '<h5>Per favore, avvicini il nuovo badge al lettore entro un minuto. Grazie.</h5>';
-var testoModalSuccessoBadge = '<h5>Registrazione del badge eseguita con successo.</h5>';
+const testoModalAttesa = '<h5>Per favore, avvicini il nuovo badge al lettore entro un minuto. Grazie.</h5>';
+const testoModalSuccessoBadge = '<h5>Registrazione del badge eseguita con successo.</h5>';
 
-var testoModalErroreBadge = '<h5>Si è verificato un errore nella registrazione del badge.<br>' +
-'Riprovi la procedura o contattati l\'amministratore di sistema </h5 > ';
-
-var testoModalErroreConn = '<h5>Si è verificato un errore di connessione col lettore di badge.<br>' +
+const testoModalErroreBadge = '<h5>Si è verificato un errore nella registrazione del badge.<br>' +
 	'Riprovi la procedura o contattati l\'amministratore di sistema </h5 > ';
+
+const testoModalErroreConn = '<h5>Si è verificato un errore di connessione col lettore di badge.<br>' +
+	'Riprovi la procedura o contattati l\'amministratore di sistema </h5 > ';
+
+var pageName = location.pathname.split("/").slice(-1)[0]
+var ruolo;
+var table;
 
 
 //Controlliamo che il nome del nuovo utente sia stato inserito nell'input box
@@ -42,29 +46,29 @@ $('#btnRegBadge').on('click', function () {
 			null,
 			// Funzione eseguita se la richiesta GET ha avuto successo
 			function (data, status) {
-				var badgeRegStatus = data.substr(data.lastIndexOf("successo=")+9, 1);
-				
+				var badgeRegStatus = data.substr(data.lastIndexOf("successo=") + 9, 1);
+
 				if (badgeRegStatus == "S") // Registrazione badge avvenuta con successo
 				{
 					$('#newBadgeModalBody').addClass('stileModalSuccesso');
 					$('#newBadgeModalBody').html(testoModalSuccessoBadge);
 					$('#newBadgeModalBody').removeClass('stileModalErrore');
-				}	
+				}
 				else if (badgeRegStatus == "N")// Registrazione badge non avvenuta
 				{
 					$('#newBadgeModalBody').addClass('stileModalErrore');
 					$('#newBadgeModalBody').html(testoModalErroreBadge);
 					$('#newBadgeModalBody').removeClass('stileModalSuccesso');
-				}	
+				}
 				else // Registrazione badge: qualcosa non va
 				{
 					console.log("Data: " + data);
 					console.log("badgeRegStatus: " + badgeRegStatus);
-				}	
+				}
 			}).fail(function (jqXHR, textStatus, error) { // <- Funzione che eseguimo se non siamo riusciti a contattare il lettore rfid
 				$('#newBadgeModalBody').addClass('stileModalErrore');
 				$('#newBadgeModalBody').html(testoModalErroreConn
-			);
+				);
 				console.log("text stat: " + textStatus);
 				console.log("jqXHR: " + jqXHR.getAllResponseHeaders());
 				console.log("error: " + error);
@@ -72,9 +76,31 @@ $('#btnRegBadge').on('click', function () {
 			})
 	}
 
-	else { // Se l'input box è vuoto visualiziamo un tooltip
-		$('#nomeBambino').tooltip('show');
+
+
+});
+
+
+$('#btnSaveBadge').on('click', function () {
+	event.preventDefault();
+	var pageControls = document.getElementById("formNuovoBambino").elements;
+
+	var i;
+	var dataObj = {};
+
+	dataObj["paramInsertUser"] = ruolo;
+	dataObj["paramTableForInsert"] = table;
+	for (i = 0; i < pageControls.length; i++) {
+		if (pageControls[i].type == "text" || pageControls[i].type == "date" || pageControls[i].type == "select-one" || pageControls[i].type == "textarea") {
+			dataObj[pageControls[i].name] = pageControls[i].value;
+		}
 	}
+
+	$.post(PHPURL, dataObj, function (data) {
+
+		
+		console.log(data);
+	});
 
 
 });
@@ -93,24 +119,16 @@ $('#modalAttesaBadge').on('hidden.bs.modal', function (e) {
 })
 
 
-// Facciamo in modo che il tooltip dell'input box nome duri per 3 secondi
-$('.form-control').on('shown.bs.tooltip', function () {
-	setTimeout(function () {
-		$('#nomeBambino').tooltip('hide');
-	}, 3000);
-})
-
-
 $(document).ready(function () {
-	// Inizializiamo il tooltip dell'input box Nome
-	$('[data-toggle="tooltip"]').tooltip();
-	$('#nomeBambino').tooltip({
-		trigger: 'manual',
-		container: 'body',
-		placement: 'auto',
-		title: "<h6>Per favore compila<br>questo campo.</h6>",
-		html: true
-	});
+
+	if (pageName == "NuovoBambino.html") {
+		ruolo = "B";
+		table = "tbbambini";
+	}
+	else if (pageName == "NuovoEducatore.html") {
+		ruolo = "E";
+		table = "tbeducatori";
+	}
 
 });
 
