@@ -51,7 +51,7 @@ $('#btnRegBadge').on('click', function () {
 					$('#newBadgeModalBody').removeClass('stileModalErrore');
 				}	
 				else if (badgeRegStatus == "N")// Registrazione badge non avvenuta
-				{
+				{ }
 				else // Registrazione badge: qualcosa non va
 				{
 					console.log("Data: " + data);
