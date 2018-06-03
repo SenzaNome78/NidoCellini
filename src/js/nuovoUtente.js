@@ -46,7 +46,7 @@ $('#btnRegBadge').on('click', function () {
 				
 				if (badgeRegStatus == "S") // Registrazione badge avvenuta con successo
 				{
-					$('#newBadgeModalBody').addClass('stileModalSuccesso');
+					$('#newBadgeModalBody').addClass('_stileModalSuccesso');
 					$('#newBadgeModalBody').html(testoModalSuccessoBadge);
 					$('#newBadgeModalBody').removeClass('stileModalErrore');
 				}	
