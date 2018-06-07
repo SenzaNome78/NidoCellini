@@ -45,7 +45,7 @@ $(document).ready(function () {
 		]);
 	} else if (pageName === "ElencoBambini.html") {
 		currMysqlTable = MYSQL_TABLE_BAMBINI;
-		PopulateTable(MYSQL_TABLE_BAMBINI, "idBambino", [
+		PopulateTable(MYSQL_TABLE_BAMBINI, "idtbbambini", [
 			{ data: "nome" },
 			{ data: "cognome" },
 			{ data: "dataNascita" },
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
 	} else if (pageName === "ElencoEducatori.html") {
 		currMysqlTable = MYSQL_TABLE_EDUCATORI;
-		PopulateTable(MYSQL_TABLE_EDUCATORI, "idEducatore", [
+		PopulateTable(MYSQL_TABLE_EDUCATORI, "idtbeducatori", [
 			{ data: "nome" },
 			{ data: "cognome" },
 			{ data: "dataNascita" },

@@ -11,14 +11,44 @@ const testoModalErroreBadge = '<h5>Si è verificato un errore nella registrazion
 const testoModalErroreConn = '<h5>Si è verificato un errore di connessione col lettore di badge.<br>' +
 	'Riprovi la procedura o contattati l\'amministratore di sistema </h5 > ';
 
-var pageName = location.pathname.split("/").slice(-1)[0]
-var ruolo;
-var table;
+var pageName = location.pathname.split("/").slice(-1)[0] // Otteniamo il nome della pagina html
+var ruolo; // Contiene il ruolo, es. B per bambino, E per educatore, etc:
+var table; // Nome della tabella mysql da usare
+var formName; // nome del form html
+var inputName; // nome del campo input che contiene il nome dello user
+
+// Il documento è pronto, inizializiamo le variabili
+$(document).ready(function () {
+
+	if (pageName == "NuovoBambino.html") {
+		ruolo = "B";
+		table = "tbbambini";
+		formName = "formNuovoBambino"
+		inputName = "nomeBambino";
+	}
+	else if (pageName == "NuovoEducatore.html") {
+		ruolo = "E";
+		table = "tbeducatori";
+		formName = "formNuovoEducatore"
+		inputName = "nomeEducatore";
+	}
+	else if (pageName == "NuovoParente.html") {
+		ruolo = "E";
+		table = "tbparenti";
+		formName = "formNuovoParente"
+		inputName = "nomeParente";
+	}
+	else // Stampiamo un errore nella console
+	{
+		console.log("Errore nel nome di pagina");
+	}	
+
+});
 
 
 //Controlliamo che il nome del nuovo utente sia stato inserito nell'input box
 function ValidForm() {
-	var valido = document.getElementById("formNuovoUser").elements.namedItem("nomeBambino").value;
+	var valido = document.getElementById(formName).elements.namedItem(inputName).value;
 	if (valido == "") {
 		return false;
 	}
@@ -33,7 +63,7 @@ $('#btnRegBadge').on('click', function () {
 	if (ValidForm()) {
 		// Passiamo l'url allo script php per la richiesta al lettore rfid
 		var url = ".\\php\\proxyToEsp.php?command=newBadge" +
-			"&nome=" + $("#nomeBambino").val() +
+			"&nome=" + $("#" + inputName).val() +
 			"&ruolo=" + $("#Ruolo").val() +
 			"&sesso=" + $("#Sesso").val();
 		console.log(url);
@@ -83,7 +113,7 @@ $('#btnRegBadge').on('click', function () {
 
 $('#btnSaveBadge').on('click', function () {
 	event.preventDefault();
-	var pageControls = document.getElementById("formNuovoBambino").elements;
+	var pageControls = document.getElementById(formName).elements;
 
 	var i;
 	var dataObj = {};
@@ -93,12 +123,13 @@ $('#btnSaveBadge').on('click', function () {
 	for (i = 0; i < pageControls.length; i++) {
 		if (pageControls[i].type == "text" || pageControls[i].type == "date" || pageControls[i].type == "select-one" || pageControls[i].type == "textarea") {
 			dataObj[pageControls[i].name] = pageControls[i].value;
+			console.log(pageControls[i].name);
 		}
 	}
 
 	$.post(PHPURL, dataObj, function (data) {
 
-		
+		console.log("test");
 		console.log(data);
 	});
 
@@ -117,21 +148,6 @@ $('#modalAttesaBadge').on('hidden.bs.modal', function (e) {
 	$('#newBadgeModalBody').removeClass('stileModalErrore');
 	$('#newBadgeModalBody').removeClass('stileModalSuccesso');
 })
-
-
-$(document).ready(function () {
-
-	if (pageName == "NuovoBambino.html") {
-		ruolo = "B";
-		table = "tbbambini";
-	}
-	else if (pageName == "NuovoEducatore.html") {
-		ruolo = "E";
-		table = "tbeducatori";
-	}
-
-});
-
 
 // Carichiamo la navbar in alto
 $.get("nav-top.html", function (data) {

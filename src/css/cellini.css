@@ -59,6 +59,12 @@
 	/* box-shadow: 5px 10px 10px 10px green inset; */
 }
 
+/* Elimina il pulsante di chiusura nella finestra modal */
+.modal-header .close {
+	display:none;
+  }
+/* FINE MODAL */
+
 /* Tooltip  */
 .tooltip-inner {
 
@@ -118,3 +124,8 @@
 .form-control::-webkit-input-placeholder {
 	color: rgba(124, 124, 124, 0.5);
 }
+
+/* Elimina il pulsante di chiusura nella finestra modal */
+.modal-header .close {
+	display:none;
+  }
