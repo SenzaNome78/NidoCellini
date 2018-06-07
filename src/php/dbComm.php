@@ -101,10 +101,15 @@
       $fieldsToInsert  = rtrim($fieldsToInsert, ", ");
 
       $insertNewUserSql .= $recordsToInsert . ") VALUES (" . $fieldsToInsert . ")";
-      $tableExists      = $db->query("SHOW TABLES");
-      if ($tableExists === true)
+
+
+      $query       = $db->query('SHOW TABLES LIKE "$tableName"');
+      $tableExists = $query->fetchAll();
+      $tableLenght = count($tableExists);
+      echo $tableLenght;
+      if ($tableLenght > 0)
       {
-          $db->exec($insertNewUserSql);
+          $db->exec($insertNewUserSql); // CREARE TABELLA TBBAMBINI programmaticamente
       }
   }
 
