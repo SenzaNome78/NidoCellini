@@ -1,96 +1,9 @@
-<!-- <?php
-				session_start();
-				$NomeDaReg = "";
-				$RuoloDaReg = "";
-// Sezione php dedicata al login
-				try {
-					function myErrorHandler($errno, $errstr, $errfile, $errline)
-					{
-						if (!(error_reporting() & $errno)) {
-        // This error code is not included in error_reporting, so let it fall
-        // through to the standard PHP error handler
-							return false;
-						}
-
-						switch ($errno) {
-							case E_ERROR:
-								echo "<b>My ERROR</b> [$errno] $errstr<br />\n";
-								echo "  Fatal error on line $errline in file $errfile";
-								echo ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
-								echo "Aborting...<br />\n";
-								exit(1);
-								break;
-
-							case E_WARNING:
-								echo "<b>My WARNING</b> [$errno] $errstr<br />\n";
-								break;
-
-							case E_NOTICE:
-								echo "<b>My NOTICE</b> [$errno] $errstr<br />\n";
-								break;
-
-							default:
-								echo "Unknown error type: [$errno] $errstr<br />\n";
-								break;
-						}
-
-    /* Don't execute PHP internal error handler */
-						return true;
-					}
-
-	// set_error_handler("myErrorHandler");
-
-
-					if (isset($_POST['nomeBambino'])) {
-						$NomeDaReg = $_POST['nomeBambino'];
-					}
-
-					if (isset($_POST['Ruolo'])) {
-						$RuoloDaReg = $_POST['Ruolo'];
-					}
-
-					if (isset($_POST['Sesso'])) {
-						$SessoDaReg = $_POST['Sesso'];
-					}
-					if (isset($_POST['salva'])) {
-						if (isset($_POST['nomeBambino'])) {
-
-			// $_SESSION['username'] = $_POST['username'];
-			// $_SESSION['password'] = $_POST['password'];
-
-						}
-					} else if (isset($_POST['regBadge'])) {
-						if (isset($_POST['nomeBambino'])) {
-
-							ob_start();
-							$t = microtime(true);
-							@$content = file_get_contents("http://192.168.0.6/?nome=$NomeDaReg&ruolo=$RuoloDaReg&sesso=$SessoDaReg");
-							if ($content == false) {
-								echo "Site down"; // or other problem
-							} else {
-								$t = microtime(true) - $t;
-								print "It took $t seconds!";
-							}
-
-							while (ob_get_status()) {
-								ob_end_clean();
-							}
-
-						}
-
-					}
-				} catch (PDOException $e) {
-					echo ($e->getMessage());
-					echo "test";
-				}
-				?> -->
-
 <!DOCTYPE html>
 
 <html>
 
 <head>
-	<title>Nido Cellini - Nuovo bambino</title>
+	<title>Nido Cellini - Nuovo Bambino</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -107,67 +20,62 @@
 	<body class="backDrop">
 
 		<div class="container-fluid bg-white rounded">
-			<div class="row mt-2"></div>
-			<div class="row">
-				<div class="col-md-3"></div>
-				<div class="col-md-6">
-					<h6 class="text-center h2">Inserire i dati del bambino:</h6>
+
+			<div class="row mt-3 mb-3">
+				<div class="col-md-12">
+					<h6 class="text-center h2">Inserire i dati del nuovo bambino:</h6>
 				</div>
-				<div class="col-md-3"></div>
 			</div>
 			<div class="flex-row-reverse ContentLista">
 
-
-				<form class="form-horizontal" role="form" action="" method="post" id="formNuovoBambino">
-
+				<form class="form-horizontal" role="form" action="" method="post" id="formNuovoUser">
 
 					<div class="row rowLista">
 						<div class="input-group input-group-lg">
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Nome</div>
+								<div class="NuovoLabelCss">Nome</div>
 							</div>
 							<div class="col-md-4">
-								<label class="sr-only" for="nomeBambino">Nome bambino</label>
+								<label class="sr-only" for="nomeBambino">Nome Bambino</label>
 
-								<input type="text" name="nomeBambino" class="form-control NuovoBambinoInput" id="nomeBambino" maxlength="16" placeholder="Nome bambino"
-								 required autofocus>
+								<input type="text" name="nomeBambino" class="form-control NuovoInputCss" id="nomeBambino" maxlength="16" placeholder="Nome Bambino"
+								 value="Pi" required autofocus>
 
 							</div>
 							<div class="col-md-2">
-								<label class="NuovoBambinoLabel">Cognome</label>
+								<label class="NuovoLabelCss">Cognome</label>
 							</div>
 							<div class="col-md-4">
-								<label class="sr-only" for="cognomeBambino">Cognome bambino</label>
+								<label class="sr-only" for="cognomeBambino">Cognome Bambino</label>
 
-								<input type="text" name="cognomeBambino" class="form-control NuovoBambinoInput" id="cognomeBambino" maxlength="16" placeholder="Cognome bambino"
-								 xrequired autofocus>
+								<input type="text" name="cognomeBambino" class="form-control NuovoInputCss" id="cognomeBambino" maxlength="16" placeholder="Cognome Bambino"
+								 value="Pi" required autofocus>
 
 							</div>
 
 						</div>
 					</div>
 
-
 					<div class="row rowLista">
 						<div class="input-group input-group-lg">
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Nato/a a</div>
+								<div class="NuovoLabelCss">Nato/a a</div>
 							</div>
 							<div class="col-md-6">
 								<label class="sr-only" for="luogoNascitaBambino">Nato/a a</label>
 
-								<input type="text" name="luogoNascitaBambino" class="form-control NuovoBambinoInput" id="luogoNascitaBambino" maxlength="16"
+								<input type="text" name="luogoNascitaBambino" class="form-control NuovoInputCss" id="luogoNascitaBambino" maxlength="32"
 								 placeholder="Campo facoltativo" autofocus>
 
 							</div>
 							<div class="col-md-2">
-								<label class="NuovoBambinoLabel">Provincia</label>
+								<label class="NuovoLabelCss">Provincia</label>
 							</div>
 							<div class="col-md-2">
 								<label class="sr-only" for="provNascitaBambino">Provincia</label>
 
-								<input type="text" name="provNascitaBambino" class="form-control NuovoBambinoInput" id="provNascitaBambino" maxlength="2"
-								 placeholder="Campo facoltativo" autofocus>
+								<input type="text" name="provNascitaBambino" class="form-control NuovoInputCss" id="provNascitaBambino" maxlength="2" placeholder="Campo facoltativo"
+								 autofocus>
 
 							</div>
 
@@ -177,36 +85,35 @@
 					<div class="row rowLista">
 						<div class="input-group input-group-lg">
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Nazione</div>
+								<div class="NuovoLabelCss">Nazione</div>
 							</div>
 							<div class="col-md-10">
 								<label class="sr-only" for="nazioneNascitaBambino">Nazione</label>
 
-								<input type="text" name="nazioneNascitaBambino" class="form-control NuovoBambinoInput" id="nazioneNascitaBambino" maxlength="16"
+								<input type="text" name="nazioneNascitaBambino" class="form-control NuovoInputCss" id="nazioneNascitaBambino" maxlength="32"
 								 placeholder="Campo facoltativo" autofocus>
 
 							</div>
 						</div>
 					</div>
 
-
 					<div class="row rowLista ">
 						<div class="input-group input-group-lg">
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Il</div>
+								<div class="NuovoLabelCss">Il giorno</div>
 							</div>
 							<div class="col-md-4">
-								<label class="sr-only" for="dataNascitaBambino">Il</label>
+								<label class="sr-only" for="dataNascitaBambino">Il giorno</label>
 
-								<input type="date" name="dataNascitaBambino" class="form-control NuovoBambinoInput" id="dataNascitaBambino" maxlength="10" max="2029-12-31" min="1901-12-31"
-								 xrequired autofocus>
+								<input type="date" value="2018-07-03" name="dataNascitaBambino" class="form-control NuovoInputCss" id="dataNascitaBambino"
+								 maxlength="10" max="2029-12-31" min="1901-12-31" required autofocus>
 
 							</div>
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Sesso</div>
+								<div class="NuovoLabelCss">Sesso</div>
 							</div>
 							<div class="col-md-4">
-								<select class="form-control NuovoBambinoInput" name="sessoBambino" id="sessoBambino" required>
+								<select class="form-control NuovoInputCss" name="sessoBambino" id="sessoBambino" required>
 									<option value="F">Femmina</option>
 									<option value="M">Maschio</option>
 								</select>
@@ -214,50 +121,48 @@
 						</div>
 					</div>
 
-
 					<div class="row rowLista ">
 						<div class="input-group input-group-lg">
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Codice Fiscale</div>
+								<div class="NuovoLabelCss">Codice Fiscale</div>
 							</div>
 							<div class="col-md-4">
 								<label class="sr-only" for="codiceFiscaleBambino">Codice Fiscale</label>
 
-								<input type="text" name="codiceFiscaleBambino" class="form-control NuovoBambinoInput" id="codiceFiscaleBambino" maxlength="16"
+								<input type="text" name="codiceFiscaleBambino" class="form-control NuovoInputCss" id="codiceFiscaleBambino" maxlength="16"
 								 autofocus placeholder="Campo facoltativo">
 							</div>
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Cittadinanza</div>
+								<div class="NuovoLabelCss">Cittadinanza</div>
 							</div>
 							<div class="col-md-4">
 								<label class="sr-only" for="cittadinanzaBambino">Cittadinanza</label>
 
-								<input type="text" name="cittadinanzaBambino" class="form-control NuovoBambinoInput" id="cittadinanzaBambino" maxlength="16"
+								<input type="text" name="cittadinanzaBambino" class="form-control NuovoInputCss" id="cittadinanzaBambino" maxlength="32"
 								 autofocus placeholder="Campo facoltativo">
 							</div>
 						</div>
 					</div>
 
-
 					<div class="row rowLista ">
 						<div class="input-group input-group-lg">
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Residente in</div>
+								<div class="NuovoLabelCss">Residente in</div>
 							</div>
 							<div class="col-md-6">
 								<label class="sr-only" for="residenzaBambino">Residente in</label>
 
-								<input type="text" name="residenzaBambino" class="form-control NuovoBambinoInput" id="residenzaBambino" maxlength="16" autofocus
-								 xrequired>
+								<input type="text" name="residenzaBambino" class="form-control NuovoInputCss" id="residenzaBambino" maxlength="64" autofocus
+								 value="Pi" required>
 							</div>
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">CAP</div>
+								<div class="NuovoLabelCss">CAP</div>
 							</div>
 							<div class="col-md-2">
 								<label class="sr-only" for="capBambino">CAP</label>
 
-								<input type="text" name="capBambino" class="form-control NuovoBambinoInput" id="capBambino" maxlength="5"
-								 autofocus xrequired>
+								<input type="text" name="capBambino" class="form-control NuovoInputCss" id="capBambino" maxlength="5" value="Pi" autofocus
+								 required>
 							</div>
 						</div>
 					</div>
@@ -265,22 +170,22 @@
 					<div class="row rowLista ">
 						<div class="input-group input-group-lg">
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Città</div>
+								<div class="NuovoLabelCss">Città</div>
 							</div>
 							<div class="col-md-6">
 								<label class="sr-only" for="cittaResidenzaBambino">Città</label>
 
-								<input type="text" name="cittaResidenzaBambino" class="form-control NuovoBambinoInput" id="cittaResidenzaBambino" maxlength="16"
-								 autofocus xrequired>
+								<input type="text" name="cittaResidenzaBambino" class="form-control NuovoInputCss" id="cittaResidenzaBambino" maxlength="32"
+								 value="Pi" autofocus required>
 							</div>
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Provincia</div>
+								<div class="NuovoLabelCss">Provincia</div>
 							</div>
 							<div class="col-md-2">
 								<label class="sr-only" for="provResidenzaBambino">Provincia</label>
 
-								<input type="text" name="provResidenzaBambino" class="form-control NuovoBambinoInput" id="provResidenzaBambino" maxlength="2"
-								 autofocus xrequired>
+								<input type="text" name="provResidenzaBambino" class="form-control NuovoInputCss" id="provResidenzaBambino" maxlength="2"
+								 value="Pi" autofocus required>
 							</div>
 						</div>
 					</div>
@@ -288,34 +193,38 @@
 					<div class="row rowLista">
 						<div class="input-group input-group-lg">
 							<div class="col-md-2">
-								<div class="NuovoBambinoLabel">Note</div>
+								<div class="NuovoLabelCss">Note</div>
 							</div>
 							<div class="col-md-10">
 								<label class="sr-only" for="noteBambino">Note</label>
-								<textarea class="form-control NuovoBambinoInput" name="noteBambino" id="noteBambino" placeholder="Campo facoltativo" rows="5"></textarea>
+								<textarea class="form-control NuovoInputCss" name="noteBambino" id="noteBambino" placeholder="Campo facoltativo" rows="5"></textarea>
 
 							</div>
 						</div>
 					</div>
 
-					<!-- Pulsante per salvare il nuovo bambino -->
-					<div class="row mt-3 mb-3">
+					<!-- Pulsante per salvare il nuovo utente -->
+					<div class="row mt-3 mb-1">
 						<div class="col-lg-3 col-md-2"></div>
 						<div class="col-lg-6 col-md-8">
 							<div>
-								<button id="btnSaveBadge" class="btn btn-lg mt-3 btn-block btn-outline-primary">Salva</button>
+								<button id="btnSaveUser" class="btn btn-lg mt-3 btn-block btn-outline-primary">Salva</button>
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-2"></div>
 					</div>
 
-					<!-- Pulsante per registare il badge del nuovo bambino -->
-					<div class="row mt-3 mb-3">
-						<div class="col-lg-3 col-md-2"></div>
+					<!-- Pulsante per registare il badge del nuovo utente -->
+					<div class="row mb-3">
+						<div class="col-lg-3 col-md-2"> </div>
+
 						<div class="col-lg-6 col-md-8">
-							<div>
-								<button id="btnRegBadge" class="btn btn-lg mt-3  btn-block btn-outline-primary">RegBadge</button>
+							<div id="tipBtnRegBadge" class="d-block Dtooltip">
+								<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">Per registrare un nuovo badge si prega di aggiungere un nuovo utente usando il pulsante "Salva"</span>
+								<button id="btnRegBadge" disabled class="btn btn-lg mt-3  btn-block btn-outline-primary">Registra nuovo badge</button>
+
 							</div>
+
 						</div>
 						<div class="col-lg-3 col-md-2"></div>
 					</div>
@@ -325,25 +234,29 @@
 		</div>
 
 		<!-- MODAL -->
-		<div class="modal fade" id="modalAttesaBadge" tabindex="-1" role="dialog" aria-labelledby="modalAttesaBadge" aria-hidden="true">
+		<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialog" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-dialog-centered " role="document">
-				<div class="modal-content ">
+				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modalAttesaBadgeLabel">Registrazione nuovo badge</h5>
+						<h5 class="modal-title" id="modalDialogLabel">html</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div id="newBadgeModalBody" class="modal-body text-center">
-						<h5>Htm favore, avvicini il nuovo badge al lettore entro un minuto. Grazie.</h5>
+					<div id="modalDialogModalBody" class="modal-body text-center">
+						<h5>""
+							<h5>
 
 					</div>
 					<div class="modal-footer justify-content-center">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+						<button type="button" id="btnCloseModal" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+						<button type="button" id="btnStopBadgeRegModal" class="btn btn-primary" style="display: none;">Interrompere registrazione badge</button>
+
 					</div>
 				</div>
 			</div>
 		</div>
+		<!-- FINE MODAL -->
 
 		<script src="js/jquery.js"></script>
 		<script src="js/bootstrap.bundle.js"></script>

@@ -8,8 +8,8 @@ const DELETEKEY = "delete"
 const PHPURL = ".\\php\\dbComm.php";
 
 // Elenco di tabelle contenute nel database mysql
-const MYSQL_TABLE_BAMBINI = "tbbambini";
-const MYSQL_TABLE_EDUCATORI = "tbeducatori";
+const MYSQL_TABLE_BAMBINI = "vwbambini";
+const MYSQL_TABLE_EDUCATORI = "vweducatori";
 const MYSQL_TABLE_PRESENZE_EDUCATORI = "tbpresenzeeducatori";
 const MYSQL_TABLE_PRESENZE_BAMBINI = "tbpresenzebambini";
 
@@ -21,6 +21,11 @@ var currMysqlTable; // Variabile stringa che contiene la tabella mysql per la pa
 // usiamo questa variabile per passare la tabella mysql attraverso
 // il comando POST al nostro script PHP
 var postData;
+
+//variabile che contiene il riferimento alla DataTable creata
+var tabella;
+// contiene un'instanza dei pulsanti in basso alla tabella
+var ButtonsVar;
 
 // Aggiungiamo la barra di navigazione superiore alla pagina
 $.get("nav-top.html", function (data) {
@@ -46,30 +51,60 @@ $(document).ready(function () {
 	} else if (pageName === "ElencoBambini.html") {
 		currMysqlTable = MYSQL_TABLE_BAMBINI;
 		PopulateTable(MYSQL_TABLE_BAMBINI, "idtbbambini", [
-			{ data: "nome" },
-			{ data: "cognome" },
-			{ data: "dataNascita" },
-			{ data: "seriale" }
+			{ data: "nomeBambino" },
+			{ data: "cognomeBambino" },
+			{ data: "dataNascitaBambino" },
+			{ data: "nomeSezione" },
+			{ data: "educRif" }
 		]);
 
 	} else if (pageName === "ElencoEducatori.html") {
 		currMysqlTable = MYSQL_TABLE_EDUCATORI;
 		PopulateTable(MYSQL_TABLE_EDUCATORI, "idtbeducatori", [
-			{ data: "nome" },
-			{ data: "cognome" },
-			{ data: "dataNascita" },
-			{ data: "seriale" }
+			{ data: "nomeEducatore" },
+			{ data: "cognomeEducatore" },
+			{ data: "nomeSezione" },
+			{ data: "codiceFiscaleEducatore" },
+			{ data: "tel01Educatore" },
+			{ data: "tel02Educatore" },
+			{ data: "emailEducatore" }
 		]);
 
 	}
-	
+
+	// Una o più righe della tabella sono state selezionate
+	tabella.on('select', function (e, dt, type, indexes) {
+		// Se è stata selezionata una sola riga attiva il pulsante per modificare la voce
+		if (type === 'row') {
+			var righe = tabella.rows({ selected: true });
+			if (righe[0].length === 1) {
+				tabella.button('btnModifica:name').enable();
+			}
+			else {
+				tabella.button('btnModifica:name').enable(false);
+			}
+		}
+	});
+
+	// Una o più righe della tabella sono state deselezionate
+	tabella.on('deselect', function (e, dt, type, indexes) {
+		// Se è stata deselezionata una sola riga attiva il pulsante per modificare la voce
+		if (type === 'row') {
+			var righe = tabella.rows({ selected: true });
+			if (righe[0].length === 1) {
+				tabella.button('btnModifica:name').enable();
+			}
+			else {
+				tabella.button('btnModifica:name').enable(false);
+			}
+		}
+	});
+
 	postData = TABLEKEY + "=" + currMysqlTable;
 })
 
 
 
-//variabile che contiene il riferimento alla DataTable creata
-var tabella;
 /**
  * Popola la tabella con i dati da un database mySql
  * @param {string} dbTabella Nome della tabella in mySql
@@ -135,7 +170,7 @@ function PopulateTable(dbTabella, idKey, colonne) {
 			},
 		});
 
-	var ButtonsVar = new $.fn.DataTable.Buttons(tabella, {
+	ButtonsVar = new $.fn.DataTable.Buttons(tabella, {
 		buttons: [
 			//'copy', 'excel', 'pdf',
 			{
@@ -145,16 +180,28 @@ function PopulateTable(dbTabella, idKey, colonne) {
 				}
 			},
 			{
+				name: "btnRicarica",
 				text: "Ricarica voci",
 				action: function () {
-
+					console.log("Rica");
 					tabella.ajax.reload();
+				}
+			},
+			{
+				name: "btnModifica",
+				text: "Modifica voce",
+				enabled: false,
+				action: function () {
+					console.log("Modifica voce");
+					MostraDettagli();
+					$('#modalDialog').modal({ backdrop: 'static' });
 				}
 			},
 			{
 				text: "Aggiungi random",
 				action: function () {
-					AddRandomRecords();
+
+					//AddRandomRecords();
 				}
 
 			}
@@ -162,7 +209,6 @@ function PopulateTable(dbTabella, idKey, colonne) {
 		]
 	});
 	tabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
-
 }
 
 
@@ -200,4 +246,9 @@ function AddRandomRecords() {
 			tabella.ajax.reload();
 		}
 	});
+}
+
+function MostraDettagli(){
+
+	$('#modalDialog').modal({ backdrop: 'static' });
 }

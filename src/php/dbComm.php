@@ -54,7 +54,7 @@
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-      $query  = $db->prepare("SELECT * FROM " . $tableName);
+      $query  = $db->prepare("SELECT * FROM $tableName");
       $query->execute();
       $result = $query->fetchAll(PDO::FETCH_CLASS, "RecordClass");
 
@@ -94,23 +94,22 @@
           if (substr($key, 0, 5) !== "param")
           {
               $recordsToInsert .= $key . ", ";
-              $fieldsToInsert  .= "'" . $value . "'" . ", ";
+              if ($value === "")
+              {
+                  $fieldsToInsert .= "'" . "" . "'" . ", ";
+              }
+              else
+              {
+                  $fieldsToInsert .= "'" . $value . "'" . ", ";
+              }
           }
       }
       $recordsToInsert = rtrim($recordsToInsert, ", ");
       $fieldsToInsert  = rtrim($fieldsToInsert, ", ");
 
       $insertNewUserSql .= $recordsToInsert . ") VALUES (" . $fieldsToInsert . ")";
-
-
-      $query       = $db->query('SHOW TABLES LIKE "$tableName"');
-      $tableExists = $query->fetchAll();
-      $tableLenght = count($tableExists);
-      echo $tableLenght;
-      if ($tableLenght > 0)
-      {
-          $db->exec($insertNewUserSql); // CREARE TABELLA TBBAMBINI programmaticamente
-      }
+      $r                = $db->exec($insertNewUserSql); // CREARE TABELLA TBBAMBINI programmaticamente
+      echo $r;
   }
 
   function AddRandomRecords()

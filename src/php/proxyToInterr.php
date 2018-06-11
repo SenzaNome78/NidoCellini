@@ -1,19 +1,11 @@
 <?php
 
   $proxyParam = isset($_GET['command']) ? $_GET['command'] : '';
-  $NomeDaReg  = isset($_GET['nome']) ? $_GET['nome'] : '';
-  $RuoloDaReg = isset($_GET['ruolo']) ? $_GET['ruolo'] : '';
-  $SessoDaReg = isset($_GET['sesso']) ? $_GET['sesso'] : '';
 
-  if ($proxyParam === "newBadge")
-  {
-      $url = "http://192.168.0.6/?nome=$NomeDaReg&ruolo=$RuoloDaReg&sesso=$SessoDaReg";
-  }
-  elseif ($proxyParam === "stop")
+  if ($proxyParam === "stop")
   {
       $url    = "http://192.168.0.6/?command=stop";
       $StopCh = curl_init($url);
-
 
       curl_setopt($StopCh, CURLOPT_HEADER, 0);
       curl_setopt($StopCh, CURLOPT_CONNECTTIMEOUT, 5);

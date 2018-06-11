@@ -13,35 +13,42 @@
 
 .CelliniRounded {
 	border-radius: 0.5em !important;
-	/* border-radius: 1em 0.5em 2em 1em !important; */
  }
 
+  /* Abbassa i menu al passaggio del mouse */
+ .dropdown:hover .dropdown-menu {
+	display: block;
+  }
+
+  /* Risolve le mancate aperture dei menu */
+  .dropdown-menu  {
+	  margin-top: -2px;
+  }
 
 /* Stili della barra di navigazione */
 .navbar-light .navbar-nav .active > .nav-link
 {
 	color:#ffffff;
-	background: #138496;
-	/* background: #6d7fcc; */
-}
-
-.navbar-light .navbar-nav .show > .nav-link{
-	color: white;
+	background: #17A2B8;
 }
 
 .navbar-light .navbar-nav .nav-link:hover {
 	color: white;
-	background: rgb(2,117,216);
+	background: #138496;
 }
 
 .navbar-light .navbar-nav .nav-link{
-	
 	border-radius: 0.5em !important;
 }
-.dropdown-item:hover, .dropdown-item:focus {
+.dropdown-item:hover {
 	color: white;
 	text-decoration: none;
-	background-color: rgb(2,117,216);
+	background-color:#138496;
+}
+
+.dropdown-item
+{
+	color: black;
 }
 
 /* Modal */
@@ -54,47 +61,79 @@
 {
 	background-color: rgba(0, 117, 0, 0.616);
 	color: white;
-	/* border: 1px solid green; */
-    /* padding: 10px; */
-	/* box-shadow: 5px 10px 10px 10px green inset; */
 }
 
 /* Elimina il pulsante di chiusura nella finestra modal */
 .modal-header .close {
 	display:none;
   }
+  
+/* Elimina il pulsante di chiusura nella finestra modal */
+.modal-header .close {
+	display:none;
+  }
+
 /* FINE MODAL */
 
 /* Tooltip  */
-.tooltip-inner {
 
-
-
-    max-width: 200px;
-    padding: 3px 8px;
-    color: rgb(187, 0, 0);
-    text-align: center;
-	background-color: rgb(248, 248, 248);
-	
-	border-style: groove;
-	border-style: groove;
-    border-color: rgba(255, 19, 19, 0.945);
-    border-width: 2px;
-    border-radius: 0.25rem; 
+.Dtooltip {
+    position: relative;
+    display: inline-block;
 }
 
-.NuovoBambinoLabel{
+/* Testo del tooltip */
+.Dtooltip .Dtooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+ 
+    /* Posizione del testo del tooltip */
+    position: absolute;
+	z-index: 1;
+	width: 240px;
+    bottom: 120%;
+    left: 50%; 
+    margin-left: -120px; 
+}
+
+.Dtooltip .Dtooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+/* Mostra il tooltip quando passiamo col mouse sul controllo */
+.Dtooltip:hover .Dtooltiptext {
+    visibility: visible;
+}
+/* FINE TOOLTIP  */
+
+/* Formato delle etichette */
+.NuovoLabelCss{
 	font-size: 1.2em;
 	font-weight: bold;
 	margin: 0.5em;
 	padding-top: 0.2em
 }
-
-.NuovoBambinoInput{
+/* Formato dei controlli di testo */
+.NuovoInputCss{
 	font-size: 1.2em;
 	margin: 0.5em;
 }
 
+/* TABELLE */
+
+/* Stile delle righe delle tabelle */
 .rowLista{
 	border-color: rgba(111, 111, 111, 0.5);
 	border-bottom-width: 1px;
@@ -107,6 +146,7 @@
 	margin-left: 0.30em;
 }
 
+/* Parte esterna delle tabelle */
 .ContentLista{
 	border-color: rgba(111, 111, 111, 0.5);
 	border-width: 0.3px;
@@ -114,6 +154,20 @@
 	padding: 0px;
 	margin: 0px;
 }
+
+.btn-secondary{
+	
+	background-color: #17A2B8;
+}
+
+.btn-secondary:hover{
+	background-color: #138496;
+}
+
+.btn-secondary.disabled{
+	color: rgb(0, 0, 0);
+}
+/* FINE TABELLE */
 
 .form-control::-moz-placeholder {
 	color: rgba(124, 124, 124, 0.5);
@@ -124,8 +178,3 @@
 .form-control::-webkit-input-placeholder {
 	color: rgba(124, 124, 124, 0.5);
 }
-
-/* Elimina il pulsante di chiusura nella finestra modal */
-.modal-header .close {
-	display:none;
-  }
