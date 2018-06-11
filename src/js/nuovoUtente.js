@@ -20,34 +20,42 @@ var ruolo; // Contiene il ruolo, es. B per bambino, E per educatore, etc:
 var table; // Nome della tabella mysql da usare
 var formName; // nome del form html
 var inputName; // nome del campo input che contiene il nome dello user
-var codfis; // nome del campo contenente il codice fiscale
 
 // Il documento è pronto, inizializiamo le variabili
 $(document).ready(function () {
 	$('[data-toggle="tooltip"]').tooltip({
 		container: 'body'
 	});
-	
+
 
 	formName = "formNuovoUser"
-	
+
 	if (pageName == "NuovoBambino.html") {
+
+		// Carichiamo i campi dal file "BambinoCampi.html"
+		$.get("BambinoCampi.html", function (data) {
+			$("#campi").replaceWith(data);
+		});
+
 		ruolo = "B";
 		table = "tbbambini";
 		inputName = "nomeBambino";
-		codfis = "codiceFiscaleBambino";
 	}
 	else if (pageName == "NuovoEducatore.html") {
+
+		// Carichiamo i campi dal file "EducatoreCampi.html"
+		$.get("EducatoreCampi.html", function (data) {
+			$("#campi").replaceWith(data);
+		});
+
 		ruolo = "E";
-		table = "tbeducatori";		
+		table = "tbeducatori";
 		inputName = "nomeEducatore";
-		codfis = "codiceFiscaleEducatore";
 	}
 	else if (pageName == "NuovoParente.html") {
 		ruolo = "P";
 		table = "tbparenti";
 		inputName = "nomeParente";
-		codfis = "codiceFiscaleParente";
 	}
 	else // Stampiamo un errore nella console
 	{
@@ -71,7 +79,7 @@ function ValidForm() {
 // Vogliamo interrompere la registrazione del nuovo badge
 $('#btnStopBadgeRegModal').on('click', function () {
 	var url = ".\\php\\proxyToInterr.php?command=stop";
-	
+
 	$.get(url);
 });
 
@@ -151,7 +159,10 @@ $('#btnRegBadge').on('click', function () {
 
 // Salviamo un nuovo user nel database e attiviamo il pulsante per registrare
 // un nuovo badge
-$('#btnSaveUser').on('click', function () {
+$('#btnSaveUser').on('click', InsertUser());
+
+// Funzione per inserire un nuovo user attraverso PHP->mySql
+function InsertUser() {
 
 	// Controlliamo se i campi obbligatori sono stati inseriti, altrimenti usciamo
 	if (!document.getElementById(formName).checkValidity()) {
@@ -166,8 +177,9 @@ $('#btnSaveUser').on('click', function () {
 	var i; // contatore
 	var dataObj = {}; // Oggetto contenente tutti i controlli che ci servono e i loro valori
 
-	dataObj["paramInsertUser"] = ruolo; 	// il ruolo, e attiva la funzione InsertNewUser in dbComm.php
-	dataObj["paramTableForInsert"] = table; // la tabella mysql
+	dataObj["paramInsertOrUpdate"] = "insert"; // Indica alla funzione php di eseguire un insert
+	dataObj["paramInsertUser"] = ruolo; 	
+	dataObj["paramTable"] = table; // la tabella mysql
 
 	// Scorriamo tutti i controlli della pagina e se sono controlli che ci servono
 	// li aggiungiamo a dataObj con i loro valori
@@ -200,8 +212,7 @@ $('#btnSaveUser').on('click', function () {
 	$('#modalDialogModalBody').html(testoModalUserSaved);
 	$('#modalDialog').modal({ backdrop: 'static' });
 
-});
-
+}
 
 // Carichiamo la navbar in alto
 $.get("nav-top.html", function (data) {

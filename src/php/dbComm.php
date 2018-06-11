@@ -23,9 +23,13 @@
       {
           AddRandomRecords();
       }
-      else if (isset($_POST['paramInsertUser']))
+      else if (isset($_POST['paramInsertOrUpdate']))
       {
-          InsertNewUser();
+          InsertUpdateUser();
+      }
+      else if (isset($_POST['paramInsertOrUpdate']))
+      {
+          InsertUpdateUser();
       }
       else if (isset($_POST['table']))
       {
@@ -78,38 +82,82 @@
       $db->exec($deleteSQL);
   }
 
-  function InsertNewUser()
+  function InsertUpdateUser()
   {
+      //paramInsertOrUpdate
       $db = new PDO('mysql:host=localhost;dbname=dbnidocellini', 'root', 'mysql231278');
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-      $tableName        = $_POST["paramTableForInsert"];
-      $insertNewUserSql = "INSERT INTO " . $tableName . " (";
+      $tableName = $_POST["paramTable"];
+      $ruolo     = $_POST["paramRuolo"];
+      $id        = $_POST["paramId"];
 
-      $recordsToInsert = "";
-      $fieldsToInsert  = "";
-      foreach ($_POST as $key => $value)
+      // Compilo la stringa SQL per INSERIRE un nuovo utente
+      if ($_POST["paramInsertOrUpdate"] === "insert")
       {
-          if (substr($key, 0, 5) !== "param")
+          $SqlString       = "INSERT INTO " . $tableName . " (";
+          $recordsToInsert = "";
+          $fieldsToInsert  = "";
+
+          // Per ogni campo da aggiungere alla stringa SQL
+          foreach ($_POST as $key => $value)
           {
-              $recordsToInsert .= $key . ", ";
-              if ($value === "")
+              if (substr($key, 0, 5) !== "param")
               {
-                  $fieldsToInsert .= "'" . "" . "'" . ", ";
-              }
-              else
-              {
-                  $fieldsToInsert .= "'" . $value . "'" . ", ";
+                  $recordsToInsert .= $key . ", ";
+                  if ($value === "")
+                  {
+                      $fieldsToInsert .= "'" . "" . "'" . ", ";
+                  }
+                  else
+                  {
+                      $fieldsToInsert .= "'" . $value . "'" . ", ";
+                  }
               }
           }
-      }
-      $recordsToInsert = rtrim($recordsToInsert, ", ");
-      $fieldsToInsert  = rtrim($fieldsToInsert, ", ");
+          $recordsToInsert = rtrim($recordsToInsert, ", ");
+          $fieldsToInsert  = rtrim($fieldsToInsert, ", ");
 
-      $insertNewUserSql .= $recordsToInsert . ") VALUES (" . $fieldsToInsert . ")";
-      $r                = $db->exec($insertNewUserSql); // CREARE TABELLA TBBAMBINI programmaticamente
-      echo $r;
+          $SqlString .= $recordsToInsert . ") VALUES (" . $fieldsToInsert . ")";
+      }
+      // Facciamo un UPDATE
+      else if ($_POST["paramInsertOrUpdate"] === "update")
+      {
+          $SqlString       = "UPDATE " . $tableName . " SET ";
+          $recordsToInsert = "";
+          $fieldsToInsert  = "";
+
+          // Per ogni campo da aggiungere alla stringa SQL
+          foreach ($_POST as $key => $value)
+          {
+              if (substr($key, 0, 5) !== "param")
+              {
+                  $SqlString .= $key . " = ";
+                  if ($value === "") // il campo da inserire è vuoto
+                  {
+                      $SqlString .= "'" . "" . "'" . ", ";
+                  }
+                  else // il campo da inserire contiene qualcosa
+                  {
+                      $SqlString .= "'" . $value . "'" . ", ";
+                  }
+              }
+          }
+          $SqlString      = rtrim($SqlString, ", ");
+          $fieldsToInsert = rtrim($fieldsToInsert, ", ");
+
+          if ($ruolo === "B")
+          {
+              $SqlString .= " WHERE idtbbambini = $id";
+          }
+          else if ($ruolo === "E")
+          {
+              $SqlString .= " WHERE idtbeducatori = $id";
+          }
+      }
+
+      $db->exec($SqlString);
   }
 
   function AddRandomRecords()

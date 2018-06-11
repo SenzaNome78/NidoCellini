@@ -67,12 +67,16 @@
 .modal-header .close {
 	display:none;
   }
-  
-/* Elimina il pulsante di chiusura nella finestra modal */
-.modal-header .close {
-	display:none;
-  }
 
+/* Modal per modificare le voci delle tabelle */
+/* Important part */
+.modal-Edit-dialog{
+    overflow-y: initial !important
+}
+.modal-Edit-body{
+    height: 75vh !important;
+    overflow-y: auto !important
+}
 /* FINE MODAL */
 
 /* Tooltip  */
@@ -96,8 +100,8 @@
     position: absolute;
 	z-index: 1;
 	width: 240px;
-    bottom: 120%;
-    left: 50%; 
+	bottom: 135%;
+	left: 50%; 
     margin-left: -120px; 
 }
 
@@ -157,11 +161,11 @@
 
 .btn-secondary{
 	
-	background-color: #17A2B8;
+	background-color: rgb(18, 110, 124);
 }
 
 .btn-secondary:hover{
-	background-color: #138496;
+	background-color: #0c545f;
 }
 
 .btn-secondary.disabled{

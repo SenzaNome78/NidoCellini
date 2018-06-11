@@ -8,15 +8,18 @@ const DELETEKEY = "delete"
 const PHPURL = ".\\php\\dbComm.php";
 
 // Elenco di tabelle contenute nel database mysql
-const MYSQL_TABLE_BAMBINI = "vwbambini";
-const MYSQL_TABLE_EDUCATORI = "vweducatori";
+const MYSQL_TABLE_BAMBINI = "tbbambini";
+const MYSQL_TABLE_EDUCATORI = "tbeducatori";
 const MYSQL_TABLE_PRESENZE_EDUCATORI = "tbpresenzeeducatori";
 const MYSQL_TABLE_PRESENZE_BAMBINI = "tbpresenzebambini";
+const MYSQL_VIEW_BAMBINI = "vwbambini";
+const MYSQL_VIEW_EDUCATORI = "vweducatori";
 
 // la variabile pageName contiene il nome della pagina web (non il titolo)
 var pageName = location.pathname.split("/").slice(-1)[0]
 
 var currMysqlTable; // Variabile stringa che contiene la tabella mysql per la pagina attuale
+var tabellaPerUpdate; // Tabella mysql per modificare gli user
 
 // usiamo questa variabile per passare la tabella mysql attraverso
 // il comando POST al nostro script PHP
@@ -26,6 +29,12 @@ var postData;
 var tabella;
 // contiene un'instanza dei pulsanti in basso alla tabella
 var ButtonsVar;
+
+// Il nome del form che usiamo per modificare i dati dello user
+var formName = "formModificaUser";
+
+// Variabile con il ruolo degli utenti della tabella (B:bambini, E:Educatori, P:Parenti)
+var ruolo;
 
 // Aggiungiamo la barra di navigazione superiore alla pagina
 $.get("nav-top.html", function (data) {
@@ -49,8 +58,10 @@ $(document).ready(function () {
 			{ data: "seriale" }
 		]);
 	} else if (pageName === "ElencoBambini.html") {
-		currMysqlTable = MYSQL_TABLE_BAMBINI;
-		PopulateTable(MYSQL_TABLE_BAMBINI, "idtbbambini", [
+		currMysqlTable = MYSQL_VIEW_BAMBINI;
+		ruolo = "B";
+		tabellaPerUpdate = MYSQL_TABLE_BAMBINI;
+		PopulateTable(currMysqlTable, "idtbbambini", [
 			{ data: "nomeBambino" },
 			{ data: "cognomeBambino" },
 			{ data: "dataNascitaBambino" },
@@ -59,8 +70,10 @@ $(document).ready(function () {
 		]);
 
 	} else if (pageName === "ElencoEducatori.html") {
-		currMysqlTable = MYSQL_TABLE_EDUCATORI;
-		PopulateTable(MYSQL_TABLE_EDUCATORI, "idtbeducatori", [
+		currMysqlTable = MYSQL_VIEW_EDUCATORI;
+		ruolo = "E";
+		tabellaPerUpdate = MYSQL_TABLE_EDUCATORI;
+		PopulateTable(currMysqlTable, "idtbeducatori", [
 			{ data: "nomeEducatore" },
 			{ data: "cognomeEducatore" },
 			{ data: "nomeSezione" },
@@ -100,9 +113,9 @@ $(document).ready(function () {
 		}
 	});
 
+
 	postData = TABLEKEY + "=" + currMysqlTable;
 })
-
 
 
 /**
@@ -134,6 +147,10 @@ function PopulateTable(dbTabella, idKey, colonne) {
 				}
 			},
 
+			columns: colonne,
+
+			responsive: true,
+
 			rowId: idKey,
 			select: true,
 
@@ -142,7 +159,6 @@ function PopulateTable(dbTabella, idKey, colonne) {
 			scrollCollapse: true,
 			paging: false,
 			deferRender: true,
-			columns: colonne,
 
 			// in questa sezione ho tradotto le varie voci della tabella in italiano
 			language: {
@@ -175,6 +191,7 @@ function PopulateTable(dbTabella, idKey, colonne) {
 			//'copy', 'excel', 'pdf',
 			{
 				text: 'Cancella voci',
+				className: 'btn btn-primary glyphicon glyphicon-duplicate',
 				action: function () {
 					CancellaVoci(idKey);
 				}
@@ -183,7 +200,6 @@ function PopulateTable(dbTabella, idKey, colonne) {
 				name: "btnRicarica",
 				text: "Ricarica voci",
 				action: function () {
-					console.log("Rica");
 					tabella.ajax.reload();
 				}
 			},
@@ -192,9 +208,7 @@ function PopulateTable(dbTabella, idKey, colonne) {
 				text: "Modifica voce",
 				enabled: false,
 				action: function () {
-					console.log("Modifica voce");
 					MostraDettagli();
-					$('#modalDialog').modal({ backdrop: 'static' });
 				}
 			},
 			{
@@ -203,14 +217,23 @@ function PopulateTable(dbTabella, idKey, colonne) {
 
 					//AddRandomRecords();
 				}
+			},
+			{
+				text: "TestButton",
+				action: function () {
 
+					TestButton();
+				}
 			}
-
 		]
 	});
 	tabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
+
 }
 
+function TestButton() {
+	console.log(tabella.rows({}).data());
+}
 
 function CancellaVoci(idKey) {
 
@@ -248,7 +271,98 @@ function AddRandomRecords() {
 	});
 }
 
-function MostraDettagli(){
+var datiTabella;
+var idDaPassare;
+// Apre il modal per modificare l'utente
+function MostraDettagli() {
+	// Registra un evento all'apertura del modal per riportare la scrollbar in alto
+	$('#modalDialog').off('show.bs.modal');
+	
 
-	$('#modalDialog').modal({ backdrop: 'static' });
+	$('#modalDialog').on('show.bs.modal', function (event) {
+
+		// LEGGIAMO I DATI DALLA TABELLA E COMPILIAMO IL FORM
+		// Queste due variabili contengono:
+		// controlli: tutti i controlli del nostro form html
+		// datiTabella: i campi e i valori del record selezionato nella tabella
+		var controlli = document.getElementById(formName).elements;
+		datiTabella = tabella.rows({ selected: true }).data()[0];
+
+		
+		if (ruolo === "B") {
+			idDaPassare = datiTabella["idtbbambini"];
+		} else if (ruolo === "E") {
+			idDaPassare = datiTabella["idtbeducatori"];
+		}
+
+
+		// Per ogni campo della tabella (anche quelli nascosti)
+		for (var campo in datiTabella) {
+			// Controlliamo che il rispettivo controllo esista nel form
+			if (typeof controlli[campo] !== 'undefined') {
+				// Se sia il campo della tabella che quello del controllo non sono null
+				// modificiamo quest'ultimo
+				if ((datiTabella[campo] !== null) && (controlli[campo].value != null))
+					controlli[campo].value = datiTabella[campo];
+			}
+		}
+		// FINE LETTURA DATI
+
+
+		$('#btnSaveUser').on('click', function (event) {
+			UpdateUser(idDaPassare);
+			$('#modalDialog').modal('hide');
+			tabella.ajax.reload();
+		});
+
+		$('#btnRegBadge').on('click', function (event) {
+			console.log('regbadge');
+		});
+
+		$('#btnAnnullaModal').on('click', function (event) {
+			$('#modalDialog').modal('hide');
+		});
+
+	});
+	
+	$('#modalDialog').modal('show');
+	$('#modalDialogModalBody').scrollTop(0);
+}
+
+function UpdateUser(idDaPassare) {
+
+	// Controlliamo se i campi obbligatori sono stati inseriti, altrimenti usciamo
+	if (!document.getElementById(formName).checkValidity()) {
+		return;
+	}
+	// preventDefault per non inviare il modulo e non fare il refresh della pagina
+	event.preventDefault();
+
+	// In pageControls mettiamo tutti i controlli della pagina
+	var pageControls = document.getElementById(formName).elements;
+
+	var i; // contatore
+	var dataObj = {}; // Oggetto contenente tutti i controlli che ci servono e i loro valori
+
+	dataObj["paramInsertOrUpdate"] = "update"; // Indica alla funzione php di eseguire un update
+	dataObj["paramRuolo"] = ruolo; 	// il ruolo
+	dataObj["paramTable"] = tabellaPerUpdate; // la tabella mysql
+	dataObj["paramId"] = idDaPassare; // Id del record mysql da modificare
+
+	// Scorriamo tutti i controlli della pagina e se sono controlli che ci servono
+	// li aggiungiamo a dataObj con i loro valori
+	for (i = 0; i < pageControls.length; i++) {
+		if (pageControls[i].type == "text"
+			|| pageControls[i].type == "date"
+			|| pageControls[i].type == "select-one"
+			|| pageControls[i].type == "textarea"
+			|| pageControls[i].type == "tel"
+			|| pageControls[i].type == "email") {
+			dataObj[pageControls[i].name] = pageControls[i].value;
+		}
+	}
+
+	// inviamo l'oggetto dataObj al file php
+	$.post(PHPURL, dataObj, function (data) {
+	});
 }
