@@ -24,6 +24,7 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="DataTables/datatables.css" />
 	<link rel="stylesheet" type="text/css" href="DataTables/Scroller-1.4.4/css/scroller.bootstrap4.css" />
+
 	<link rel="stylesheet" type="text/css" href="css/cellini.css" />
 </head>
 
@@ -34,301 +35,294 @@
 	<body class="backDrop">
 
 		<div class="container-fluid bg-white rounded">
-				<div class="row mt-3 mb-3">
-					<div class="col-md-12">
-						<h6 class="text-center h2">Inserire i dati del nuovo educatore:</h6>
-					</div>
+			<div class="row mt-3 mb-3">
+				<div class="col-md-12">
+					<h6 class="text-center h2">Inserire i dati del nuovo educatore:</h6>
 				</div>
-				<div class="flex-row-reverse ContentLista">
+			</div>
+			<div class="flex-row-reverse ContentLista">
 
-					<form class="form-horizontal" role="form" action="" method="post" id="formNuovoUser">
+				<form class="form-horizontal" role="form" action="" method="post" id="formNuovoUser">
 
-						<!-- <div class="row rowLista">
+					<div class="row rowLista">
 						<div class="input-group input-group-lg">
+
 							<div class="col-md-2">
-								<div class="NuovoLabelCss">Sezione</div>
+								<div class="NuovoLabelCss">Nome</div>
+							</div>
+							<div class="col-md-4">
+								<label class="sr-only" for="nomeEducatore">Nome Educatore</label>
+								<input type="text" name="nomeEducatore" class="form-control NuovoInputCss" id="nomeEducatore" maxlength="16" placeholder="Nome Educatore"
+								 value="" required autofocus>
+							</div>
+
+							<div class="col-md-2">
+								<label class="NuovoLabelCss">Cognome</label>
+							</div>
+							<div class="col-md-4">
+								<label class="sr-only" for="cognomeEducatore">Cognome Educatore</label>
+								<input type="text" name="cognomeEducatore" class="form-control NuovoInputCss" id="cognomeEducatore" maxlength="16" placeholder="Cognome Educatore"
+								 value="" required autofocus>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row rowLista">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Nato/a a</div>
+							</div>
+							<div class="col-md-6">
+								<label class="sr-only" for="luogoNascitaEducatore">Nato/a a</label>
+								<input type="text" value="Firenze" name="luogoNascitaEducatore" class="form-control NuovoInputCss" id="luogoNascitaEducatore"
+								 maxlength="32" placeholder="Campo facoltativo" autofocus>
+							</div>
+
+							<div class="col-md-2">
+								<label class="NuovoLabelCss">Provincia</label>
+							</div>
+							<div class="col-md-2">
+								<label class="sr-only" for="provNascitaEducatore">Provincia</label>
+								<input type="text" value="FI" name="provNascitaEducatore" class="form-control NuovoInputCss" id="provNascitaEducatore" maxlength="2"
+								 placeholder="Campo facoltativo" autofocus>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row rowLista">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Nazione</div>
 							</div>
 							<div class="col-md-10">
-								<label class="sr-only" for="nazioneNascitaEducatore">Sezione</label>
-								<?php echo json_encode($result); ?>
-								<input type="text" value="Italia" name="nazioneNascitaEducatore" class="form-control NuovoInputCss" id="nazioneNascitaEducatore" maxlength="32"
-								 placeholder="Campo facoltativo" autofocus>
-
+								<label class="sr-only" for="nazioneNascitaEducatore">Nazione</label>
+								<input type="text" value="Italia" name="nazioneNascitaEducatore" class="form-control NuovoInputCss" id="nazioneNascitaEducatore"
+								 maxlength="32" placeholder="Campo facoltativo" autofocus>
 							</div>
-						</div>
-					</div> -->
-
-						<div class="row rowLista">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Nome</div>
-								</div>
-								<div class="col-md-4">
-									<label class="sr-only" for="nomeEducatore">Nome Educatore</label>
-
-									<input type="text" name="nomeEducatore" class="form-control NuovoInputCss" id="nomeEducatore" maxlength="16" placeholder="Nome Educatore"
-									 value="Pi" required autofocus>
-
-								</div>
-								<div class="col-md-2">
-									<label class="NuovoLabelCss">Cognome</label>
-								</div>
-								<div class="col-md-4">
-									<label class="sr-only" for="cognomeEducatore">Cognome Educatore</label>
-
-									<input type="text" name="cognomeEducatore" class="form-control NuovoInputCss" id="cognomeEducatore" maxlength="16" placeholder="Cognome Educatore"
-									 value="Pi" required autofocus>
-
-								</div>
-
-							</div>
-						</div>
-
-						<div class="row rowLista">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Nato/a a</div>
-								</div>
-								<div class="col-md-6">
-									<label class="sr-only" for="luogoNascitaEducatore">Nato/a a</label>
-
-									<input type="text" value="Firenze" name="luogoNascitaEducatore" class="form-control NuovoInputCss" id="luogoNascitaEducatore"
-									 maxlength="32" placeholder="Campo facoltativo" autofocus>
-
-								</div>
-								<div class="col-md-2">
-									<label class="NuovoLabelCss">Provincia</label>
-								</div>
-								<div class="col-md-2">
-									<label class="sr-only" for="provNascitaEducatore">Provincia</label>
-
-									<input type="text" value="FI" name="provNascitaEducatore" class="form-control NuovoInputCss" id="provNascitaEducatore" maxlength="2"
-									 placeholder="Campo facoltativo" autofocus>
-
-								</div>
-
-							</div>
-						</div>
-
-						<div class="row rowLista">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Nazione</div>
-								</div>
-								<div class="col-md-10">
-									<label class="sr-only" for="nazioneNascitaEducatore">Nazione</label>
-
-									<input type="text" value="Italia" name="nazioneNascitaEducatore" class="form-control NuovoInputCss" id="nazioneNascitaEducatore"
-									 maxlength="32" placeholder="Campo facoltativo" autofocus>
-
-								</div>
-							</div>
-						</div>
-
-						<div class="row rowLista ">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Il giorno</div>
-								</div>
-								<div class="col-md-4">
-									<label class="sr-only" for="dataNascitaEducatore">Il giorno</label>
-
-									<input type="date" value="2018-07-03" name="dataNascitaEducatore" class="form-control NuovoInputCss" id="dataNascitaEducatore"
-									 maxlength="10" max="2029-12-31" min="1901-12-31" required autofocus>
-
-								</div>
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Sesso</div>
-								</div>
-								<div class="col-md-4">
-									<select class="form-control NuovoInputCss" name="sessoEducatore" id="sessoEducatore" required>
-										<option value="F">Femmina</option>
-										<option value="M">Maschio</option>
-									</select>
-								</div>
-							</div>
-						</div>
-
-						<div class="row rowLista ">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Codice Fiscale</div>
-								</div>
-								<div class="col-md-4">
-									<label class="sr-only" for="codiceFiscaleEducatore">Codice Fiscale</label>
-
-									<input type="text" name="codiceFiscaleEducatore" class="form-control NuovoInputCss" id="codiceFiscaleEducatore" maxlength="16"
-									 autofocus placeholder="Campo facoltativo">
-								</div>
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Cittadinanza</div>
-								</div>
-								<div class="col-md-4">
-									<label class="sr-only" for="cittadinanzaEducatore">Cittadinanza</label>
-
-									<input type="text" value="Italiana" name="cittadinanzaEducatore" class="form-control NuovoInputCss" id="cittadinanzaEducatore"
-									 maxlength="32" autofocus placeholder="Campo facoltativo">
-								</div>
-							</div>
-						</div>
-
-						<div class="row rowLista ">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Residente in</div>
-								</div>
-								<div class="col-md-6">
-									<label class="sr-only" for="residenzaEducatore">Residente in</label>
-
-									<input type="text" name="residenzaEducatore" class="form-control NuovoInputCss" id="residenzaEducatore" maxlength="64" autofocus
-									 value="Pi" required>
-								</div>
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">CAP</div>
-								</div>
-								<div class="col-md-2">
-									<label class="sr-only" for="capEducatore">CAP</label>
-
-									<input type="text" name="capEducatore" class="form-control NuovoInputCss" id="capEducatore" maxlength="5" value="50" autofocus
-									 required>
-								</div>
-							</div>
-						</div>
-
-						<div class="row rowLista ">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Città</div>
-								</div>
-								<div class="col-md-6">
-									<label class="sr-only" for="cittaResidenzaEducatore">Città</label>
-
-									<input type="text" name="cittaResidenzaEducatore" class="form-control NuovoInputCss" id="cittaResidenzaEducatore" maxlength="32"
-									 value="Firenze" autofocus required>
-								</div>
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Provincia</div>
-								</div>
-								<div class="col-md-2">
-									<label class="sr-only" for="provResidenzaEducatore">Provincia</label>
-
-									<input type="text" name="provResidenzaEducatore" class="form-control NuovoInputCss" id="provResidenzaEducatore" maxlength="2"
-									 value="FI" autofocus required>
-								</div>
-							</div>
-						</div>
-
-						<div class="row rowLista ">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Telefono</div>
-								</div>
-								<div class="col-md-4">
-									<label class="sr-only" for="tel01Educatore">Telefono</label>
-
-									<input type="tel" name="tel01Educatore" class="form-control NuovoInputCss" id="tel01Educatore" maxlength="16" placeholder="Fisso (facoltativo)"
-									 autofocus>
-								</div>
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Cellulare</div>
-								</div>
-								<div class="col-md-4">
-									<label class="sr-only" for="tel02Educatore">Cellulare</label>
-
-									<input type="tel" name="tel02Educatore" class="form-control NuovoInputCss" id="tel02Educatore" maxlength="16" autofocus placeholder="Cellulare (facoltativo)">
-								</div>
-							</div>
-						</div>
-
-						<div class="row rowLista ">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Email</div>
-								</div>
-								<div class="col-md-10">
-									<label class="sr-only" for="emailEducatore">Email</label>
-
-									<input type="email" name="emailEducatore" class="form-control NuovoInputCss" id="emailEducatore" maxlength="64" placeholder="Campo facoltativo"
-									 autofocus>
-								</div>
-
-							</div>
-						</div>
-
-						<div class="row rowLista">
-							<div class="input-group input-group-lg">
-								<div class="col-md-2">
-									<div class="NuovoLabelCss">Note</div>
-								</div>
-								<div class="col-md-10">
-									<label class="sr-only" for="noteEducatore">Note</label>
-									<textarea class="form-control NuovoInputCss" name="noteEducatore" id="noteEducatore" placeholder="Campo facoltativo" rows="5"></textarea>
-
-								</div>
-							</div>
-						</div>
-
-						<!-- Pulsante per salvare il nuovo utente -->
-						<div class="row mt-3 mb-1">
-							<div class="col-lg-3 col-md-2"></div>
-							<div class="col-lg-6 col-md-8">
-								<div>
-									<button id="btnSaveUser" class="btn btn-lg mt-3 btn-block btn-outline-primary">Salva</button>
-								</div>
-							</div>
-							<div class="col-lg-3 col-md-2"></div>
-						</div>
-
-						<!-- Pulsante per registare il badge del nuovo utente -->
-						<div class="row mb-3">
-							<div class="col-lg-3 col-md-2"> </div>
-
-							<div class="col-lg-6 col-md-8">
-								<div id="tipBtnRegBadge" class="d-block Dtooltip">
-									<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">Per registrare un nuovo badge si prega di aggiungere un nuovo utente usando il pulsante "Salva"</span>
-									<button id="btnRegBadge" disabled class="btn btn-lg mt-3  btn-block btn-outline-primary">Registra nuovo badge</button>
-
-								</div>
-
-							</div>
-							<div class="col-lg-3 col-md-2"></div>
-						</div>
-					</form>
-				</div>
-
-			</div>
-
-			<!-- MODAL -->
-			<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialog" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-centered " role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="modalDialogLabel">html</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div id="modalDialogModalBody" class="modal-body text-center">
-							<h5>""
-								<h5>
-
-						</div>
-						<div class="modal-footer justify-content-center">
-							<button type="button" id="btnCloseModal" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
-							<button type="button" id="btnStopBadgeRegModal" class="btn btn-primary" style="display: none;">Interrompere registrazione badge</button>
 
 						</div>
 					</div>
+
+					<div class="row rowLista ">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Il giorno</div>
+							</div>
+							<div class="col-md-4">
+								<label class="sr-only" for="dataNascitaEducatore">Il giorno</label>
+								<input type="date" value="2018-07-03" name="dataNascitaEducatore" class="form-control NuovoInputCss" id="dataNascitaEducatore"
+								 maxlength="10" max="2029-12-31" min="1901-12-31" required autofocus>
+							</div>
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Sesso</div>
+							</div>
+							<div class="col-md-4">
+								<select class="form-control NuovoInputCss" name="sessoEducatore" id="sessoEducatore" required>
+									<option value="F">Femmina</option>
+									<option value="M">Maschio</option>
+								</select>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row rowLista ">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Codice Fiscale</div>
+							</div>
+							<div class="col-md-4">
+								<label class="sr-only" for="codiceFiscaleEducatore">Codice Fiscale</label>
+								<input type="text" name="codiceFiscaleEducatore" class="form-control NuovoInputCss" id="codiceFiscaleEducatore" maxlength="16"
+								 autofocus placeholder="Campo facoltativo">
+							</div>
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Cittadinanza</div>
+							</div>
+							<div class="col-md-4">
+								<label class="sr-only" for="cittadinanzaEducatore">Cittadinanza</label>
+								<input type="text" value="Italiana" name="cittadinanzaEducatore" class="form-control NuovoInputCss" id="cittadinanzaEducatore"
+								 maxlength="32" autofocus placeholder="Campo facoltativo">
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row rowLista ">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Residente in</div>
+							</div>
+							<div class="col-md-6">
+								<label class="sr-only" for="residenzaEducatore">Residente in</label>
+								<input type="text" name="residenzaEducatore" class="form-control NuovoInputCss" id="residenzaEducatore" maxlength="64" autofocus
+								 value="" required>
+							</div>
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">CAP</div>
+							</div>
+							<div class="col-md-2">
+								<label class="sr-only" for="capEducatore">CAP</label>
+								<input type="text" name="capEducatore" class="form-control NuovoInputCss" id="capEducatore" maxlength="5" value="" autofocus
+								 required>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row rowLista ">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Citt&agrave;</div>
+							</div>
+							<div class="col-md-6">
+								<label class="sr-only" for="cittaResidenzaEducatore">Citt&agrave;</label>
+								<input type="text" name="cittaResidenzaEducatore" class="form-control NuovoInputCss" id="cittaResidenzaEducatore" maxlength="32"
+								 value="Firenze" placeholder="Citt&agrave; di residenza" autofocus required>
+							</div>
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Provincia</div>
+							</div>
+							<div class="col-md-2">
+								<label class="sr-only" for="provResidenzaEducatore">Provincia</label>
+								<input type="text" name="provResidenzaEducatore" class="form-control NuovoInputCss" id="provResidenzaEducatore" maxlength="2"
+								 value="FI" placeholder="di residenza" autofocus required>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row rowLista ">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Telefono</div>
+							</div>
+							<div class="col-md-4">
+								<label class="sr-only" for="tel01Educatore">Telefono</label>
+								<input type="tel" name="tel01Educatore" class="form-control NuovoInputCss" id="tel01Educatore" maxlength="16" placeholder="Fisso (facoltativo)"
+								 autofocus>
+							</div>
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Cellulare</div>
+							</div>
+							<div class="col-md-4">
+								<label class="sr-only" for="tel02Educatore">Cellulare</label>
+								<input type="tel" name="tel02Educatore" class="form-control NuovoInputCss" id="tel02Educatore" maxlength="16" autofocus placeholder="Cellulare (facoltativo)">
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row rowLista ">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Email</div>
+							</div>
+							<div class="col-md-10">
+								<label class="sr-only" for="emailEducatore">Email</label>
+								<input type="email" name="emailEducatore" class="form-control NuovoInputCss" id="emailEducatore" maxlength="64" placeholder="Campo facoltativo"
+								 autofocus>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row rowLista">
+						<div class="input-group input-group-lg">
+
+							<div class="col-md-2">
+								<div class="NuovoLabelCss">Note</div>
+							</div>
+							<div class="col-md-10">
+								<label class="sr-only" for="noteEducatore">Note</label>
+								<textarea class="form-control NuovoInputCss" name="noteEducatore" id="noteEducatore" placeholder="Campo facoltativo" rows="4"></textarea>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- Pulsante per salvare il nuovo utente -->
+					<div class="row mt-3 mb-1">
+						<div class="col-lg-3 col-md-2"></div>
+						<div class="col-lg-6 col-md-8">
+							<div>
+								<button id="btnSaveUser" class="btn btn-lg mt-3 btn-block btn-primary">Salva</button>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-2"></div>
+					</div>
+
+
+					<div class="row mb-3">
+						<div class="col-lg-3 col-md-2"> </div>
+
+						<div class="col-lg-3 col-md-4">
+							<!-- Pulsante per registare il badge del nuovo utente -->
+							<div id="tipBtnRegBadge" class="d-block Dtooltip">
+								<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">Per registrare un nuovo badge si prega di aggiungere un nuovo utente usando il pulsante "Salva"</span>
+								<button id="btnRegBadge" disabled class="btn btn-lg mt-3  btn-block btn-outline-primary">Registra nuovo badge</button>
+
+							</div>
+
+						</div>
+						<div class="col-lg-3 col-md-4">
+							<!-- Pulsante per pulire i campi, con conferma locale -->
+							<button id="btnPulisci" class="btn btn-lg mt-3 btn-block btn-outline-primary">Pulisci campi</button>
+							
+						</div>
+						<div class="col-lg-3 col-md-2"></div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+
+		<!-- MODAL -->
+		<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalDialogLabel">html</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div id="modalDialogModalBody" class="modal-body text-center">
+						<h5>""
+							<h5>
+
+					</div>
+					<div class="modal-footer justify-content-center">
+						<button type="button" id="btnCloseModal" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+						<button type="button" id="btnStopBadgeRegModal" class="btn btn-primary" style="display: none;">Interrompere registrazione badge</button>
+
+					</div>
 				</div>
 			</div>
-			<!-- FINE MODAL -->
+		</div>
+		<!-- FINE MODAL -->
 
 
-			<script src="js/jquery.js"></script>
-			<script src="js/bootstrap.bundle.js"></script>
-			<script src="DataTables/datatables.js"></script>
-			<script src="DataTables/Scroller-1.4.4/js/dataTables.scroller.js"></script>
-			<script src="js/nuovoUtente.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.bundle.js"></script>
+		<script src="DataTables/datatables.js"></script>
+		<script src="DataTables/Scroller-1.4.4/js/dataTables.scroller.js"></script>
+		<script src="js/nuovoUtente.js"></script>
 
 	</body>
 

@@ -15,7 +15,7 @@
 
   try
   {
-      if (isset($_POST['delete']))
+      if (isset($_POST['deleteId']))
       {
           DeleteRecord();
       }
@@ -75,11 +75,11 @@
 
 
       $tableName = $_POST["table"];
-      $deleteId  = $_POST["delete"];
+      $deleteId  = $_POST["deleteId"];
       $idKey     = $_POST["idKey"];
 
       $deleteSQL = "DELETE FROM $tableName WHERE $idKey IN ($deleteId)";
-      $db->exec($deleteSQL);
+      echo $db->exec($deleteSQL);
   }
 
   function InsertUpdateUser()

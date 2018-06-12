@@ -22,14 +22,15 @@ session_start();
 	<div id="nav-top"></div>
 	<div class="d-sm-flex p-2 d-none d-sm-block">
 		<div class="ml-4 d-flex d-flex align-items-center">
-			<img src="assets/img/baby-head-outline-with-pacifierBlack.svg"  width="48" height="48">
+			<img src="assets/img/baby-head-outline-with-pacifierBlack.svg" width="48" height="48">
 		</div>
 		<div class="mr-auto p-2 font-weight-bold h2">Bambini</div>
 
 
 		<button type="button" class="btn btn-lg btn-info pl-3 pr-3 mr-4" onclick="location.href='NuovoBambino.html';">
-			
-			<div class="h4"><i class="fas fa-plus"></i>&nbsp&nbspNuovo bambino</div>
+
+			<div class="h4">
+				<i class="fas fa-plus"></i>&nbsp&nbspNuovo bambino</div>
 		</button>
 	</div>
 	<div class="container-fluid d-none d-sm-block">
@@ -57,31 +58,233 @@ session_start();
 		</div>
 	</div>
 
-	<!-- MODAL -->
-	<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialog" aria-hidden="true">
-			<div class="modal-dialog modal-lg modal-dialog-centered " role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="modalDialogLabel">Modifica bambino</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div id="modalDialogModalBody" class="modal-body text-center">
-						<h5>""
-							<h5>
+	<!-- INIZIO MODAL -->
+	<div class="modal" id="modalDialog" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modalDialog" aria-hidden="true">
 
+		<div class="modal-dialog modal-Edit-dialog modal-lg modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header justify-content-center">
+					<h2 class="modal-title text-center" id="modalDialogLabel">Modifica dati:</h2>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<form class="form-horizontal" role="form" action="" method="post" id="formModificaUser">7
+					<div id="modalDialogModalBody" class="modal-body modal-Edit-body text-center">
+
+						<div class="container-fluid bg-white rounded">
+
+							<div class="flex-row-reverse ContentLista">
+
+								<div class="row rowLista">
+									<div class="input-group input-group-lg">
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Nome</div>
+										</div>
+										<div class="col-md-4">
+											<label class="sr-only" for="nomeBambino">Nome Bambino</label>
+
+											<input type="text" name="nomeBambino" class="form-control NuovoInputCss" id="nomeBambino" maxlength="16" placeholder="Nome Bambino"
+											 value="" required autofocus>
+
+										</div>
+										<div class="col-md-2">
+											<label class="NuovoLabelCss">Cognome</label>
+										</div>
+										<div class="col-md-4">
+											<label class="sr-only" for="cognomeBambino">Cognome Bambino</label>
+
+											<input type="text" name="cognomeBambino" class="form-control NuovoInputCss" id="cognomeBambino" maxlength="16" placeholder="Cognome Bambino"
+											 value="" required autofocus>
+
+										</div>
+
+									</div>
+								</div>
+
+								<div class="row rowLista">
+									<div class="input-group input-group-lg">
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Nato/a a</div>
+										</div>
+										<div class="col-md-6">
+											<label class="sr-only" for="luogoNascitaBambino">Nato/a a</label>
+
+											<input type="text" name="luogoNascitaBambino" class="form-control NuovoInputCss" id="luogoNascitaBambino" maxlength="32"
+											 placeholder="Campo facoltativo" autofocus>
+
+										</div>
+										<div class="col-md-2">
+											<label class="NuovoLabelCss">Provincia</label>
+										</div>
+										<div class="col-md-2">
+											<label class="sr-only" for="provNascitaBambino">Provincia</label>
+
+											<input type="text" name="provNascitaBambino" class="form-control NuovoInputCss" id="provNascitaBambino" maxlength="2" placeholder="Campo facoltativo"
+											 autofocus>
+
+										</div>
+
+									</div>
+								</div>
+
+								<div class="row rowLista">
+									<div class="input-group input-group-lg">
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Nazione</div>
+										</div>
+										<div class="col-md-10">
+											<label class="sr-only" for="nazioneNascitaBambino">Nazione</label>
+
+											<input type="text" name="nazioneNascitaBambino" class="form-control NuovoInputCss" id="nazioneNascitaBambino" maxlength="32"
+											 placeholder="Campo facoltativo" autofocus>
+
+										</div>
+									</div>
+								</div>
+
+								<div class="row rowLista ">
+									<div class="input-group input-group-lg">
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Il giorno</div>
+										</div>
+										<div class="col-md-4">
+											<label class="sr-only" for="dataNascitaBambino">Il giorno</label>
+
+											<input type="date" value="2018-07-03" name="dataNascitaBambino" class="form-control NuovoInputCss" id="dataNascitaBambino"
+											 maxlength="10" max="2029-12-31" min="1901-12-31" required autofocus>
+
+										</div>
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Sesso</div>
+										</div>
+										<div class="col-md-4">
+											<select class="form-control NuovoInputCss" name="sessoBambino" id="sessoBambino" required>
+												<option value="F">Femmina</option>
+												<option value="M">Maschio</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="row rowLista ">
+									<div class="input-group input-group-lg">
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Codice Fiscale</div>
+										</div>
+										<div class="col-md-4">
+											<label class="sr-only" for="codiceFiscaleBambino">Codice Fiscale</label>
+
+											<input type="text" name="codiceFiscaleBambino" class="form-control NuovoInputCss" id="codiceFiscaleBambino" maxlength="16"
+											 autofocus placeholder="Campo facoltativo">
+										</div>
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Cittadinanza</div>
+										</div>
+										<div class="col-md-4">
+											<label class="sr-only" for="cittadinanzaBambino">Cittadinanza</label>
+
+											<input type="text" name="cittadinanzaBambino" class="form-control NuovoInputCss" id="cittadinanzaBambino" maxlength="32"
+											 autofocus placeholder="Campo facoltativo">
+										</div>
+									</div>
+								</div>
+
+								<div class="row rowLista ">
+									<div class="input-group input-group-lg">
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Residente in</div>
+										</div>
+										<div class="col-md-6">
+											<label class="sr-only" for="residenzaBambino">Residente in</label>
+
+											<input type="text" name="residenzaBambino" class="form-control NuovoInputCss" id="residenzaBambino" maxlength="64" autofocus
+											 value="" required>
+										</div>
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">CAP</div>
+										</div>
+										<div class="col-md-2">
+											<label class="sr-only" for="capBambino">CAP</label>
+
+											<input type="text" name="capBambino" class="form-control NuovoInputCss" id="capBambino" maxlength="5" value="" autofocus
+											 required>
+										</div>
+									</div>
+								</div>
+
+								<div class="row rowLista ">
+									<div class="input-group input-group-lg">
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Citt&agrave;</div>
+										</div>
+										<div class="col-md-6">
+											<label class="sr-only" for="cittaResidenzaBambino">Citt&agrave;</label>
+
+											<input type="text" name="cittaResidenzaBambino" class="form-control NuovoInputCss" id="cittaResidenzaBambino" maxlength="32"
+											 value="" autofocus required>
+										</div>
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Provincia</div>
+										</div>
+										<div class="col-md-2">
+											<label class="sr-only" for="provResidenzaBambino">Provincia</label>
+
+											<input type="text" name="provResidenzaBambino" class="form-control NuovoInputCss" id="provResidenzaBambino" maxlength="2"
+											 value="" autofocus required>
+										</div>
+									</div>
+								</div>
+
+								<div class="row rowLista">
+									<div class="input-group input-group-lg">
+										<div class="col-md-2">
+											<div class="NuovoLabelCss">Note</div>
+										</div>
+										<div class="col-md-10">
+											<label class="sr-only" for="noteBambino">Note</label>
+											<textarea class="form-control NuovoInputCss" name="noteBambino" id="noteBambino" placeholder="Campo facoltativo" rows="5"></textarea>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="modal-footer justify-content-center">
-						<button type="button" id="btnAnnullaModal" class="btn btn-primary" data-dismiss="modal">Annulla</button>
-						<button type="button" id="btnSalvaModal" class="btn btn-primary" data-dismiss="modal">Salva</button>
 
+						<!-- Pulsante per salvare le modifiche -->
+						<div id="tipBtnSaveUserDiv" class="d-block Dtooltip">
+							<span id="tipBtnSaveUserSpan" class="Dtooltiptext">
+								Salva le modifiche apportate e chiudi la finestra
+							</span>
+							<button id="btnSaveUser" class="btn btn-primary btn-lg ">Salva</button>
+						</div>
+
+						<!-- Pulsante per registare il badge del nuovo utente -->
+						<div id="tipBtnRegBadgeDiv" class="d-block Dtooltip">
+							<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">
+								Registra un nuovo badge per questo utente
+							</span>
+							<button id="btnRegBadge" class="btn btn-outline-primary">Registra badge</button>
+						</div>
+
+						<!-- Pulsante per annullare le modifiche e chiudere la finestra -->
+						<div id="tipBtnAnnullaDiv" class="d-block Dtooltip">
+							<span id="tipBtnAnnullaSpan" class="Dtooltiptext">
+								Annulla le modifiche apportate e chiudi la finestra
+							</span>
+							<button id="btnAnnullaModal" class="btn btn-outline-primary" data-dismiss="modal">Annulla
+							</button>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
-		<!-- FINE MODAL -->
-		
+	</div>
+	<!-- FINE MODAL -->
+
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.bundle.js"></script>
 	<script src="DataTables/datatables.js"></script>

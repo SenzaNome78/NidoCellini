@@ -18,12 +18,8 @@ const MYSQL_VIEW_EDUCATORI = "vweducatori";
 // la variabile pageName contiene il nome della pagina web (non il titolo)
 var pageName = location.pathname.split("/").slice(-1)[0]
 
-var currMysqlTable; // Variabile stringa che contiene la tabella mysql per la pagina attuale
-var tabellaPerUpdate; // Tabella mysql per modificare gli user
-
-// usiamo questa variabile per passare la tabella mysql attraverso
-// il comando POST al nostro script PHP
-var postData;
+var viewMySql; // Variabile stringa che contiene la VIEW mysql per la pagina attuale
+var tableMySql; // Variabile stringa che contiene la TABELLA mysql per la pagina attuale
 
 //variabile che contiene il riferimento alla DataTable creata
 var tabella;
@@ -58,10 +54,10 @@ $(document).ready(function () {
 			{ data: "seriale" }
 		]);
 	} else if (pageName === "ElencoBambini.html") {
-		currMysqlTable = MYSQL_VIEW_BAMBINI;
+		viewMySql = MYSQL_VIEW_BAMBINI;
 		ruolo = "B";
-		tabellaPerUpdate = MYSQL_TABLE_BAMBINI;
-		PopulateTable(currMysqlTable, "idtbbambini", [
+		tableMySql = MYSQL_TABLE_BAMBINI;
+		PopulateTable(viewMySql, "idtbbambini", [
 			{ data: "nomeBambino" },
 			{ data: "cognomeBambino" },
 			{ data: "dataNascitaBambino" },
@@ -70,10 +66,10 @@ $(document).ready(function () {
 		]);
 
 	} else if (pageName === "ElencoEducatori.html") {
-		currMysqlTable = MYSQL_VIEW_EDUCATORI;
+		viewMySql = MYSQL_VIEW_EDUCATORI;
 		ruolo = "E";
-		tabellaPerUpdate = MYSQL_TABLE_EDUCATORI;
-		PopulateTable(currMysqlTable, "idtbeducatori", [
+		tableMySql = MYSQL_TABLE_EDUCATORI;
+		PopulateTable(viewMySql, "idtbeducatori", [
 			{ data: "nomeEducatore" },
 			{ data: "cognomeEducatore" },
 			{ data: "nomeSezione" },
@@ -90,31 +86,47 @@ $(document).ready(function () {
 		// Se è stata selezionata una sola riga attiva il pulsante per modificare la voce
 		if (type === 'row') {
 			var righe = tabella.rows({ selected: true });
-			if (righe[0].length === 1) {
-				tabella.button('btnModifica:name').enable();
+			
+			if (righe[0].length > 0) {
+				// Se sono rimaste seleziona una o più righe, attiva il pulsante per cancellare le voci
+				tabella.button('btnCancella:name').enable();
+				// Se è rimasta selezionata una sola riga attiva il pulsante per modificare la voce
+				if (righe[0].length === 1)
+					tabella.button('btnModifica:name').enable();
+				else
+					tabella.button('btnModifica:name').enable(false);
 			}
-			else {
+			
+			else { // Nessuna voce selezionata, disattiva i tasti di modifica e cancellazione
 				tabella.button('btnModifica:name').enable(false);
+				tabella.button('btnCancella:name').enable(false);
 			}
 		}
 	});
 
 	// Una o più righe della tabella sono state deselezionate
 	tabella.on('deselect', function (e, dt, type, indexes) {
-		// Se è stata deselezionata una sola riga attiva il pulsante per modificare la voce
+		
 		if (type === 'row') {
 			var righe = tabella.rows({ selected: true });
-			if (righe[0].length === 1) {
-				tabella.button('btnModifica:name').enable();
+
+			if (righe[0].length > 0) {
+				// Se sono rimaste seleziona una o più righe, attiva il pulsante per cancellare le voci
+				tabella.button('btnCancella:name').enable();
+				// Se è rimasta selezionata una sola riga attiva il pulsante per modificare la voce
+				if (righe[0].length === 1)
+					tabella.button('btnModifica:name').enable();
+				else
+					tabella.button('btnModifica:name').enable(false);
 			}
-			else {
+			
+			else { // Nessuna voce selezionata, disattiva i tasti di modifica e cancellazione
 				tabella.button('btnModifica:name').enable(false);
+				tabella.button('btnCancella:name').enable(false);
 			}
 		}
 	});
 
-
-	postData = TABLEKEY + "=" + currMysqlTable;
 })
 
 
@@ -133,7 +145,6 @@ function PopulateTable(dbTabella, idKey, colonne) {
 			// chiamata ajax per compilare la tabella
 			ajax: {
 				url: PHPURL, // url della nostra pagina php
-
 				type: "POST", // usiamo il comando POST
 				data: {
 					table: dbTabella // nome della tabella mysql che andiamo a interrogare
@@ -190,8 +201,9 @@ function PopulateTable(dbTabella, idKey, colonne) {
 		buttons: [
 			//'copy', 'excel', 'pdf',
 			{
+				name: "btnCancella",
 				text: 'Cancella voci',
-				className: 'btn btn-primary glyphicon glyphicon-duplicate',
+				enabled: false,
 				action: function () {
 					CancellaVoci(idKey);
 				}
@@ -214,7 +226,6 @@ function PopulateTable(dbTabella, idKey, colonne) {
 			{
 				text: "Aggiungi random",
 				action: function () {
-
 					//AddRandomRecords();
 				}
 			},
@@ -239,7 +250,7 @@ function CancellaVoci(idKey) {
 
 	var obj = tabella.rows({ selected: true }).ids(true);
 
-	var tmpPostData = "&delete=";
+	var tmpPostData = "&deleteId=";
 
 	for (var i = 0; i < obj.length; i++) {
 
@@ -252,9 +263,8 @@ function CancellaVoci(idKey) {
 	$.ajax({
 		url: PHPURL,
 		method: "POST",
-		data: postData + tmpPostData + "&idKey=" + idKey,
+		data: "table=" + tableMySql + tmpPostData + "&idKey=" + idKey,
 		success: function (dataRet, stat, xmlh) {
-
 			tabella.ajax.reload();
 		}
 	});
@@ -264,7 +274,7 @@ function AddRandomRecords() {
 	$.ajax({
 		url: PHPURL,
 		method: "POST",
-		data: postData + "&random=" + "exec",
+		data: "table=" + tableMySql + "&random=exec",
 		success: function () {
 			tabella.ajax.reload();
 		}
@@ -310,9 +320,11 @@ function MostraDettagli() {
 
 
 		$('#btnSaveUser').on('click', function (event) {
-			UpdateUser(idDaPassare);
-			$('#modalDialog').modal('hide');
-			tabella.ajax.reload();
+			if (UpdateUser(idDaPassare))
+			{
+				$('#modalDialog').modal('hide');
+				tabella.ajax.reload();
+			}
 		});
 
 		$('#btnRegBadge').on('click', function (event) {
@@ -333,7 +345,7 @@ function UpdateUser(idDaPassare) {
 
 	// Controlliamo se i campi obbligatori sono stati inseriti, altrimenti usciamo
 	if (!document.getElementById(formName).checkValidity()) {
-		return;
+		return false;
 	}
 	// preventDefault per non inviare il modulo e non fare il refresh della pagina
 	event.preventDefault();
@@ -346,7 +358,7 @@ function UpdateUser(idDaPassare) {
 
 	dataObj["paramInsertOrUpdate"] = "update"; // Indica alla funzione php di eseguire un update
 	dataObj["paramRuolo"] = ruolo; 	// il ruolo
-	dataObj["paramTable"] = tabellaPerUpdate; // la tabella mysql
+	dataObj["paramTable"] = tableMySql; // la tabella mysql
 	dataObj["paramId"] = idDaPassare; // Id del record mysql da modificare
 
 	// Scorriamo tutti i controlli della pagina e se sono controlli che ci servono
@@ -365,4 +377,6 @@ function UpdateUser(idDaPassare) {
 	// inviamo l'oggetto dataObj al file php
 	$.post(PHPURL, dataObj, function (data) {
 	});
+
+	return true;
 }

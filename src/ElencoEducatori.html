@@ -1,9 +1,3 @@
-<?php
-session_start();
-?>
-
-<!DOCTYPE html>
-
 <html>
 
 <head>
@@ -24,13 +18,14 @@ session_start();
 		<div class="ml-4 d-flex d-flex align-items-center">
 			<img src="assets/img/Woman black.svg" width="48" height="48">
 		</div>
-		<div class="mr-auto p-2 font-weight-bold h2">Educatori</div>
-
+		<div class="mr-auto p-2 font-weight-bold h2">
+			Educatori
+		</div>
 
 		<button type="button" class="btn btn-lg btn-info pl-3 pr-3 mr-4" onclick="location.href='NuovoEducatore.html';">
-
 			<div class="h4">
-				<i class="fas fa-plus"></i>&nbsp&nbspNuovo educatore</div>
+				<i class="fas fa-plus"></i>&nbsp&nbspNuovo educatore
+			</div>
 		</button>
 	</div>
 	<div class="container-fluid d-none d-sm-block">
@@ -73,13 +68,12 @@ session_start();
 					</button>
 				</div>
 
-				<div id="modalDialogModalBody" class="modal-body modal-Edit-body text-center">
+				<form class="form-horizontal" role="form" action="" method="post" id="formModificaUser">
+					<div id="modalDialogModalBody" class="modal-body modal-Edit-body text-center">
 
-					<div class="container-fluid bg-white rounded">
+						<div class="container-fluid bg-white rounded">
 
-						<div class="flex-row-reverse ContentLista">
-
-							<form class="form-horizontal" role="form" action="" method="post" id="formModificaUser">
+							<div class="flex-row-reverse ContentLista">
 
 								<div class="row rowLista">
 									<div class="input-group input-group-lg">
@@ -90,7 +84,7 @@ session_start();
 											<label class="sr-only" for="nomeEducatore">Nome Educatore</label>
 
 											<input type="text" name="nomeEducatore" class="form-control NuovoInputCss" id="nomeEducatore" maxlength="16" placeholder="Nome Educatore"
-											 value="Pi" required autofocus>
+											 value="" required autofocus>
 
 										</div>
 										<div class="col-md-2">
@@ -100,7 +94,7 @@ session_start();
 											<label class="sr-only" for="cognomeEducatore">Cognome Educatore</label>
 
 											<input type="text" name="cognomeEducatore" class="form-control NuovoInputCss" id="cognomeEducatore" maxlength="16" placeholder="Cognome Educatore"
-											 value="Pi" required autofocus>
+											 value="" required autofocus>
 
 										</div>
 
@@ -204,7 +198,7 @@ session_start();
 											<label class="sr-only" for="residenzaEducatore">Residente in</label>
 
 											<input type="text" name="residenzaEducatore" class="form-control NuovoInputCss" id="residenzaEducatore" maxlength="64" autofocus
-											 value="Pi" required>
+											 value="" required>
 										</div>
 										<div class="col-md-2">
 											<div class="NuovoLabelCss">CAP</div>
@@ -291,46 +285,49 @@ session_start();
 									</div>
 								</div>
 
+							</div>
+
+						</div>
+					</div>
+
+					<div class="modal-footer justify-content-center">
+
+						<!-- Pulsante per salvare le modifiche -->
+						<div id="tipBtnSaveUserDiv" class="d-block Dtooltip">
+							<span id="tipBtnSaveUserSpan" class="Dtooltiptext">
+								Salva le modifiche apportate e chiudi la finestra
+							</span>
+							<button id="btnSaveUser" class="btn btn-primary btn-lg ">Salva
+							</button>
 						</div>
 
+						<!-- Pulsante per registare il badge del nuovo utente -->
+						<div id="tipBtnRegBadgeDiv" class="d-block Dtooltip">
+							<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">
+								Registra un nuovo badge per questo utente
+							</span>
+							<button id="btnRegBadge" class="btn btn-outline-primary">Registra badge
+							</button>
+						</div>
+
+						<div id="tipBtnAnnullaDiv" class="d-block Dtooltip">
+							<span id="tipBtnAnnullaSpan" class="Dtooltiptext">
+								Annulla le modifiche apportate e chiudi la finestra
+							</span>
+							<button id="btnAnnullaModal" class="btn btn-outline-primary" data-dismiss="modal">Annulla
+							</button>
+						</div>
 					</div>
-				</div>
-				<div class="modal-footer justify-content-center">
-
-					<!-- Pulsante per salvare le modifiche -->
-					<div id="tipBtnSaveUserDiv" class="d-block Dtooltip">
-						<span id="tipBtnSaveUserSpan" class="Dtooltiptext">
-							Salva le modifiche apportate e chiudi la finestra
-						</span>
-						<button id="btnSaveUser" class="btn btn-primary btn-lg ">Salva</button>
-					</div>
-					<!-- Pulsante per registare il badge del nuovo utente -->
-
-					<div id="tipBtnRegBadgeDiv" class="d-block Dtooltip">
-						<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">
-							Registra un nuovo badge per questo utente
-						</span>
-						<button id="btnRegBadge" class="btn btn-outline-primary">Registra badge</button>
-
-					</div>
-
-					<div id="tipBtnAnnullaDiv" class="d-block Dtooltip">
-						<span id="tipBtnAnnullaSpan" class="Dtooltiptext">
-							Annulla le modifiche apportate e chiudi la finestra
-						</span>
-						<button type="button" id="btnAnnullaModal" class="btn btn-outline-primary" data-dismiss="modal">Annulla</button>
-
-					</div>
-					</form>
-				</div>
+				</form>
 			</div>
 		</div>
-		<!-- FINE MODAL -->
-		<script src="js/jquery.js"></script>
-		<script src="js/bootstrap.bundle.js"></script>
-		<script src="DataTables/datatables.js"></script>
-		<script src="DataTables/Scroller-1.4.4/js/dataTables.scroller.js"></script>
-		<script src="js/Elenco.js"></script>
+	</div>
+	<!-- FINE MODAL -->
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.bundle.js"></script>
+	<script src="DataTables/datatables.js"></script>
+	<script src="DataTables/Scroller-1.4.4/js/dataTables.scroller.js"></script>
+	<script src="js/Elenco.js"></script>
 
 </body>
 

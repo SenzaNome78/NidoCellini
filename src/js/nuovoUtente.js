@@ -21,6 +21,7 @@ var table; // Nome della tabella mysql da usare
 var formName; // nome del form html
 var inputName; // nome del campo input che contiene il nome dello user
 
+  
 // Il documento è pronto, inizializiamo le variabili
 $(document).ready(function () {
 	$('[data-toggle="tooltip"]').tooltip({
@@ -159,11 +160,12 @@ $('#btnRegBadge').on('click', function () {
 
 // Salviamo un nuovo user nel database e attiviamo il pulsante per registrare
 // un nuovo badge
-$('#btnSaveUser').on('click', InsertUser());
+$('#btnSaveUser').on('click', InsertUser);
 
 // Funzione per inserire un nuovo user attraverso PHP->mySql
 function InsertUser() {
 
+	
 	// Controlliamo se i campi obbligatori sono stati inseriti, altrimenti usciamo
 	if (!document.getElementById(formName).checkValidity()) {
 		return;
@@ -213,6 +215,14 @@ function InsertUser() {
 	$('#modalDialog').modal({ backdrop: 'static' });
 
 }
+
+// Puliamo tutti i campi (Ricarica pagina)
+$('#btnPulisci').on('click', function () {
+	event.preventDefault();
+	if (window.confirm("Premendo OK verrano puliti tutti i campi. Confermare?"))
+		location.reload(true);
+	
+});
 
 // Carichiamo la navbar in alto
 $.get("nav-top.html", function (data) {
