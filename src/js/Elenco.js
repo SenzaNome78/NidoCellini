@@ -286,10 +286,10 @@ var idDaPassare;
 // Apre il modal per modificare l'utente
 function MostraDettagli() {
 	// Registra un evento all'apertura del modal per riportare la scrollbar in alto
-	$('#modalDialog').off('show.bs.modal');
+	$('#modalDialogUpdateUser').off('show.bs.modal');
 	
 
-	$('#modalDialog').on('show.bs.modal', function (event) {
+	$('#modalDialogUpdateUser').on('show.bs.modal', function (event) {
 
 		// LEGGIAMO I DATI DALLA TABELLA E COMPILIAMO IL FORM
 		// Queste due variabili contengono:
@@ -322,23 +322,25 @@ function MostraDettagli() {
 		$('#btnSaveUser').on('click', function (event) {
 			if (UpdateUser(idDaPassare))
 			{
-				$('#modalDialog').modal('hide');
+				$('#modalDialogUpdateUser').modal('hide');
 				tabella.ajax.reload();
 			}
 		});
 
 		$('#btnRegBadge').on('click', function (event) {
+			event.preventDefault();
 			console.log('regbadge');
 		});
 
 		$('#btnAnnullaModal').on('click', function (event) {
-			$('#modalDialog').modal('hide');
+			event.preventDefault();
+			$('#modalDialogUpdateUser').modal('hide');
 		});
 
 	});
 	
-	$('#modalDialog').modal('show');
-	$('#modalDialogModalBody').scrollTop(0);
+	$('#modalDialogUpdateUser').modal('show');
+	$('#modalDialogUpdateUserModalBody').scrollTop(0);
 }
 
 function UpdateUser(idDaPassare) {

@@ -1,8 +1,8 @@
 <?php
 
-  $proxyParam = isset($_GET['command']) ? $_GET['command'] : '';
+  $commandParam = isset($_GET['command']) ? $_GET['command'] : '';
 
-  if ($proxyParam === "stop")
+  if ($commandParam === "stop")
   {
       $url    = "http://192.168.0.6/?command=stop";
       $StopCh = curl_init($url);

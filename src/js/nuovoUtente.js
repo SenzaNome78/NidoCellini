@@ -5,11 +5,14 @@ const titoloModalBadge = 'Registrazione nuovo badge';
 const testoModalAttesa = '<h5>Per favore, avvicini il nuovo badge al lettore entro un minuto. Grazie.</h5>';
 const testoModalSuccessoBadge = '<h5>Registrazione del badge eseguita con successo.</h5>';
 
-const testoModalErroreBadge = '<h5>Si è verificato un errore nella registrazione del badge.<br>' +
-	'Riprovi la procedura o contattati l\'amministratore di sistema </h5 > ';
+const testoModalErroreBadge = '<h5>Si è verificato un errore nella registrazione del badge.<br>Riprovi la procedura o contattati l\'amministratore di sistema </h5 > ';
 
-const testoModalErroreConn = '<h5>Si è verificato un errore di connessione col lettore di badge.<br>' +
-	'Riprovi la procedura o contattati l\'amministratore di sistema </h5 > ';
+const testoModalErroreConn = "<h5>Si è verificato un errore di connessione con il lettore di badge.<br> " +
+	"Si prega di ripetere la procedura.<br> Se necessario contattare l'amministratore di sistema.</h5 > ";
+
+const testoModalErroreTimeout = '<h5>Tempo per registrare il badge esaurito. <br> Si prega di riprovare.</h5 > ';
+
+const testoModalErroreStop = "<h5>Registrazione badge interrotta dall'utente.<br>Premere OK per chiudere la finestra</h5 >";
 
 const testoModalUserSaved = '<h5>Nuovo utente salvato.<br>' + '<p style="text-align:center">Adesso è possibile registrare un nuovo badge<br>usando il pulsante nella parte bassa della pagina</h5 ></p>';
 const titoloModalUserSaved = 'Registrazione nuovo utente';
@@ -20,6 +23,7 @@ var ruolo; // Contiene il ruolo, es. B per bambino, E per educatore, etc:
 var table; // Nome della tabella mysql da usare
 var formName; // nome del form html
 var inputName; // nome del campo input che contiene il nome dello user
+var inputSesso; // nome del campo input che contiene il sesso dello user
 
   
 // Il documento è pronto, inizializiamo le variabili
@@ -33,30 +37,23 @@ $(document).ready(function () {
 
 	if (pageName == "NuovoBambino.html") {
 
-		// Carichiamo i campi dal file "BambinoCampi.html"
-		$.get("BambinoCampi.html", function (data) {
-			$("#campi").replaceWith(data);
-		});
-
 		ruolo = "B";
 		table = "tbbambini";
 		inputName = "nomeBambino";
+		inputSesso = "sessoBambino";
 	}
 	else if (pageName == "NuovoEducatore.html") {
-
-		// Carichiamo i campi dal file "EducatoreCampi.html"
-		$.get("EducatoreCampi.html", function (data) {
-			$("#campi").replaceWith(data);
-		});
 
 		ruolo = "E";
 		table = "tbeducatori";
 		inputName = "nomeEducatore";
+		inputSesso = "sessoEducatore";
 	}
 	else if (pageName == "NuovoParente.html") {
 		ruolo = "P";
 		table = "tbparenti";
 		inputName = "nomeParente";
+		inputSesso = "sessoParente";
 	}
 	else // Stampiamo un errore nella console
 	{
@@ -88,64 +85,82 @@ $('#btnStopBadgeRegModal').on('click', function () {
 $('#btnRegBadge').on('click', function () {
 	event.preventDefault();
 	if (ValidForm()) {
+
+
 		// Passiamo l'url allo script php per la richiesta al lettore rfid
-		var url = ".\\php\\proxyToEsp.php?command=newBadge" +
+		var url = ".\\php\\NewBadge.php?command=newBadge" +
 			"&nome=" + $("#" + inputName).val() +
 			"&ruolo=" + ruolo +
-			"&sesso=" + $("#sessoUser").val();
-		// console.log(url);
+			"&sesso=" + $("#" + inputSesso).val();
+
+		// Visualizziamo un messaggio per invitare ad avvicinare un badge al lettore
+		$('#modalDialogNewUserBody').addClass('stileModalSuccesso');
+		$('#modalDialogNewUserBody').removeClass('stileModalErrore');
+		$('#modalDialogNewUserLabel').html(titoloModalBadge);
+		$('#modalDialogNewUserBody').html(testoModalAttesa);
+		$('#modalDialogNewUser').modal({ backdrop: 'static' });
 
 		// La finestra modal puo' essere chiusa solo con i pulsanti
-		$('#modalDialogModalBody').addClass('stileModalSuccesso');
-		$('#modalDialogModalBody').removeClass('stileModalErrore');
-		$('#modalDialogLabel').html(titoloModalBadge);
-		$('#modalDialogModalBody').html(testoModalAttesa);
-		$('#modalDialog').modal({ backdrop: 'static' });
-
 		document.getElementById('btnCloseModal').style.display = "none";
 		document.getElementById('btnStopBadgeRegModal').style.display = "inline";
+
+
 		// Proviamo ad inviare una richiesta al lettore rfid per registrare un nuovo badge
 		$.ajax(url,
 			// Funzione eseguita se la richiesta GET ha avuto successo
 			{
 				success: function (data, status, jqXHR) {
-					// var badgeRegStatus = data.substr(data.lastIndexOf("successo=") + 9, 1);
-
-
-					console.log("ajax successo");
 					if (data.search("ConnOk") != -1) // Connessione al lettore rfid riuscita
 					{
-						if (data.search("&successo=S") != -1) {
-							$('#modalDialogModalBody').addClass('stileModalSuccesso');
-							$('#modalDialogModalBody').html(testoModalSuccessoBadge);
-							$('#modalDialogModalBody').removeClass('stileModalErrore');
+						if (data.search("S=Registrato") != -1) {
+							$('#modalDialogNewUserBody').addClass('stileModalSuccesso');
+							$('#modalDialogNewUserBody').html(testoModalSuccessoBadge);
+							$('#modalDialogNewUserBody').removeClass('stileModalErrore');
+
 						}
-						else if (data.search("&successo=N") != -1) {
-							$('#modalDialogModalBody').addClass('stileModalErrore');
-							$('#modalDialogModalBody').html(testoModalErroreBadge);
-							$('#modalDialogModalBody').removeClass('stileModalSuccesso');
+						else if (data.search("F=ScriviNuovoBadge") != -1) {
+							$('#modalDialogNewUserBody').addClass('stileModalErrore');
+							$('#modalDialogNewUserBody').html(testoModalErroreBadge);
+							$('#modalDialogNewUserBody').removeClass('stileModalSuccesso');
+						}
+						else if (data.search("F=Stop") != -1) {
+							$('#modalDialogNewUserBody').addClass('stileModalErrore');
+							$('#modalDialogNewUserBody').html(testoModalErroreStop);
+							$('#modalDialogNewUserBody').removeClass('stileModalSuccesso');
+						}
+						else if (data.search("F=Timeout") != -1) {
+							$('#modalDialogNewUserBody').addClass('stileModalErrore');
+							$('#modalDialogNewUserBody').html(testoModalErroreTimeout);
+							$('#modalDialogNewUserBody').removeClass('stileModalSuccesso');
 						}
 
 					}
 					else if (data.search("ConnErr") != -1) // Connessione al lettore rfid fallita
 					{
-						$('#modalDialogModalBody').addClass('stileModalErrore');
-						$('#modalDialogModalBody').html(testoModalErroreConn);
-						$('#modalDialogModalBody').removeClass('stileModalSuccesso');
+						$('#modalDialogNewUserBody').addClass('stileModalErrore');
+						$('#modalDialogNewUserBody').html(testoModalErroreConn);
+						$('#modalDialogNewUserBody').removeClass('stileModalSuccesso');
+						
 					}
 					else // Registrazione badge: qualcosa non va
 					{
-						$('#modalDialogModalBody').addClass('stileModalErrore');
-						$('#modalDialogModalBody').html("Errore Generico");
-						$('#modalDialogModalBody').removeClass('stileModalSuccesso');
+						$('#modalDialogNewUserBody').addClass('stileModalErrore');
+						$('#modalDialogNewUserBody').html("Errore Generico");
+						$('#modalDialogNewUserBody').removeClass('stileModalSuccesso');
+						document.getElementById('btnCloseModal').style.display = "inline";
+						document.getElementById('btnStopBadgeRegModal').style.display = "none";
 						console.log("Data: " + data);
 						console.log("badgeRegStatus: " + data);
 					}
+					document.getElementById('btnCloseModal').style.display = "inline";
+					document.getElementById('btnStopBadgeRegModal').style.display = "none";
 				},
 				error: function (jqXHR, textStatus, error) { // <- Funzione che eseguimo se non siamo riusciti a contattare il lettore rfid
-					$('#modalDialogModalBody').addClass('stileModalErrore');
-					$('#modalDialogModalBody').html(testoModalErroreConn
+					$('#modalDialogNewUserBody').addClass('stileModalErrore');
+					$('#modalDialogNewUserBody').html(testoModalErroreConn
+						
 					);
+
 					console.log("ERRORE");
 					console.log("text stat: " + textStatus);
 					console.log("jqXHR: " + jqXHR.getAllResponseHeaders());
@@ -154,8 +169,8 @@ $('#btnRegBadge').on('click', function () {
 			});
 
 	}
-	$('#modalDialogModalBody').removeClass('stileModalErrore');
-	$('#modalDialogModalBody').removeClass('stileModalSuccesso');
+	$('#modalDialogNewUserBody').removeClass('stileModalErrore');
+	$('#modalDialogNewUserBody').removeClass('stileModalSuccesso');
 });
 
 // Salviamo un nuovo user nel database e attiviamo il pulsante per registrare
@@ -208,11 +223,11 @@ function InsertUser() {
 
 	// Formattiamo e visualizziamo una finestra modal per indicare il successo 
 	// del salvataggio
-	$('#modalDialogModalBody').addClass('stileModalSuccesso');
-	$('#modalDialogModalBody').removeClass('stileModalErrore');
-	$('#modalDialogLabel').html(titoloModalUserSaved);
-	$('#modalDialogModalBody').html(testoModalUserSaved);
-	$('#modalDialog').modal({ backdrop: 'static' });
+	$('#modalDialogNewUserBody').addClass('stileModalSuccesso');
+	$('#modalDialogNewUserBody').removeClass('stileModalErrore');
+	$('#modalDialogNewUserLabel').html(titoloModalUserSaved);
+	$('#modalDialogNewUserBody').html(testoModalUserSaved);
+	$('#modalDialogNewUser').modal({ backdrop: 'static' });
 
 }
 
