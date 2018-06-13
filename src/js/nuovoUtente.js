@@ -25,7 +25,7 @@ var formName; // nome del form html
 var inputName; // nome del campo input che contiene il nome dello user
 var inputSesso; // nome del campo input che contiene il sesso dello user
 
-  
+
 // Il documento è pronto, inizializiamo le variabili
 $(document).ready(function () {
 	$('[data-toggle="tooltip"]').tooltip({
@@ -82,9 +82,11 @@ $('#btnStopBadgeRegModal').on('click', function () {
 });
 
 // E' stato cliccato il pulsante per registrare un nuovo badge
-$('#btnRegBadge').on('click', function () {
+$('#btnRegBadge').on('click', RegBadge);
+
+function RegBadge() {
 	event.preventDefault();
-	if (ValidForm()) {
+	// if (ValidForm()) {
 
 
 		// Passiamo l'url allo script php per la richiesta al lettore rfid
@@ -101,7 +103,7 @@ $('#btnRegBadge').on('click', function () {
 		$('#modalDialogNewUser').modal({ backdrop: 'static' });
 
 		// La finestra modal puo' essere chiusa solo con i pulsanti
-		document.getElementById('btnCloseModal').style.display = "none";
+		// document.getElementById('btnCloseModal').style.display = "none";
 		document.getElementById('btnStopBadgeRegModal').style.display = "inline";
 
 
@@ -140,7 +142,7 @@ $('#btnRegBadge').on('click', function () {
 						$('#modalDialogNewUserBody').addClass('stileModalErrore');
 						$('#modalDialogNewUserBody').html(testoModalErroreConn);
 						$('#modalDialogNewUserBody').removeClass('stileModalSuccesso');
-						
+
 					}
 					else // Registrazione badge: qualcosa non va
 					{
@@ -158,7 +160,7 @@ $('#btnRegBadge').on('click', function () {
 				error: function (jqXHR, textStatus, error) { // <- Funzione che eseguimo se non siamo riusciti a contattare il lettore rfid
 					$('#modalDialogNewUserBody').addClass('stileModalErrore');
 					$('#modalDialogNewUserBody').html(testoModalErroreConn
-						
+
 					);
 
 					console.log("ERRORE");
@@ -168,10 +170,12 @@ $('#btnRegBadge').on('click', function () {
 				}
 			});
 
-	}
+	// }
 	$('#modalDialogNewUserBody').removeClass('stileModalErrore');
 	$('#modalDialogNewUserBody').removeClass('stileModalSuccesso');
-});
+}
+
+export { RegBadge };
 
 // Salviamo un nuovo user nel database e attiviamo il pulsante per registrare
 // un nuovo badge
@@ -180,7 +184,7 @@ $('#btnSaveUser').on('click', InsertUser);
 // Funzione per inserire un nuovo user attraverso PHP->mySql
 function InsertUser() {
 
-	
+
 	// Controlliamo se i campi obbligatori sono stati inseriti, altrimenti usciamo
 	if (!document.getElementById(formName).checkValidity()) {
 		return;
@@ -195,7 +199,7 @@ function InsertUser() {
 	var dataObj = {}; // Oggetto contenente tutti i controlli che ci servono e i loro valori
 
 	dataObj["paramInsertOrUpdate"] = "insert"; // Indica alla funzione php di eseguire un insert
-	dataObj["paramInsertUser"] = ruolo; 	
+	dataObj["paramInsertUser"] = ruolo;
 	dataObj["paramTable"] = table; // la tabella mysql
 
 	// Scorriamo tutti i controlli della pagina e se sono controlli che ci servono
@@ -236,7 +240,7 @@ $('#btnPulisci').on('click', function () {
 	event.preventDefault();
 	if (window.confirm("Premendo OK verrano puliti tutti i campi. Confermare?"))
 		location.reload(true);
-	
+
 });
 
 // Carichiamo la navbar in alto

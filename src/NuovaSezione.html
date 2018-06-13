@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Nido Cellini - Nuova sezione</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="DataTables/datatables.css" />
+	<link rel="stylesheet" type="text/css" href="DataTables/Scroller-1.4.4/css/scroller.bootstrap4.css" />
+	<link rel="stylesheet" type="text/css" href="css/cellini.css" />
+</head>
+
+<body class="backDrop">
+	<div id="nav-top"></div>
+
+
+	<div class="container-fluid bg-white rounded">
+
+		<div class="row mt-3 mb-3">
+			<div class="col-md-12">
+				<h6 class="text-center h2">Crea nuova sezione:</h6>
+			</div>
+		</div>
+		<div class="flex-row-reverse ContentLista">
+
+			<form class="form-horizontal" role="form" action="" method="post" id="formNuovaSezione">
+				<!--CAMPO NOME SEZIONE -->
+				<div class="row rowLista">
+					<div class="input-group input-group-lg">
+						<div class="col-lg-2 col-md-3 col-sm-4">
+							<div class="text-center NuovoLabelCss">Nome sezione</div>
+						</div>
+						<div class="col-lg-10 col-md-9 col-sm-8">
+							<label class="sr-only" for="nomeNuovaSezione">Nome sezione</label>
+							<input type="text" name="nomeNuovaSezione" class="form-control NuovoInputCss" id="nomeNuovaSezione" maxlength="32" placeholder="Nome nuova sezione"
+							 value="Rossi" required autofocus>
+						</div>
+					</div>
+				</div>
+				<!--FINE CAMPO NOME SEZIONE -->
+
+				<!-- INTESTAZIONI LISTE bambini ed educatori -->
+				<div class="row mt-4">
+					<div class="col-md-6">
+						<p class="h3 text-center font-weight-bold">Bambini</p>
+					</div>
+					<div class="col-md-6 ">
+						<p class="h3 text-center font-weight-bold">Educatori</p>
+					</div>
+				</div>
+				<!-- FINE INTESTAZIONI LISTE bambini ed educatori -->
+
+				<!-- PULSANTI AGGIUNGI bambini ed educatori -->
+				<div class="row">
+					<div class="col-md-6 justify-content-center">
+						<div id="tipBtnAggBambino" class="d-block Dtooltip">
+							<span id="tipBtnAggBambinoSpan" class="Dtooltiptext">Aggiunge uno o più bambini a questa sezione</span>
+							<button id="BtnAggBambino" class="btn btn-lg mt-3 btn-block btn-primary">Aggiungi bambini</button>
+							<!-- <a id="BtnAggBambino" class="btn btn-lg mt-3 btn-block btn-primary">Aggiungi bambini</a> -->
+
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div id="tipBtnAggEducatore" class="d-block Dtooltip">
+							<span id="tipBtnAggEducatoreSpan" class="Dtooltiptext">Aggiunge uno o più educatori a questa sezione</span>
+							<button id="BtnAggEducatore" class="btn btn-lg mt-3 btn-block btn-primary">Aggiungi educatori</button>
+						</div>
+					</div>
+				</div>
+				<!-- FINE PULSANTI AGGIUNGI bambini ed educatori -->
+
+				<!-- LISTE BAMBINI ED EDUCATORI -->
+				<div class="row">
+					<!-- <div class="col-md-1"></div> -->
+
+					<!-- LISTA BAMBINI -->
+					<div class="col-md-6">
+						<table id="TabellaBambini" class="table table-striped table-hover table-bordered border-info">
+
+							<thead class="thead-light">
+								<tr>
+									<th>Nome</th>
+									<th>Cognome</th>
+								</tr>
+							</thead>
+							<tbody class="dataTables_scrollBody">
+
+							</tbody>
+						</table>
+					</div>
+					<!-- FINE LISTA BAMBINI -->
+
+					<!-- <div class="col-md-2"></div> -->
+
+					<!-- LISTA EDUCATORI -->
+					<div class="col-md-6">
+						<table id="TabellaEducatori" class="table table-striped table-hover table-bordered border-info">
+							<thead class="thead-light">
+								<tr>
+									<th>Nome</th>
+									<th>Cognome</th>
+								</tr>
+							</thead>
+							<tbody class="dataTables_scrollBody">
+
+							</tbody>
+						</table>
+					</div>
+					<!-- FINE LISTA EDUCATORI -->
+
+					<!-- <div class="col-md-1"></div> -->
+				</div>
+
+				<!-- FINE LISTE BAMBINI ED EDUCATORI -->
+			</form>
+		</div>
+
+	</div>
+
+	<!-- MODAL AGGIUNGI PERSONE -->
+	<div class="modal fade" id="modalAggiungiPersone" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="modalAggiungiPersoneLabel">Aggiungi alla sezione</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modalAggiungiPersoneBody" class="modal-body text-center">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12">
+								<p class="h5">Selezionare una o più persone da aggiungere alla sezione</p>
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<table id="tabellaAggiungi" class="table table-striped table-hover table-bordered border-info" style="width:100%;">
+									<thead class="thead-light">
+										<tr>
+											<th>Nome</th>
+											<th>Cognome</th>
+										</tr>
+									</thead>
+									<tbody class="dataTables_scrollBody">
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer justify-content-center">
+
+					<button type="button" id="btnAggiungiPersone" class="btn btn-primary">Aggiungi</button>
+					<button type="button" id="btnCloseModal" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- FINE MODAL AGGIUNGI PERSONE -->
+	<!-- MODAL -->
+	<div class="modal fade" id="modalDialogNewUser" tabindex="-1" role="dialog" aria-labelledby="modalDialogNewUser" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalDialogNewUserLabel">html</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div id="modalDialogNewUserBody" class="modal-body text-center">
+					<h5>""
+						<h5>
+
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="button" id="btnCloseModal" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+					<button type="button" id="btnStopBadgeRegModal" class="btn btn-primary" style="display: none;">Interrompere registrazione badge</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- FINE MODAL -->
+
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.bundle.js"></script>
+	<script src="DataTables/datatables.js"></script>
+	<script src="DataTables/Scroller-1.4.4/js/dataTables.scroller.js"></script>
+	<script src="js/NuovaSezione.js"></script>
+
+</body>
+
+</html>

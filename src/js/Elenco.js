@@ -1,4 +1,5 @@
 "use strict";
+import { RegBadge } from "./nuovoUtente.js";
 
 // costanti che usiamo come chiavi per il comando POST, quando dobbiamo comunicare col server web
 const TABLEKEY = "table"
@@ -23,8 +24,7 @@ var tableMySql; // Variabile stringa che contiene la TABELLA mysql per la pagina
 
 //variabile che contiene il riferimento alla DataTable creata
 var tabella;
-// contiene un'instanza dei pulsanti in basso alla tabella
-var ButtonsVar;
+
 
 // Il nome del form che usiamo per modificare i dati dello user
 var formName = "formModificaUser";
@@ -47,12 +47,7 @@ $.get("nav-top.html", function (data) {
 // colonne che ci servono e associamo alla variabile currMysqlTable la tabella attuale
 $(document).ready(function () {
 	if (pageName === "Bacheca.html") {
-		PopulateTable(MYSQL_TABLE_BAMBINI, "idBambino", [
-			{ data: "nome" },
-			{ data: "cognome" },
-			{ data: "dataNascita" },
-			{ data: "seriale" }
-		]);
+
 	} else if (pageName === "ElencoBambini.html") {
 		viewMySql = MYSQL_VIEW_BAMBINI;
 		ruolo = "B";
@@ -133,7 +128,6 @@ $(document).ready(function () {
 /**
  * Popola la tabella con i dati da un database mySql
  * @param {string} dbTabella Nome della tabella in mySql
- * @param {string} idTabella L'id html della tabella visualizzata
  * @param {int} idKey il nome del campo mySql contentente la chiave primaria
  * @param {Array} colonne un'array i nomi delle intestazioni delle colonne
  */
@@ -197,7 +191,7 @@ function PopulateTable(dbTabella, idKey, colonne) {
 			},
 		});
 
-	ButtonsVar = new $.fn.DataTable.Buttons(tabella, {
+	new $.fn.DataTable.Buttons(tabella, {
 		buttons: [
 			//'copy', 'excel', 'pdf',
 			{
@@ -329,7 +323,7 @@ function MostraDettagli() {
 
 		$('#btnRegBadge').on('click', function (event) {
 			event.preventDefault();
-			console.log('regbadge');
+			RegBadge();
 		});
 
 		$('#btnAnnullaModal').on('click', function (event) {
