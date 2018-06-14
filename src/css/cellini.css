@@ -52,6 +52,10 @@
 }
 
 /* Modal */
+.modal-big {
+	max-width: 85% !important; 
+  }
+
 .stileModalErrore{
 	background-color: rgba(255, 0, 0, 0.616);
 	color: white;

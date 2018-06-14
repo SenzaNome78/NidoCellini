@@ -43,6 +43,7 @@ session_start();
 
 					<thead class="thead-light bg-info">
 						<tr>
+							<th>Id</th>
 							<th>Nome</th>
 							<th>Cognome</th>
 							<th>Sezione</th>
@@ -65,7 +66,7 @@ session_start();
 	<!-- INIZIO MODAL -->
 	<div class="modal" id="modalDialogUpdateUser" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modalDialogUpdateUser" aria-hidden="true">
 
-		<div class="modal-dialog modal-Edit-dialog modal-lg modal-dialog-centered" role="document">
+		<div class="modal-dialog modal-Edit-dialog modal-big modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header justify-content-center">
 					<h2 class="modal-title text-center" id="modalDialogUpdateUserLabel">Modifica dati:</h2>
@@ -204,7 +205,7 @@ session_start();
 											<label class="sr-only" for="residenzaEducatore">Residente in</label>
 
 											<input type="text" name="residenzaEducatore" class="form-control NuovoInputCss" id="residenzaEducatore" maxlength="64" autofocus
-											 value="" required>
+											 value="">
 										</div>
 										<div class="col-md-2">
 											<div class="NuovoLabelCss">CAP</div>
@@ -212,8 +213,7 @@ session_start();
 										<div class="col-md-2">
 											<label class="sr-only" for="capEducatore">CAP</label>
 
-											<input type="text" name="capEducatore" class="form-control NuovoInputCss" id="capEducatore" maxlength="5" value="50" autofocus
-											 required>
+											<input type="text" name="capEducatore" class="form-control NuovoInputCss" id="capEducatore" maxlength="5" value="50" autofocus>
 										</div>
 									</div>
 								</div>
@@ -227,7 +227,7 @@ session_start();
 											<label class="sr-only" for="cittaResidenzaEducatore">Citt&agrave;</label>
 
 											<input type="text" name="cittaResidenzaEducatore" class="form-control NuovoInputCss" id="cittaResidenzaEducatore" maxlength="32"
-											 value="Firenze" autofocus required>
+											 value="Firenze" autofocus>
 										</div>
 										<div class="col-md-2">
 											<div class="NuovoLabelCss">Provincia</div>
@@ -236,7 +236,7 @@ session_start();
 											<label class="sr-only" for="provResidenzaEducatore">Provincia</label>
 
 											<input type="text" name="provResidenzaEducatore" class="form-control NuovoInputCss" id="provResidenzaEducatore" maxlength="2"
-											 value="FI" autofocus required>
+											 value="FI" autofocus>
 										</div>
 									</div>
 								</div>
@@ -299,11 +299,11 @@ session_start();
 					<div class="modal-footer justify-content-center">
 
 						<!-- Pulsante per salvare le modifiche -->
-						<div id="tipBtnSaveUserDiv" class="d-block Dtooltip">
-							<span id="tipBtnSaveUserSpan" class="Dtooltiptext">
+						<div id="tipbtnModUserDiv" class="d-block Dtooltip">
+							<span id="tipbtnModUserSpan" class="Dtooltiptext">
 								Salva le modifiche apportate e chiudi la finestra
 							</span>
-							<button id="btnSaveUser" class="btn btn-primary btn-lg ">Salva
+							<button type="button" id="btnModUser" class="btn btn-primary btn-lg ">Salva
 							</button>
 						</div>
 
@@ -312,7 +312,7 @@ session_start();
 							<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">
 								Registra un nuovo badge per questo utente
 							</span>
-							<button id="btnRegBadge" class="btn btn-outline-primary">Registra badge
+							<button type="button" id="btnRegBadge" class="btn btn-outline-primary">Registra badge
 							</button>
 						</div>
 
@@ -320,7 +320,7 @@ session_start();
 							<span id="tipBtnAnnullaSpan" class="Dtooltiptext">
 								Annulla le modifiche apportate e chiudi la finestra
 							</span>
-							<button id="btnAnnullaModal" class="btn btn-outline-primary" data-dismiss="modal">Annulla
+							<button type="button" id="btnAnnullaModal" class="btn btn-outline-primary" data-dismiss="modal">Annulla
 							</button>
 						</div>
 					</div>
@@ -328,12 +328,38 @@ session_start();
 			</div>
 		</div>
 	</div>
-	<!-- FINE MODAL -->
+	<!-- FINE REGISTRA BADGE MODAL -->
+
+	<!-- MODAL DI DIALOGO-->
+	<div class="modal fade" id="modalRegStatus" tabindex="-1" role="dialog" aria-labelledby="modalRegStatus" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalRegStatusLabel">html</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div id="modalRegStatusBody" class="modal-body text-center">
+						<h5>""
+							<h5>
+
+					</div>
+					<div class="modal-footer justify-content-center">
+						<button type="button" id="btnCloseModal" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+						<button type="button" id="btnStopBadgeRegModal" class="btn btn-primary" style="display: none;">Interrompere registrazione badge</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- FINE MODAL DI DIALOGO -->
+
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.bundle.js"></script>
 	<script src="DataTables/datatables.js"></script>
 	<script src="DataTables/Scroller-1.4.4/js/dataTables.scroller.js"></script>
-	<script type="module" src="js/Elenco.js"></script>
+	<script src="js/Principale.js"></script>
 
 </body>
 

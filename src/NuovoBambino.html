@@ -150,7 +150,7 @@
 							<div class="col-md-6">
 								<label class="sr-only" for="residenzaBambino">Residente in</label>
 								<input type="text" name="residenzaBambino" class="form-control NuovoInputCss" id="residenzaBambino" maxlength="64" autofocus
-								 value="via C" placeholder="via o piazza" required>
+								 value="" placeholder="via o piazza">
 							</div>
 
 							<div class="col-md-2">
@@ -160,7 +160,7 @@
 								<label class="sr-only" for="capBambino">CAP</label>
 
 								<input type="text" name="capBambino" class="form-control NuovoInputCss" id="capBambino" maxlength="5" value="" autofocus
-								 value="50231" required>
+								 value="">
 							</div>
 						</div>
 					</div>
@@ -174,7 +174,7 @@
 							<div class="col-md-6">
 								<label class="sr-only" for="cittaResidenzaBambino">Citt&agrave;</label>
 								<input type="text" name="cittaResidenzaBambino" class="form-control NuovoInputCss" id="cittaResidenzaBambino" maxlength="32"
-								 value="erw" placeholder="Citt&agrave; di residenza" autofocus required>
+								 value="" placeholder="Citt&agrave; di residenza" autofocus>
 							</div>
 
 							<div class="col-md-2">
@@ -183,7 +183,7 @@
 							<div class="col-md-2">
 								<label class="sr-only" for="provResidenzaBambino">Provincia</label>
 								<input type="text" name="provResidenzaBambino" class="form-control NuovoInputCss" id="provResidenzaBambino" maxlength="2"
-								 value="dgfd" placeholder="di residenza" autofocus required>
+								 value="" placeholder="di residenza" autofocus>
 							</div>
 
 						</div>
@@ -207,7 +207,7 @@
 						<div class="col-lg-3 col-md-2"></div>
 						<div class="col-lg-6 col-md-8">
 							<div>
-								<button id="btnSaveUser" class="btn btn-lg mt-3 btn-block btn-primary">Salva</button>
+								<button type="button" id="btnSaveNewUser" class="btn btn-lg mt-3 btn-block btn-primary">Salva</button>
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-2"></div>
@@ -221,14 +221,14 @@
 							<!-- Pulsante per registare il badge del nuovo utente -->
 							<div id="tipBtnRegBadge" class="d-block Dtooltip">
 								<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">Per registrare un nuovo badge si prega di aggiungere un nuovo utente usando il pulsante "Salva"</span>
-								<button id="btnRegBadge" disabled class="btn btn-lg mt-3  btn-block btn-outline-primary">Registra badge</button>
+								<button type="button" id="btnRegBadge" disabled class="btn btn-lg mt-3 btn-block btn-outline-primary">Registra badge</button>
 
 							</div>
 
 						</div>
 						<div class="col-lg-3 col-md-4">
 							<!-- Pulsante per pulire i campi, con conferma locale -->
-							<button id="btnPulisci" class="btn btn-lg mt-3 btn-block btn-outline-primary">Pulisci campi</button>
+							<button type="button" id="btnPulisci" class="btn btn-lg mt-3 btn-block btn-outline-primary">Pulisci campi</button>
 
 						</div>
 						<div class="col-lg-3 col-md-2"></div>
@@ -239,16 +239,16 @@
 		</div>
 
 		<!-- MODAL -->
-		<div class="modal fade" id="modalDialogNewUser" tabindex="-1" role="dialog" aria-labelledby="modalDialogNewUser" aria-hidden="true">
+		<div class="modal fade" id="modalRegStatus" tabindex="-1" role="dialog" aria-labelledby="modalRegStatus" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-dialog-centered " role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modalDialogNewUserLabel">html</h5>
+						<h5 class="modal-title" id="modalRegStatusLabel">html</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div id="modalDialogNewUserBody" class="modal-body text-center">
+					<div id="modalRegStatusBody" class="modal-body text-center">
 						<h5>""
 							<h5>
 
@@ -267,7 +267,7 @@
 		<script src="js/bootstrap.bundle.js"></script>
 		<script src="DataTables/datatables.js"></script>
 		<script src="DataTables/Scroller-1.4.4/js/dataTables.scroller.js"></script>
-		<script src="js/nuovoUtente.js"></script>
+		<script src="js/Principale.js"></script>
 
 	</body>
 

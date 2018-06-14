@@ -4,9 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Apache24/htdocs/NidoCellini/src/php/RegEntry.php</file>
-            <file>file:/C:/Apache24/htdocs/NidoCellini/src/php/proxyToInterr.php</file>
             <file>file:/C:/Apache24/htdocs/NidoCellini/src/php/dbComm.php</file>
             <file>file:/C:/Apache24/htdocs/NidoCellini/src/php/NewBadge.php</file>
+            <file>file:/C:/Apache24/htdocs/NidoCellini/src/php/Diagnostica.php</file>
+            <file>file:/C:/Apache24/htdocs/NidoCellini/src/php/QuerySezioni.php</file>
         </group>
     </open-files>
 </project-private>

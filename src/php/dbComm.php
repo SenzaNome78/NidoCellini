@@ -27,10 +27,6 @@
       {
           InsertUpdateUser();
       }
-      else if (isset($_POST['paramInsertOrUpdate']))
-      {
-          InsertUpdateUser();
-      }
       else if (isset($_POST['table']))
       {
           PopulateTable();
@@ -91,7 +87,7 @@
 
       $tableName = $_POST["paramTable"];
       $ruolo     = $_POST["paramRuolo"];
-      $id        = $_POST["paramId"];
+
 
       // Compilo la stringa SQL per INSERIRE un nuovo utente
       if ($_POST["paramInsertOrUpdate"] === "insert")
@@ -124,6 +120,7 @@
       // Facciamo un UPDATE
       else if ($_POST["paramInsertOrUpdate"] === "update")
       {
+          $id              = $_POST["paramId"];
           $SqlString       = "UPDATE " . $tableName . " SET ";
           $recordsToInsert = "";
           $fieldsToInsert  = "";
