@@ -26,8 +26,7 @@ session_start();
 		</div>
 		<div class="mr-auto p-2 font-weight-bold h2">Bambini</div>
 
-
-		<button type="button" class="btn btn-lg btn-info pl-3 pr-3 mr-4" onclick="location.href='NuovoBambino.html';">
+		<button type="button" id="btnNuovo" class="btn btn-lg btn-info pl-3 pr-3 mr-4">
 
 			<div class="h4">
 				<i class="fas fa-plus"></i>&nbsp&nbspNuovo bambino</div>
@@ -46,7 +45,6 @@ session_start();
 							<th>Nome</th>
 							<th>Cognome</th>
 							<th>Data di nascita</th>
-							<th>Sezione</th>
 							<th>Educatore di riferimento</th>
 						</tr>
 					</thead>
@@ -63,7 +61,7 @@ session_start();
 	<div class="modal fade" id="modalDialogUpdateUser" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modalDialogUpdateUser" aria-hidden="true">
 
 		<div class="modal-dialog bg-primary modal-Edit-dialog modal-big modal-dialog-centered" role="document">
-			<div class="modal-content bg-light">
+			<div class="modal-content border-info">
 				<div class="modal-header justify-content-center">
 					<h2 class="modal-title text-center" id="modalDialogUpdateUserLabel">Modifica dati:</h2>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -257,15 +255,16 @@ session_start();
 						<!-- Pulsante per salvare le modifiche -->
 						<div id="tipbtnModUserDiv" class="d-block Dtooltip">
 							<span id="tipbtnModUserSpan" class="Dtooltiptext">
-								Salva le modifiche apportate e chiudi la finestra
+								
 							</span>
+							
 							<button type="button" id="btnModUser" class="btn btn-primary btn-lg ">Salva</button>
 						</div>
 
 						<!-- Pulsante per registare il badge del nuovo utente -->
 						<div id="tipBtnRegBadgeDiv" class="d-block Dtooltip">
 							<span id="tipBtnRegBadgeSpan" class="Dtooltiptext">
-								Registra un nuovo badge per questo utente
+								
 							</span>
 							<button type="button" id="btnRegBadge" class="btn btn-outline-primary">Registra badge</button>
 						</div>
@@ -273,9 +272,9 @@ session_start();
 						<!-- Pulsante per annullare le modifiche e chiudere la finestra -->
 						<div id="tipBtnAnnullaDiv" class="d-block Dtooltip">
 							<span id="tipBtnAnnullaSpan" class="Dtooltiptext">
-								Annulla le modifiche apportate e chiudi la finestra
+								Chiudi la finestra corrente
 							</span>
-							<button type="button" id="btnAnnullaModal" class="btn btn-outline-primary" data-dismiss="modal">Annulla
+							<button type="button" id="btnAnnullaModal" class="btn btn-outline-primary" data-dismiss="modal">Chiudi
 							</button>
 						</div>
 					</div>
@@ -288,9 +287,9 @@ session_start();
 	<!-- MODAL DI DIALOGO-->
 	<div class="modal fade" id="modalRegStatus" tabindex="-1" role="dialog" aria-labelledby="modalRegStatus" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header ">
-						<h5 class="modal-title text-center" id="modalRegStatusLabel">html</h5>
+				<div class="modal-content border-info">
+					<div class="modal-header">
+						<h5 class="modal-title text-center" id="modalRegStatusLabel"></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>

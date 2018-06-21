@@ -1,0 +1,87 @@
+<?php
+session_start();
+?>
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Nido Cellini</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="css/cellini.css" />
+</head>
+
+<body>
+
+	<div id="nav-top"></div>
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-xs-auto">
+				<!-- <button type="button" id="btnGoBambini" class="btn btn-lg btn-info pl-3 pr-3 mr-4"> -->
+				<a type="button" id="btnGoBambini" class="btn btn-info mr-2 mt-5" href="ElencoBambini.html">
+
+					<div class="h4" style="color:white">
+						Elenco bambini
+					</div>
+				</a>
+
+				<button type="button" id="btnGoEduatori" class="btn btn-lg btn-info ml-2 mt-5">
+
+					<div class="h4">
+						Elenco educatori
+					</div>
+				</button>
+			</div>
+
+		</div>
+		<div class="row text-center justify-content-center">
+				<div class="col-xs-auto">
+						<!-- <button type="button" id="btnGoBambini" class="btn btn-lg btn-info pl-3 pr-3 mr-4"> -->
+						<button type="button" id="btnGoBambini" class="btn btn-lg btn-info mr-2 mt-5">
+		
+							<div class="h4">
+								Nuovo bambino
+							</div>
+						</button>
+		
+						<button type="button" id="btnGoEduatori" class="btn btn-lg btn-info ml-2 mt-5">
+		
+							<div class="h4">
+								Nuovo educatore
+							</div>
+						</button>
+					</div>
+		</div>
+		<div class="row text-center justify-content-center">
+				<div class="col-sm-12">
+						<!-- <button type="button" id="btnGoBambini" class="btn btn-lg btn-info pl-3 pr-3 mr-4"> -->
+						<button type="button" id="btnGoBambini" class="btn btn-lg btn-info mr-2 mt-5">
+		
+							<div class="h4">
+								Presenze bambini
+							</div>
+						</button>
+		
+						<button type="button" id="btnGoEduatori" class="btn btn-lg btn-info ml-2 mt-5">
+		
+							<div class="h4">
+								Presenze educatori
+							</div>
+						</button>
+					</div>
+		</div>
+
+	</div>
+
+
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.bundle.js"></script>
+	<script src="js/Principale.js"></script>
+
+</body>
+
+</html>

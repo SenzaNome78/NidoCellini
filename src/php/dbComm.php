@@ -29,7 +29,7 @@
       }
       else if (isset($_POST['table']))
       {
-          PopulateTable();
+          CompilaTabella();
       }
       else
       {
@@ -45,22 +45,30 @@
       echo 'Connection failed: ' . $e->getMessage();
   }
 
-  function PopulateTable()
+  // Restituisce un array di dati estratti dalla tabella del database MySQL
+  function CompilaTabella()
   {
-
+      // nome della tabella mySQL
       $tableName = $_POST["table"];
 
+      // Apriamo il collegamento col database
       $db = new PDO('mysql:host=localhost;dbname=dbnidocellini', 'root', 'mysql231278');
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-      $query  = $db->prepare("SELECT * FROM $tableName");
+      // Prepariamo la stringa SQL, che seleziona tutti i record della tabella
+      $query = $db->prepare("SELECT * FROM $tableName");
+
+      // Eseguiamo la query
       $query->execute();
+
+      // Dalla query estraiamo tutti i record, affidandoli alla variabile $result
       $result = $query->fetchAll(PDO::FETCH_CLASS, "RecordClass");
 
+      // Preparariamo l'header come tipo di dati JSON
       header("Content-type: application/json");
+      // Restituiamo al browser web il nostro risultato formattato come JSON
       echo json_encode($result);
-      //echo "{\"data\": " . json_encode($result) . " }";
   }
 
   function DeleteRecord()
