@@ -38,6 +38,7 @@ var pageName = location.pathname.split("/").slice(-1)[0]
 
 var viewMySql; // Variabile stringa che contiene la VIEW mysql per la pagina attuale
 var tableMySql; // Variabile stringa che contiene la TABELLA mysql per la pagina attuale
+var idDb; // Contiene l'id del database (es. idtbbambini, idtbeducatori, etc)
 
 //variabile che contiene il riferimento alla DataTable creata
 var tbTabella;
@@ -91,13 +92,12 @@ $(document).ready(function () {
 		inputSesso = "sessoBambino";
 		formName = "formModificaUser";
 		tipoDiPagine = "elenco";
-
-		PopulateTable(viewMySql, "idtbbambini", [
-			{data: "idtbbambini"},
+		idDb = "idtbbambini";
+		CompilaTabella(viewMySql, idDb, [
+			{ data: idDb },
 			{ data: "nomeBambino" },
 			{ data: "cognomeBambino" },
-			{ data: "dataNascitaBambino" },
-			{ data: "nomeSezione" },
+			{ data: "dataNascitaBambinoFormat" },
 			{ data: "educRif" }
 		]);
 
@@ -110,11 +110,11 @@ $(document).ready(function () {
 
 		formName = "formModificaUser";
 		tipoDiPagine = "elenco";
-		PopulateTable(viewMySql, "idtbeducatori", [
-			{ data: "idtbeducatori"},
+		idDb = "idtbeducatori";
+		CompilaTabella(viewMySql, idDb, [
+			{ data: idDb },
 			{ data: "nomeEducatore" },
 			{ data: "cognomeEducatore" },
-			{ data: "nomeSezione" },
 			{ data: "codiceFiscaleEducatore" },
 			{ data: "tel01Educatore" },
 			{ data: "tel02Educatore" },
@@ -122,6 +122,10 @@ $(document).ready(function () {
 		]);
 
 	}
+	else if (pageName === "Home.html")
+	{
+		console.log("Siamo nella home, non facciamo niente.")
+		}
 	else // Stampiamo un errore nella console
 	{
 		console.log("Errore nel nome di pagina");
@@ -142,6 +146,12 @@ $(document).ready(function () {
 			if (window.confirm("Premendo OK verrano puliti tutti i campi. Confermare?"))
 				location.reload(true);
 
+		});
+	}
+	// Se siamo in una pagina elenco registriamo gli handler degli eventi
+	else if (tipoDiPagine === "elenco") {
+		$('#btnNuovo').on('click', function () {
+			MostraDettagli(true);
 		});
 	}
 
@@ -192,6 +202,8 @@ $(document).ready(function () {
 			}
 		});
 	}
+
+
 });
 
 
@@ -201,8 +213,7 @@ $(document).ready(function () {
  * @param {int} idKey il nome del campo mySql contentente la chiave primaria
  * @param {Array} colonne un'array i nomi delle intestazioni delle colonne
  */
-// function PopulateTable(dbTabella, idTabella, idRecord, colonne) {
-function PopulateTable(dbTabella, idKey, colonne) {
+function CompilaTabella(dbTabella, idKey, colonne) {
 
 	tbTabella = $("#TabellaCorrente").DataTable(
 		{
@@ -210,7 +221,7 @@ function PopulateTable(dbTabella, idKey, colonne) {
 			ajax: {
 				url: PHPURL, // url della nostra pagina php
 				method: "POST", // usiamo il comando POST
-				data: { 
+				data: {
 					table: dbTabella // nome della tabella mysql che andiamo a interrogare
 				},
 				dataSrc: '',
@@ -230,10 +241,10 @@ function PopulateTable(dbTabella, idKey, colonne) {
 			select: true,
 
 			dom: 'ftlip', // ordine degli elementi visualizzati della tabella
-			scrollY: '60vh',
+			scrollY: '60vh', // 60vh
 			scrollCollapse: true,
 			paging: false,
-			deferRender: true,
+			// deferRender: true,
 
 			// in questa sezione ho tradotto le varie voci della tabella in italiano
 			language: {
@@ -284,15 +295,15 @@ function PopulateTable(dbTabella, idKey, colonne) {
 				text: "Modifica voce",
 				enabled: false,
 				action: function () {
-					MostraDettagli();
+					MostraDettagli(false);
 				}
 			}
 		]
 	});
 	tbTabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
 
-	tbTabella.column( 0 ).visible( false );
-	
+	tbTabella.column(0).visible(false);
+
 }
 
 function CancellaVoci(idKey) {
@@ -319,64 +330,89 @@ function CancellaVoci(idKey) {
 
 var datiTabella;
 var idDaPassare;
+
 // Apre il modal per modificare l'utente
-function MostraDettagli() {
+function MostraDettagli(insert) {
 	// Registra un evento all'apertura del modal per riportare la scrollbar in alto
 	$('#modalDialogUpdateUser').off('show.bs.modal');
 
-
 	$('#modalDialogUpdateUser').on('show.bs.modal', function (event) {
-
-		// LEGGIAMO I DATI DALLA TABELLA E COMPILIAMO IL FORM
-		// Queste due variabili contengono:
-		// controlli: tutti i controlli del nostro form html
-		// datiTabella: i campi e i valori del record selezionato nella tabella
-		var controlli = document.getElementById(formName).elements;
-		datiTabella = tbTabella.rows({ selected: true }).data()[0];
+		$('#btnModUser').off('click');
+		$('#btnRegBadge').off('click');
+		$('#btnAnnullaModal').off('click');
 
 
-		if (ruolo === "B") {
-			idDaPassare = datiTabella["idtbbambini"];
-		} else if (ruolo === "E") {
-			idDaPassare = datiTabella["idtbeducatori"];
+		// Definiamo le stringhe del modal a seconda se siamo 
+		// in inserimento o modifica
+		if (insert === true) // INSERIMENTO
+		{
+			document.getElementById(formName).reset();
+			document.getElementById("btnRegBadge").disabled = true;
+			$("#modalDialogUpdateUserLabel").html("Inserisca i dati e prema Salva");
+			$("#tipbtnModUserSpan").html("Inserisce il nuovo utente e chiude la finestra");
+			$("#tipBtnRegBadgeSpan").html("Per registrare un nuovo badge si prega di aggiungere un nuovo utente usando il pulsante \"Salva\"");
+		}
+		else // MODIFICA
+		{
+			document.getElementById("btnRegBadge").disabled = false;
+			$("#modalDialogUpdateUserLabel").html("Modificare i dati e premere Salva");
+			$("#tipbtnModUserSpan").html("Salva le modifiche apportate e chiude la finestra");
+			$("#tipBtnRegBadgeSpan").html("Registra un nuovo badge per questo utente");
 		}
 
+		// Se modifichiamo un utente, prima compiliamo i campi del modal
+		if (insert === false) {
+			// LEGGIAMO I DATI DALLA TABELLA E COMPILIAMO IL FORM
+			// Queste due variabili contengono:
+			// controlli: tutti i controlli del nostro form html
+			// datiTabella: i campi e i valori del record selezionato nella tabella
+			var controlli = document.getElementById(formName).elements;
+			datiTabella = tbTabella.rows({ selected: true }).data()[0];
 
-		// Per ogni campo della tabella (anche quelli nascosti)
-		for (var campo in datiTabella) {
-			// Controlliamo che il rispettivo controllo esista nel form
-			if (typeof controlli[campo] !== 'undefined') {
-				// Se sia il campo della tabella che quello del controllo non sono null
-				// modificiamo quest'ultimo
-				if ((datiTabella[campo] !== null) && (controlli[campo].value != null))
-					controlli[campo].value = datiTabella[campo];
+
+			idDaPassare = datiTabella[idDb];
+
+			// Per ogni campo della tabella (anche quelli nascosti)
+			for (var campo in datiTabella) {
+				// Controlliamo che il rispettivo controllo esista nel form
+				if (typeof controlli[campo] !== 'undefined') {
+					// Se sia il campo della tabella che quello del controllo non sono null
+					// modificiamo quest'ultimo
+					if ((datiTabella[campo] !== null) && (controlli[campo].value != null))
+						controlli[campo].value = datiTabella[campo];
+				}
 			}
 		}
 		// FINE LETTURA DATI
 
+		if (insert === true) { // Andiamo ad inserire un nuovo utente
+			$('#btnModUser').on('click', function (event) {
+				if (InsertUpdateUser(true, 0)) {
+					//$('#modalDialogUpdateUser').modal('hide');
+				}
+			});
+		}
+		else { // Modifichiamo un utente
+			$('#btnModUser').on('click', function (event) {
+				if (InsertUpdateUser(false, idDaPassare)) {
+					//$('#modalDialogUpdateUser').modal('hide');
+				}
+			});
+		}
 
-		$('#btnModUser').on('click', function (event) {
-			if (InsertUpdateUser(false, idDaPassare)) {
-				$('#modalDialogUpdateUser').modal('hide');
-				tbTabella.ajax.reload();
-			}
-		});
 
 		$('#btnRegBadge').on('click', function (event) {
-
-			// event.preventDefault();
-			RegBadge();
+			RegBadge(idDaPassare);
 		});
 
 		$('#btnAnnullaModal').on('click', function (event) {
-			// event.preventDefault();
-			$('#modalDialogUpdateUser').modal('hide');
+			//$('#modalDialogUpdateUser').modal('hide');
 		});
 
 	});
 
 	$('#modalDialogUpdateUser').modal('show');
-	$('#modalDialogUpdateUserModalBody').scrollTop(0);
+	$('#modalDialogUpdateUserBody').scrollTop(0);
 }
 
 // Funzione per inserire o modificare un utente attraverso PHP->mySql
@@ -384,11 +420,9 @@ function InsertUpdateUser(insert, idDaPassare) {
 
 	// Controlliamo se i campi obbligatori sono stati inseriti, altrimenti usciamo
 	if (!document.getElementById(formName).checkValidity()) {
-		//		event.preventDefault();
+		document.getElementById(formName).reportValidity();
 		return false;
 	}
-	// preventDefault per non inviare il modulo e non fare il refresh della pagina
-	//	event.preventDefault();
 
 	// In pageControls mettiamo tutti i controlli della pagina
 	var pageControls = document.getElementById(formName).elements;
@@ -430,8 +464,8 @@ function InsertUpdateUser(insert, idDaPassare) {
 	if (insert === true) {
 		// Attiviamo il pulsante per registrare un nuovo badge
 		document.getElementById("btnRegBadge").disabled = false;
-		$('#tipBtnRegBadge').removeClass("Dtooltip");
-		document.getElementById("tipBtnRegBadgeSpan").innerHTML = "";
+		$("#tipBtnRegBadgeSpan").html("Registra un nuovo badge per questo utente");
+		// document.getElementById("tipBtnRegBadgeSpan").innerHTML = "";
 
 		// Stringhe usate nel dialog informativo
 		dialogTitolo = titoloModalUserInserted;
@@ -443,6 +477,7 @@ function InsertUpdateUser(insert, idDaPassare) {
 	}
 	// Formattiamo e visualizziamo una finestra modal per indicare il successo 
 	// del salvataggio
+	tbTabella.ajax.reload();
 	$('#modalRegStatusBody').addClass('stileModalSuccesso');
 	$('#modalRegStatusBody').removeClass('stileModalErrore');
 	$('#modalRegStatusLabel').html(dialogTitolo);
@@ -452,112 +487,115 @@ function InsertUpdateUser(insert, idDaPassare) {
 	return true;
 }
 
-//Controlliamo che il nome dell'utente sia stato inserito nell'input box
-function ValidForm() {
-	var valido = document.getElementById(formName).elements.namedItem(inputName).value;
-	if (valido == "") {
-		return false;
-	}
-	else {
-		return true;
-	}
-}
-
 // Vogliamo interrompere la registrazione del nuovo badge
+$('#btnStopBadgeRegModal').off('click');
 $('#btnStopBadgeRegModal').on('click', function () {
-	var url = ".\\php\\proxyToInterr.php?command=stop";
-
+	var url = ".\\php\\proxyToInterr.php?command=interr";
 	$.get(url);
 });
 
 
-function RegBadge() {
-	//event.preventDefault();
-	if (ValidForm()) {
+function RegBadge(idUtente) {
+	if (!document.getElementById(formName).checkValidity()) {
+		document.getElementById(formName).reportValidity();
+		return false;
+	}
 
+	// Passiamo l'url allo script php per la richiesta al lettore rfid
+	var url = ".\\php\\NewBadge.php?command=newBadge" +
+		"&nome=" + $("#" + inputName).val() +
+		"&ruolo=" + ruolo +
+		"&sesso=" + $("#" + inputSesso).val() +
+		"&idKey=" + idDb +
+		"&id=" + idDaPassare +
+		"&paramTable=" + tableMySql;
 
-		// Passiamo l'url allo script php per la richiesta al lettore rfid
-		var url = ".\\php\\NewBadge.php?command=newBadge" +
-			"&nome=" + $("#" + inputName).val() +
-			"&ruolo=" + ruolo +
-			"&sesso=" + $("#" + inputSesso).val();
+	// Visualizziamo un messaggio per invitare ad avvicinare un badge al lettore
+	$('#modalRegStatusBody').addClass('stileModalSuccesso');
+	$('#modalRegStatusBody').removeClass('stileModalErrore');
+	$('#modalRegStatusLabel').html(titoloModalBadge);
+	$('#modalRegStatusBody').html(testoModalAttesa);
+	$('#modalRegStatus').modal({ backdrop: 'static' });
 
-		// Visualizziamo un messaggio per invitare ad avvicinare un badge al lettore
-		$('#modalRegStatusBody').addClass('stileModalSuccesso');
-		$('#modalRegStatusBody').removeClass('stileModalErrore');
-		$('#modalRegStatusLabel').html(titoloModalBadge);
-		$('#modalRegStatusBody').html(testoModalAttesa);
-		$('#modalRegStatus').modal({ backdrop: 'static' });
+	// La finestra modal puo' essere chiusa solo con i pulsanti
 
-		// La finestra modal puo' essere chiusa solo con i pulsanti
+	document.getElementById('btnCloseModal').style.display = "none";
+	document.getElementById('btnStopBadgeRegModal').style.display = "inline";
 
-		document.getElementById('btnCloseModal').style.display = "none";
-		document.getElementById('btnStopBadgeRegModal').style.display = "inline";
-
-		// Proviamo ad inviare una richiesta al lettore rfid per registrare un nuovo badge
-		$.ajax(url,
-			// Funzione eseguita se la richiesta GET ha avuto successo
-			{
-				success: function (data, status, jqXHR) {
-					if (data.search("ConnOk") != -1) // Connessione al lettore rfid riuscita
-					{
-						if (data.search("S=Registrato") != -1) {
-							$('#modalRegStatusBody').addClass('stileModalSuccesso');
-							$('#modalRegStatusBody').html(testoModalSuccessoBadge);
-							$('#modalRegStatusBody').removeClass('stileModalErrore');
-
-						}
-						else if (data.search("F=ScriviNuovoBadge") != -1) {
-							$('#modalRegStatusBody').addClass('stileModalErrore');
-							$('#modalRegStatusBody').html(testoModalErroreBadge);
-							$('#modalRegStatusBody').removeClass('stileModalSuccesso');
-						}
-						else if (data.search("F=Stop") != -1) {
-							$('#modalRegStatusBody').addClass('stileModalErrore');
-							$('#modalRegStatusBody').html(testoModalErroreStop);
-							$('#modalRegStatusBody').removeClass('stileModalSuccesso');
-						}
-						else if (data.search("F=Timeout") != -1) {
-							$('#modalRegStatusBody').addClass('stileModalErrore');
-							$('#modalRegStatusBody').html(testoModalErroreTimeout);
-							$('#modalRegStatusBody').removeClass('stileModalSuccesso');
-						}
+	// Proviamo ad inviare una richiesta al lettore rfid per registrare un nuovo badge
+	$.ajax(url,
+		// Funzione eseguita se la richiesta GET ha avuto successo
+		{
+			success: function (data, status, jqXHR) {
+				if (data.search("ConnOk") != -1) // Connessione al lettore rfid riuscita
+				{
+					if (data.search("S=Registrato") != -1) {
+						$('#modalRegStatusBody').addClass('stileModalSuccesso');
+						$('#modalRegStatusBody').html(testoModalSuccessoBadge);
+						$('#modalRegStatusBody').removeClass('stileModalErrore');
+						console.log("Data: " + data);
+						console.log("badgeRegStatus: " + data);
 
 					}
-					else if (data.search("ConnErr") != -1) // Connessione al lettore rfid fallita
-					{
+					else if (data.search("F=ScriviNuovoBadge") != -1) {
 						$('#modalRegStatusBody').addClass('stileModalErrore');
-						$('#modalRegStatusBody').html(testoModalErroreConn);
+						$('#modalRegStatusBody').html(testoModalErroreBadge);
 						$('#modalRegStatusBody').removeClass('stileModalSuccesso');
-
-					}
-					else // Registrazione badge: qualcosa non va
-					{
-						$('#modalRegStatusBody').addClass('stileModalErrore');
-						$('#modalRegStatusBody').html("Errore Generico");
-						$('#modalRegStatusBody').removeClass('stileModalSuccesso');
-						document.getElementById('btnCloseModal').style.display = "inline";
-						document.getElementById('btnStopBadgeRegModal').style.display = "none";
 						console.log("Data: " + data);
 						console.log("badgeRegStatus: " + data);
 					}
+					else if (data.search("F=Stop") != -1) {
+						$('#modalRegStatusBody').addClass('stileModalErrore');
+						$('#modalRegStatusBody').html(testoModalErroreStop);
+						$('#modalRegStatusBody').removeClass('stileModalSuccesso');
+						console.log("Data: " + data);
+						console.log("badgeRegStatus: " + data);
+					}
+					else if (data.search("F=Timeout") != -1) {
+						$('#modalRegStatusBody').addClass('stileModalErrore');
+						$('#modalRegStatusBody').html(testoModalErroreTimeout);
+						$('#modalRegStatusBody').removeClass('stileModalSuccesso');
+						console.log("Data: " + data);
+						console.log("badgeRegStatus: " + data);
+					}
+
+				}
+				else if (data.search("ConnErr") != -1) // Connessione al lettore rfid fallita
+				{
+					$('#modalRegStatusBody').addClass('stileModalErrore');
+					$('#modalRegStatusBody').html(testoModalErroreConn);
+					$('#modalRegStatusBody').removeClass('stileModalSuccesso');
+					console.log("Data: " + data);
+					console.log("badgeRegStatus: " + data);
+
+				}
+				else // Registrazione badge: qualcosa non va
+				{
+					$('#modalRegStatusBody').addClass('stileModalErrore');
+					$('#modalRegStatusBody').html("Errore Generico");
+					$('#modalRegStatusBody').removeClass('stileModalSuccesso');
 					document.getElementById('btnCloseModal').style.display = "inline";
 					document.getElementById('btnStopBadgeRegModal').style.display = "none";
-				},
-				error: function (jqXHR, textStatus, error) { // <- Funzione che eseguimo se non siamo riusciti a contattare il lettore rfid
-					$('#modalRegStatusBody').addClass('stileModalErrore');
-					$('#modalRegStatusBody').html(testoModalErroreConn
-
-					);
-
-					console.log("ERRORE");
-					console.log("text stat: " + textStatus);
-					console.log("jqXHR: " + jqXHR.getAllResponseHeaders());
-					console.log("error: " + error);
+					console.log("Data: " + data);
+					console.log("badgeRegStatus: " + data);
 				}
-			});
+				document.getElementById('btnCloseModal').style.display = "inline";
+				document.getElementById('btnStopBadgeRegModal').style.display = "none";
+			},
+			error: function (jqXHR, textStatus, error) { // <- Funzione che eseguimo se non siamo riusciti a contattare il lettore rfid
+				$('#modalRegStatusBody').addClass('stileModalErrore');
+				$('#modalRegStatusBody').html(testoModalErroreConn
 
-	}
+				);
+
+				console.log("ERRORE");
+				console.log("text stat: " + textStatus);
+				console.log("jqXHR: " + jqXHR.getAllResponseHeaders());
+				console.log("error: " + error);
+			}
+		});
+
+
 	$('#modalRegStatusBody').removeClass('stileModalErrore');
 	$('#modalRegStatusBody').removeClass('stileModalSuccesso');
 }
