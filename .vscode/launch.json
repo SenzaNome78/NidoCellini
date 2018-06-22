@@ -16,8 +16,10 @@
 			// "url": "http://127.0.0.1\\NidoCellini\\src\\NuovoBambino.html",
 			// "url": "http://127.0.0.1\\NidoCellini\\src\\NuovoEducatore.html",
 			"url": "http://127.0.0.1\\NidoCellini\\src\\Home.html",
-			
-			"webRoot": "${workspaceFolder}"
+		
+			"webRoot": "${workspaceFolder}",
+			"disableNetworkCache": true
+
 		},
 		{
 			"type": "chrome",

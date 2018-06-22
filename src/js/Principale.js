@@ -23,7 +23,6 @@ const titoloModalUserInserted = 'Registrazione nuovo utente';
 const titoloModalUserUpdated = 'Modifica utente';
 // FINE COSTANTI STRINGHE
 
-
 // Elenco di tabelle contenute nel database mysql
 const MYSQL_TABLE_BAMBINI = "tbbambini";
 const MYSQL_TABLE_EDUCATORI = "tbeducatori";
@@ -36,6 +35,30 @@ const MYSQL_VIEW_EDUCATORI = "vweducatori";
 // la variabile pageName contiene il nome della pagina html (non il titolo)
 var pageName = location.pathname.split("/").slice(-1)[0]
 
+// Funzione estrae i parametri dall'url e li restituisce come oggetto
+// Usa la funzione di supporto transformToAssocArray
+function getSearchParameters() {
+	var prmstr = window.location.search.substr(1);
+	return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+}
+
+// Funzione di supporto transformToAssocArray per
+// la funzione getSearchParameters
+function transformToAssocArray(prmstr) {
+	var params = {};
+	var prmarr = prmstr.split("&");
+	for (var i = 0; i < prmarr.length; i++) {
+		var tmparr = prmarr[i].split("=");
+		params[tmparr[0]] = tmparr[1];
+	}
+	return params;
+}
+// Variabile che contiene i paramametri passati attraverso l'url
+// undefined se nessun parametro è stato passato
+var urlParams = getSearchParameters();
+
+history.replaceState("", "", location.origin + location.pathname);
+
 var viewMySql; // Variabile stringa che contiene la VIEW mysql per la pagina attuale
 var tableMySql; // Variabile stringa che contiene la TABELLA mysql per la pagina attuale
 var idDb; // Contiene l'id del database (es. idtbbambini, idtbeducatori, etc)
@@ -43,13 +66,11 @@ var idDb; // Contiene l'id del database (es. idtbbambini, idtbeducatori, etc)
 //variabile che contiene il riferimento alla DataTable creata
 var tbTabella;
 
-
 var ruolo; // Contiene il ruolo, es. B per bambino, E per educatore, etc:
 var formName; // nome del form html
 var inputName; // nome del campo input che contiene il nome dello user
 var inputSesso; // nome del campo input che contiene il sesso dello user
-var tipoDiPagine; // Ci indica se la pagina è un elenco o un nuovo inserimento.
-
+// var tipoDiPagine; // Ci indica se la pagina è un elenco o un nuovo inserimento.
 
 // Il documento è pronto
 // Usando il nome della pagina come riferimento, inizializiamo le variabili
@@ -60,38 +81,14 @@ $(document).ready(function () {
 		container: 'body'
 	});
 
-	if (pageName == "NuovoBambino.html") {
-		ruolo = "B";
-		tableMySql = MYSQL_TABLE_BAMBINI;;
-		inputName = "nomeBambino";
-		inputSesso = "sessoBambino";
-		formName = "formNuovoUser";
-		tipoDiPagine = "nuovoIns";
-	}
-	else if (pageName == "NuovoEducatore.html") {
-		ruolo = "E";
-		tableMySql = "tbeducatori";
-		inputName = "nomeEducatore";
-		inputSesso = "sessoEducatore";
-		formName = "formNuovoUser";
-		tipoDiPagine = "nuovoIns";
-	}
-	else if (pageName == "NuovoParente.html") {
-		ruolo = "P";
-		tableMySql = "tbparenti";
-		inputName = "nomeParente";
-		inputSesso = "sessoParente";
-		formName = "formNuovoUser";
-		tipoDiPagine = "nuovoIns";
-	}
-	else if (pageName === "ElencoBambini.html") {
+	if (pageName === "ElencoBambini.html") {
 		ruolo = "B";
 		tableMySql = MYSQL_TABLE_BAMBINI;
 		viewMySql = MYSQL_VIEW_BAMBINI;
 		inputName = "nomeBambino";
 		inputSesso = "sessoBambino";
 		formName = "formModificaUser";
-		tipoDiPagine = "elenco";
+		// tipoDiPagine = "elenco";
 		idDb = "idtbbambini";
 		CompilaTabella(viewMySql, idDb, [
 			{ data: idDb },
@@ -109,7 +106,7 @@ $(document).ready(function () {
 		inputSesso = "sessoEducatore";
 
 		formName = "formModificaUser";
-		tipoDiPagine = "elenco";
+		// tipoDiPagine = "elenco";
 		idDb = "idtbeducatori";
 		CompilaTabella(viewMySql, idDb, [
 			{ data: idDb },
@@ -122,10 +119,9 @@ $(document).ready(function () {
 		]);
 
 	}
-	else if (pageName === "Home.html")
-	{
+	else if (pageName === "Home.html") {
 		console.log("Siamo nella home, non facciamo niente.")
-		}
+	}
 	else // Stampiamo un errore nella console
 	{
 		console.log("Errore nel nome di pagina");
@@ -133,27 +129,28 @@ $(document).ready(function () {
 
 	// Se siamo in una pagina di nuovi inserimenti
 	// attiviamo gli handler di eventi per i tasti SaveUser e Pulisci
-	if (tipoDiPagine === "nuovoIns") {
-		// Salviamo un nuovo user nel database e attiviamo il pulsante per registrare
-		// un nuovo badge
-		$('#btnSaveNewUser').on('click', function () {
-			InsertUpdateUser(true, "0")
-		});
+	// if (tipoDiPagine === "nuovoIns") {
+	// 	// Salviamo un nuovo user nel database e attiviamo il pulsante per registrare
+	// 	// un nuovo badge
+	// 	$('#btnSaveNewUser').on('click', function () {
+	// 		InsertUpdateUser(true, "0")
+	// 	});
 
-		// Puliamo tutti i campi (Ricarica pagina)
-		$('#btnPulisci').on('click', function () {
-			// event.preventDefault();
-			if (window.confirm("Premendo OK verrano puliti tutti i campi. Confermare?"))
-				location.reload(true);
+	// 	// Puliamo tutti i campi (Ricarica pagina)
+	// 	$('#btnPulisci').on('click', function () {
+	// 		// event.preventDefault();
+	// 		if (window.confirm("Premendo OK verrano puliti tutti i campi. Confermare?"))
+	// 			location.reload(true);
 
-		});
-	}
+	// 	});
+	// }
+
 	// Se siamo in una pagina elenco registriamo gli handler degli eventi
-	else if (tipoDiPagine === "elenco") {
+	// else if (tipoDiPagine === "elenco") {
 		$('#btnNuovo').on('click', function () {
 			MostraDettagli(true);
 		});
-	}
+	// }
 
 	// Una o più righe della tabella sono state selezionate
 	if (tbTabella !== undefined) {
@@ -201,6 +198,8 @@ $(document).ready(function () {
 				}
 			}
 		});
+
+
 	}
 
 
@@ -229,6 +228,12 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 					if (textStatus == "parsererror") {
 						console.log(textStatus);
 						console.log("Controllare se il database mysql è avviato.");
+					}
+				},
+				complete: function (jqXHR, textStatus) {
+					if (urlParams.command == "new") { // Se nella home è stato selezionato nuovo user
+						MostraDettagli(true);	// all'avvio apriamo direttamente il dialog relativo
+						urlParams.command = ""; // Lo facciamo solo una volta per refresh
 					}
 				}
 			},
@@ -272,45 +277,56 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 			},
 		});
 
+	// Aggiunge i pulsanti in basso alla tabella
 	new $.fn.DataTable.Buttons(tbTabella, {
 		buttons: [
-			//'copy', 'excel', 'pdf',
-			{
-				name: "btnCancella",
-				text: 'Cancella voci',
-				enabled: false,
-				action: function () {
-					CancellaVoci(idKey);
-				}
-			},
-			{
+			
+			{	// Ricarica le voci della tabella
 				name: "btnRicarica",
 				text: "Ricarica voci",
 				action: function () {
 					tbTabella.ajax.reload();
 				}
 			},
-			{
+			{	// modifica la voce selezionata
 				name: "btnModifica",
 				text: "Modifica voce",
-				enabled: false,
+				enabled: false, // Disattivato all'avvio
 				action: function () {
 					MostraDettagli(false);
 				}
-			}
+			},
+			{	// Pulsante per cancellare le voci selezionate
+				name: "btnCancella",
+				text: 'Cancella voci',
+				enabled: false, // Disattivato all'avvio
+				className: "btn-danger",  // colore rosso
+				action: function () {
+					CancellaVoci(idKey);  // esegue la funzione CancellaVoci
+				},
+				init: function(api, node, config) {
+					$(node).removeClass('btn-secondary') // Rimuove la classe di default dei pulsanti
+				 }
+			},
 		]
 	});
+	// Posiziona i pulsanti in basso alla tabella
 	tbTabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
 
+	// Nasconde la prima colonna (id)
 	tbTabella.column(0).visible(false);
-
 }
 
+// Cancella le voci selezionate
+// idKey è il nome della colonna id (idtbbambini, idtbeducatori, etc)
 function CancellaVoci(idKey) {
-
+	// oggetto che contiene tutte le righe SELEZIONATE
 	var obj = tbTabella.rows({ selected: true }).ids(true);
+	// variabile che verrà passata alla richiesta POST
 	var tmpPostData = "&deleteId=";
 
+	// Per ogni riga selezionata aggiunge l'id del record da cancellare
+	// se non è l'ultimo id aggiunge anche una virgola
 	for (var i = 0; i < obj.length; i++) {
 		if (i > 0) {
 			tmpPostData += ",";
@@ -318,6 +334,8 @@ function CancellaVoci(idKey) {
 		tmpPostData += tbTabella.rows({ selected: true }).ids()[i];
 	}
 
+	// Richiesta ajax al server Apache
+	// lo script PHP dbComm si occuperà di comunicare col mySql
 	$.ajax({
 		url: PHPURL,
 		method: "POST",
@@ -333,14 +351,13 @@ var idDaPassare;
 
 // Apre il modal per modificare l'utente
 function MostraDettagli(insert) {
+	$('#btnModUser').off('click');
+	$('#btnRegBadge').off('click');
+	$('#btnAnnullaModal').off('click');
 	// Registra un evento all'apertura del modal per riportare la scrollbar in alto
 	$('#modalDialogUpdateUser').off('show.bs.modal');
 
 	$('#modalDialogUpdateUser').on('show.bs.modal', function (event) {
-		$('#btnModUser').off('click');
-		$('#btnRegBadge').off('click');
-		$('#btnAnnullaModal').off('click');
-
 
 		// Definiamo le stringhe del modal a seconda se siamo 
 		// in inserimento o modifica
@@ -348,15 +365,15 @@ function MostraDettagli(insert) {
 		{
 			document.getElementById(formName).reset();
 			document.getElementById("btnRegBadge").disabled = true;
-			$("#modalDialogUpdateUserLabel").html("Inserisca i dati e prema Salva");
-			$("#tipbtnModUserSpan").html("Inserisce il nuovo utente e chiude la finestra");
+			$("#modalDialogUpdateUserLabel").html("Inserire i dati del nuovo utente e premere il pulsante salva");
+			$("#tipbtnModUserSpan").html("Inserisce il nuovo utente");
 			$("#tipBtnRegBadgeSpan").html("Per registrare un nuovo badge si prega di aggiungere un nuovo utente usando il pulsante \"Salva\"");
 		}
 		else // MODIFICA
 		{
 			document.getElementById("btnRegBadge").disabled = false;
 			$("#modalDialogUpdateUserLabel").html("Modificare i dati e premere Salva");
-			$("#tipbtnModUserSpan").html("Salva le modifiche apportate e chiude la finestra");
+			$("#tipbtnModUserSpan").html("Salva le modifiche apportate");
 			$("#tipBtnRegBadgeSpan").html("Registra un nuovo badge per questo utente");
 		}
 
@@ -369,7 +386,6 @@ function MostraDettagli(insert) {
 			var controlli = document.getElementById(formName).elements;
 			datiTabella = tbTabella.rows({ selected: true }).data()[0];
 
-
 			idDaPassare = datiTabella[idDb];
 
 			// Per ogni campo della tabella (anche quelli nascosti)
@@ -377,7 +393,7 @@ function MostraDettagli(insert) {
 				// Controlliamo che il rispettivo controllo esista nel form
 				if (typeof controlli[campo] !== 'undefined') {
 					// Se sia il campo della tabella che quello del controllo non sono null
-					// modificiamo quest'ultimo
+					// modifichiamo quest'ultimo
 					if ((datiTabella[campo] !== null) && (controlli[campo].value != null))
 						controlli[campo].value = datiTabella[campo];
 				}
@@ -386,6 +402,7 @@ function MostraDettagli(insert) {
 		// FINE LETTURA DATI
 
 		if (insert === true) { // Andiamo ad inserire un nuovo utente
+
 			$('#btnModUser').on('click', function (event) {
 				if (InsertUpdateUser(true, 0)) {
 					//$('#modalDialogUpdateUser').modal('hide');
@@ -393,6 +410,7 @@ function MostraDettagli(insert) {
 			});
 		}
 		else { // Modifichiamo un utente
+
 			$('#btnModUser').on('click', function (event) {
 				if (InsertUpdateUser(false, idDaPassare)) {
 					//$('#modalDialogUpdateUser').modal('hide');
@@ -406,7 +424,12 @@ function MostraDettagli(insert) {
 		});
 
 		$('#btnAnnullaModal').on('click', function (event) {
-			//$('#modalDialogUpdateUser').modal('hide');
+			event.preventDefault();
+			$('#btnModUser').off('click');
+			$('#btnRegBadge').off('click');
+			$('#btnAnnullaModal').off('click');
+			$('#modalDialogUpdateUser').modal('hide');
+
 		});
 
 	});
