@@ -1,4 +1,12 @@
 
+@font-face{
+	font-family: 'nidoCelliniFont';
+    /* src: url('../assets/font/luckiestguy-regular.ttf'); */
+    src: url('../assets/font/concertone-regular.woff2');
+    /* src: url('../assets/font/concertone-regular.ttf'); */
+    /* src: url('concertone-regular.ttf'); */
+}
+
 .navbar-brand {
 	padding: 0.4em;
 }

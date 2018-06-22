@@ -18,62 +18,48 @@ session_start();
 <body>
 
 	<div id="nav-top"></div>
+
 	<div class="container">
-		<div class="row text-center">
-			<div class="col-6">
-				<!-- <button type="button" id="btnGoBambini" class="btn btn-lg btn-info pl-3 pr-3 mr-4"> -->
-				<a role="button" id="btnGoBambini" class="btn btn-lg btn-info mr-2 mt-5" href="ElencoBambini.html">
+		<div class="btn-group-vertical btn-group-lg btn-block">
+			<a role="button" id="btnGoElencoBambini" class="btn btn-info mt-4" href="ElencoBambini.html">
+				<h1>
+					Elenco Bambini
+				</h1>
 
-					<div class="h4" style="color:white">
-						Elenco bambini
-					</div>
-				</a> 
-				</div>
-				<div class="col-6 justify-content-center">
-				<a role="button" id="btnGoEduatori" class="btn btn-lg btn-info ml-2 mt-5" href="ElencoEducatori.html">
+			</a>
+			<a role="button" id="btnGoElencoEducatori" class="btn btn-info mt-4" href="ElencoEducatori.html">
+				<h1>
+					Elenco Educatori
+				</h1>
+			</a>
 
-					<div class="h4">
-						Elenco educatori
-					</div>
-					</a>
-					</div>
-		<div class="row text-center justify-content-center">
-				<div class="col-xs-auto">
-						<!-- <button type="button" id="btnGoBambini" class="btn btn-lg btn-info pl-3 pr-3 mr-4"> -->
-							<a role="button" id="btnGoBambini" class="btn btn-lg btn-info mr-2 mt-5" href="ElencoBambini.html?command=new">
-		
-							<div class="h4">
-								Nuovo bambino
-							</div>
-						</a>
-		
-						<a role="button" id="btnGoBambini" class="btn btn-lg btn-info mr-2 mt-5" href="ElencoEducatori.html?command=new">
-		
-							<div class="h4">
-								Nuovo educatore
-							</div>
-						</a>
-					</div>
+			<hr> 
+			<a role="button" id="btnNewBambino" class="btn btn-info mt-4" href="ElencoBambini.html?command=new">
+				<h1>
+					Nuovo Bambino
+				</h1>
+			</a>
+
+			<a role="button" id="btnNewEducatore" class="btn btn-info mt-4" href="ElencoEducatori.html?command=new">
+				<h1>
+					Nuovo Educatore
+				</h1>
+			</a>
+			
+			<hr> 
+			<a role="button" id="btnGoPresenzeBambini" class="btn btn-info mt-4" href="ElencoBambini.html?command=new">
+				<h1>
+					Presenze Bambini
+				</h1>
+			</a>
+			
+			<a role="button" id="btnGoPresenzeEducatori" class="btn btn-info mt-4" href="ElencoBambini.html?command=new">
+				<h1>
+					Presenze Educatori
+				</h1>
+			</a>
 		</div>
-		<div class="row text-center justify-content-center">
-				<div class="col-sm-12">
-						<!-- <button type="button" id="btnGoBambini" class="btn btn-lg btn-info pl-3 pr-3 mr-4"> -->
-						<button type="button" id="btnGoBambini" class="btn btn-lg btn-info mr-2 mt-5">
-		
-							<div class="h4">
-								Presenze bambini
-							</div>
-						</button>
-		
-						<button type="button" id="btnGoEduatori" class="btn btn-lg btn-info ml-2 mt-5">
-		
-							<div class="h4">
-								Presenze educatori
-							</div>
-						</button>
-					</div>
-		</div>
-
+<div class="row mt-5"></div>
 	</div>
 
 

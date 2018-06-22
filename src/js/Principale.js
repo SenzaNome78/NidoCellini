@@ -70,7 +70,6 @@ var ruolo; // Contiene il ruolo, es. B per bambino, E per educatore, etc:
 var formName; // nome del form html
 var inputName; // nome del campo input che contiene il nome dello user
 var inputSesso; // nome del campo input che contiene il sesso dello user
-// var tipoDiPagine; // Ci indica se la pagina è un elenco o un nuovo inserimento.
 
 // Il documento è pronto
 // Usando il nome della pagina come riferimento, inizializiamo le variabili
@@ -120,37 +119,17 @@ $(document).ready(function () {
 
 	}
 	else if (pageName === "Home.html") {
-		console.log("Siamo nella home, non facciamo niente.")
+		//Siamo nella home, non facciamo niente
 	}
 	else // Stampiamo un errore nella console
 	{
 		console.log("Errore nel nome di pagina");
 	}
 
-	// Se siamo in una pagina di nuovi inserimenti
-	// attiviamo gli handler di eventi per i tasti SaveUser e Pulisci
-	// if (tipoDiPagine === "nuovoIns") {
-	// 	// Salviamo un nuovo user nel database e attiviamo il pulsante per registrare
-	// 	// un nuovo badge
-	// 	$('#btnSaveNewUser').on('click', function () {
-	// 		InsertUpdateUser(true, "0")
-	// 	});
-
-	// 	// Puliamo tutti i campi (Ricarica pagina)
-	// 	$('#btnPulisci').on('click', function () {
-	// 		// event.preventDefault();
-	// 		if (window.confirm("Premendo OK verrano puliti tutti i campi. Confermare?"))
-	// 			location.reload(true);
-
-	// 	});
-	// }
-
-	// Se siamo in una pagina elenco registriamo gli handler degli eventi
-	// else if (tipoDiPagine === "elenco") {
-		$('#btnNuovo').on('click', function () {
-			MostraDettagli(true);
-		});
-	// }
+	// Event handler per il pulsante nuovo utente
+	$('#btnNuovo').on('click', function () {
+		MostraDettagli(true);
+	});
 
 	// Una o più righe della tabella sono state selezionate
 	if (tbTabella !== undefined) {
@@ -198,11 +177,7 @@ $(document).ready(function () {
 				}
 			}
 		});
-
-
 	}
-
-
 });
 
 
@@ -280,7 +255,7 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 	// Aggiunge i pulsanti in basso alla tabella
 	new $.fn.DataTable.Buttons(tbTabella, {
 		buttons: [
-			
+
 			{	// Ricarica le voci della tabella
 				name: "btnRicarica",
 				text: "Ricarica voci",
@@ -304,9 +279,9 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 				action: function () {
 					CancellaVoci(idKey);  // esegue la funzione CancellaVoci
 				},
-				init: function(api, node, config) {
+				init: function (api, node, config) {
 					$(node).removeClass('btn-secondary') // Rimuove la classe di default dei pulsanti
-				 }
+				}
 			},
 		]
 	});
