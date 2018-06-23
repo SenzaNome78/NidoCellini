@@ -26,10 +26,14 @@ const titoloModalUserUpdated = 'Modifica utente';
 // Elenco di tabelle contenute nel database mysql
 const MYSQL_TABLE_BAMBINI = "tbbambini";
 const MYSQL_TABLE_EDUCATORI = "tbeducatori";
-const MYSQL_TABLE_PRESENZE_EDUCATORI = "tbpresenzeeducatori";
-const MYSQL_TABLE_PRESENZE_BAMBINI = "tbpresenzebambini";
+const MYSQL_TABLE_PRESENZE_BAMBINI = "tbpresenze_bambini";
+const MYSQL_TABLE_PRESENZE_EDUCATORI = "tbpresenze_educatori";
+
+// Elenco di "viste" contenute nel database mysql
 const MYSQL_VIEW_BAMBINI = "vwbambini";
 const MYSQL_VIEW_EDUCATORI = "vweducatori";
+const MYSQL_VIEW_PRESENZE_BAMBINI = "vwpresenzebambini";
+const MYSQL_VIEW_PRESENZE_EDUCATORI = "vwpresenzeeducatori";
 // FINE ELENCO TABELLE MYSQL
 
 // la variabile pageName contiene il nome della pagina html (non il titolo)
@@ -57,6 +61,7 @@ function transformToAssocArray(prmstr) {
 // undefined se nessun parametro è stato passato
 var urlParams = getSearchParameters();
 
+// Una volta memorizzati i parametri dell'url, li eliminiamo dall'url stesso
 history.replaceState("", "", location.origin + location.pathname);
 
 var viewMySql; // Variabile stringa che contiene la VIEW mysql per la pagina attuale
@@ -87,7 +92,6 @@ $(document).ready(function () {
 		inputName = "nomeBambino";
 		inputSesso = "sessoBambino";
 		formName = "formModificaUser";
-		// tipoDiPagine = "elenco";
 		idDb = "idtbbambini";
 		CompilaTabella(viewMySql, idDb, [
 			{ data: idDb },
@@ -95,7 +99,7 @@ $(document).ready(function () {
 			{ data: "cognomeBambino" },
 			{ data: "dataNascitaBambinoFormat" },
 			{ data: "educRif" }
-		]);
+		], true);
 
 	} else if (pageName === "ElencoEducatori.html") {
 		ruolo = "E";
@@ -103,9 +107,7 @@ $(document).ready(function () {
 		viewMySql = MYSQL_VIEW_EDUCATORI;
 		inputName = "nomeEducatore";
 		inputSesso = "sessoEducatore";
-
 		formName = "formModificaUser";
-		// tipoDiPagine = "elenco";
 		idDb = "idtbeducatori";
 		CompilaTabella(viewMySql, idDb, [
 			{ data: idDb },
@@ -115,7 +117,20 @@ $(document).ready(function () {
 			{ data: "tel01Educatore" },
 			{ data: "tel02Educatore" },
 			{ data: "emailEducatore" }
-		]);
+		], true);
+	}
+	else if (pageName === "PresenzeBambini.html") {
+		ruolo = "B";
+		tableMySql = MYSQL_TABLE_PRESENZE_BAMBINI;
+		viewMySql = MYSQL_VIEW_PRESENZE_BAMBINI;
+		idDb = "idPresenzeBambini";
+		CompilaTabella(viewMySql, idDb, [
+			{ data: idDb },
+			{ data: "nomeCognomeBambino" },
+			{ data: "presBambiniData" },
+			{ data: "presBambiniOrarioIn" },
+			{ data: "presBambiniOrarioOut" }
+		], false);
 
 	}
 	else if (pageName === "Home.html") {
@@ -180,14 +195,14 @@ $(document).ready(function () {
 	}
 });
 
-
 /**
  * Popola la tabella con i dati da un database mySql
- * @param {string} dbTabella Nome della tabella in mySql
- * @param {int} idKey il nome del campo mySql contentente la chiave primaria
- * @param {Array} colonne un'array i nomi delle intestazioni delle colonne
+ * @param {string} dbTabella Nome della tabella in mySql (uso una view)
+ * @param {int} idKey Nome del campo mySql contentente la chiave primaria
+ * @param {Array} colonne Un'array con i nomi delle intestazioni delle colonne
+ * @param {bool} vociMod Se vero aggiunge un pulsante per modificare le voci
  */
-function CompilaTabella(dbTabella, idKey, colonne) {
+function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 
 	tbTabella = $("#TabellaCorrente").DataTable(
 		{
@@ -196,7 +211,7 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 				url: PHPURL, // url della nostra pagina php
 				method: "POST", // usiamo il comando POST
 				data: {
-					table: dbTabella // nome della tabella mysql che andiamo a interrogare
+					table: dbTabella // nome della view mysql che andiamo a interrogare
 				},
 				dataSrc: '',
 				error: function (jqXHR, textStatus, e) { // in caso di errore, non visibile all'utente
@@ -213,21 +228,23 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 				}
 			},
 
-			columns: colonne,
+			columns: colonne, // le colonne della tabella, passate come parametro
 
-			responsive: true,
+			responsive: true, // la tabella si ridimensiona con la larghezza della finestra
 
-			rowId: idKey,
-			select: true,
+			rowId: idKey, // nome della chiave primaria della nostra tabella
+
+			select: true, // plugin per selezionare le voci della tabella
 
 			dom: 'ftlip', // ordine degli elementi visualizzati della tabella
-			scrollY: ($(document).height() - 370), // 60vh
-			// scrollY: screen.height() - 60, // 60vh
-			scrollCollapse: true,
-			paging: false,
-			// deferRender: true,
+			
+			
+			scrollY: 400, // la tabella avrà una barra di scorrimento
+			scrollCollapse: true, // la barra di scorrimento verticale sparisce se non necessaria
+			scrollResize: true,
+			paging: false, // non dividiamo la tabella in più pagine
 
-			// in questa sezione ho tradotto le varie voci della tabella in italiano
+			// In questa sezione ho tradotto le varie voci della tabella in italiano
 			language: {
 				select: {
 					rows: {
@@ -248,8 +265,7 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 					last: "Ultima pagina",
 					next: "Prossima",
 					previous: "Precedente"
-				},
-				scroller: true
+				}
 			},
 		});
 
@@ -286,17 +302,21 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 			},
 		]
 	});
-	// Posiziona i pulsanti in basso alla tabella
-	tbTabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
 
+	// Rimuoviamo il pulsante per modificare le voci, se richiesto
+	if (vociMod == false) {
+		tbTabella.button('btnModifica:name').remove();
+	}
+
+	// Posiziona i pulsanti in basso alla tabella
+	// tbTabella.buttons().container().prependTo($('#TabellaCorrente_wrapper'));
+	tbTabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
+	// tbTabella.buttons().container().appendTo($('#TabellaCorrente_info'));
+	
 	// Nasconde la prima colonna (id)
 	tbTabella.column(0).visible(false);
 
-	$(window).resize(function () {
-		$(".dataTables_scrollBody").height($(document).height() - 370);
-		tbTabella.draw("page");
-	});
-	
+
 }
 
 // Cancella le voci selezionate

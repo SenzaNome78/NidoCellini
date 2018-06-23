@@ -176,6 +176,18 @@
 .btn-secondary.disabled{
 	color: rgb(0, 0, 0);
 }
+
+#resize_wrapper {
+	position: absolute;
+	top: 12em;
+	left: 1em;
+	right: 1em;
+	bottom: 1em;
+}
+
+#TabellaCorrente{
+}
+
 /* FINE TABELLE */
 
 .form-control::-moz-placeholder {
