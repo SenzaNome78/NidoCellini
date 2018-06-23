@@ -221,7 +221,8 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 			select: true,
 
 			dom: 'ftlip', // ordine degli elementi visualizzati della tabella
-			scrollY: '60vh', // 60vh
+			scrollY: ($(document).height() - 370), // 60vh
+			// scrollY: screen.height() - 60, // 60vh
 			scrollCollapse: true,
 			paging: false,
 			// deferRender: true,
@@ -290,6 +291,12 @@ function CompilaTabella(dbTabella, idKey, colonne) {
 
 	// Nasconde la prima colonna (id)
 	tbTabella.column(0).visible(false);
+
+	$(window).resize(function () {
+		$(".dataTables_scrollBody").height($(document).height() - 370);
+		tbTabella.draw("page");
+	});
+	
 }
 
 // Cancella le voci selezionate

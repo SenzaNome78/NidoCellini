@@ -77,7 +77,6 @@
   }
 
 /* Modal per modificare le voci delle tabelle */
-/* Important part */
 .modal-Edit-dialog{
     overflow-y: initial !important
 }
@@ -88,7 +87,6 @@
 /* FINE MODAL */
 
 /* Tooltip  */
-
 .Dtooltip {
     position: relative;
     display: inline-block;
@@ -168,7 +166,6 @@
 }
 
 .btn-secondary{
-	
 	background-color: rgb(18, 110, 124);
 }
 
