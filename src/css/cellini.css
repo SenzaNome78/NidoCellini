@@ -60,20 +60,23 @@
   
 /* Modal per modificare le voci delle tabelle */
 .modal-Edit-dialog{
-    overflow-y: initial !important
+    overflow-y: initial !important;
 }
 .modal-Edit-body{
-	/* height: 80vh !important; */
-    overflow-y: auto !important
+	height: 78vh !important;
+	overflow-y: auto !important;
 }
 
+.modal .modal-content{
+	overflow: hidden;
+}
 .modal-header{
 	border-top-width: 6px;
 	border-top-color: #007bff;
 	border-top-style: solid;
 	
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-top: 0.3rem;
+	padding-bottom: 0.3rem;
 }
 
 .modal-footer{
@@ -81,13 +84,14 @@
 	border-bottom-color: #007bff;
 	border-bottom-style: solid;
 
-	padding-top: 0.2rem;
-	padding-bottom: 0.4rem;
+	padding-top: 0.1rem;
+	padding-bottom: 0.3rem;
 }
 
 #modalDialogUpdateUserBody{
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
+	overflow-y: scroll;
 }
 
 
