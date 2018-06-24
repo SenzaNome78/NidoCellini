@@ -474,7 +474,8 @@ function MostraDettagli(insert) {
 					tmpOption.text = data[i].nomeCognRif;
 					tmpCombo.add(tmpOption);
 
-					if (tmpOption.value == datiTabella.idEducatoreRiferimento) {
+
+					if (insert == false && tmpOption.value == datiTabella.idEducatoreRiferimento) {
 						tmpCombo.selectedIndex = i;
 					}
 				}

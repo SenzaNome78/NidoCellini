@@ -57,6 +57,40 @@
 	max-width: 90% !important; 
   }
 
+  
+/* Modal per modificare le voci delle tabelle */
+.modal-Edit-dialog{
+    overflow-y: initial !important
+}
+.modal-Edit-body{
+	/* height: 80vh !important; */
+    overflow-y: auto !important
+}
+
+.modal-header{
+	border-top-width: 6px;
+	border-top-color: #007bff;
+	border-top-style: solid;
+	
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.modal-footer{
+	border-bottom-width: 6px;
+	border-bottom-color: #007bff;
+	border-bottom-style: solid;
+
+	padding-top: 0.2rem;
+	padding-bottom: 0.4rem;
+}
+
+#modalDialogUpdateUserBody{
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+
 .stileModalErrore{
 	background-color: rgba(255, 0, 0, 0.616);
 	color: white;
@@ -73,14 +107,6 @@
 	display:none;
   }
 
-/* Modal per modificare le voci delle tabelle */
-.modal-Edit-dialog{
-    overflow-y: initial !important
-}
-.modal-Edit-body{
-    height: 85vh !important;
-    overflow-y: auto !important
-}
 /* FINE MODAL */
 
 /* Tooltip  */
