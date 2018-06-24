@@ -131,7 +131,19 @@ $(document).ready(function () {
 			{ data: "presBambiniOrarioIn" },
 			{ data: "presBambiniOrarioOut" }
 		], false);
-
+	}
+	else if (pageName === "PresenzeEducatori.html") {
+		ruolo = "E";
+		tableMySql = MYSQL_TABLE_PRESENZE_EDUCATORI;
+		viewMySql = MYSQL_VIEW_PRESENZE_EDUCATORI;
+		idDb = "idPresenzeEducatori";
+		CompilaTabella(viewMySql, idDb, [
+			{ data: idDb },
+			{ data: "nomeCognomeEducatore" },
+			{ data: "presEducatoriData" },
+			{ data: "presEducatoriOrarioIn" },
+			{ data: "presEducatoriOrarioOut" }
+		], false);
 	}
 	else if (pageName === "Home.html") {
 		//Siamo nella home, non facciamo niente
@@ -237,8 +249,8 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 			select: true, // plugin per selezionare le voci della tabella
 
 			dom: 'ftlip', // ordine degli elementi visualizzati della tabella
-			
-			
+
+
 			scrollY: 400, // la tabella avrà una barra di scorrimento
 			scrollCollapse: true, // la barra di scorrimento verticale sparisce se non necessaria
 			scrollResize: true,
@@ -312,7 +324,7 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 	// tbTabella.buttons().container().prependTo($('#TabellaCorrente_wrapper'));
 	tbTabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
 	// tbTabella.buttons().container().appendTo($('#TabellaCorrente_info'));
-	
+
 	// Nasconde la prima colonna (id)
 	tbTabella.column(0).visible(false);
 
@@ -353,12 +365,14 @@ var idDaPassare;
 
 // Apre il modal per modificare l'utente
 function MostraDettagli(insert) {
+	// Eliminiamo i vecchi event handlers per non avere ripetute chiamate
 	$('#btnModUser').off('click');
 	$('#btnRegBadge').off('click');
 	$('#btnAnnullaModal').off('click');
-	// Registra un evento all'apertura del modal per riportare la scrollbar in alto
 	$('#modalDialogUpdateUser').off('show.bs.modal');
+	$('#modalDialogUpdateUser').off('shown.bs.modal');
 
+	// Event handler per quando il modal sta per essere aperto
 	$('#modalDialogUpdateUser').on('show.bs.modal', function (event) {
 
 		// Definiamo le stringhe del modal a seconda se siamo 
@@ -396,10 +410,12 @@ function MostraDettagli(insert) {
 				if (typeof controlli[campo] !== 'undefined') {
 					// Se sia il campo della tabella che quello del controllo non sono null
 					// modifichiamo quest'ultimo
-					if ((datiTabella[campo] !== null) && (controlli[campo].value != null))
+					if ((datiTabella[campo] !== null) && (controlli[campo].value != null)) {
 						controlli[campo].value = datiTabella[campo];
+					}
 				}
 			}
+
 		}
 		// FINE LETTURA DATI
 
@@ -422,7 +438,8 @@ function MostraDettagli(insert) {
 
 
 		$('#btnRegBadge').on('click', function (event) {
-			RegBadge(idDaPassare);
+			console.log(document.getElementById("idEducatoreRiferimento").length);
+			//RegBadge(idDaPassare);
 		});
 
 		$('#btnAnnullaModal').on('click', function (event) {
@@ -433,6 +450,37 @@ function MostraDettagli(insert) {
 			$('#modalDialogUpdateUser').modal('hide');
 
 		});
+
+	});
+
+	// Event handler per quando il modal è stato aperto. Lo usiamo se l'utente
+	// è un bambino, compiliamo la combobox idEducatoreRiferimento ed eventualmente selezioniamo
+	// l'educatore di riferimento corrente
+	$('#modalDialogUpdateUser').on('shown.bs.modal', function (event) {
+		// Se l'utente è un bambino qui compiliamo la combobox degli educatori di riferimento
+		if (ruolo === "B") {
+			$.ajax({
+				url: PHPURL,
+				// async: false,
+				method: "POST",
+				data: "comboEdRif=vwcomboedrif"
+
+			}).done(function (data) {
+				var tmpCombo = document.getElementById("idEducatoreRiferimento");
+				tmpCombo.length = 0;
+				var tmpOption;
+				for (let i = 0; i < data.length; i++) {
+					tmpOption = document.createElement("option");
+					tmpOption.value = data[i].idEducatoreRiferimento;
+					tmpOption.text = data[i].nomeCognRif;
+					tmpCombo.add(tmpOption);
+
+					if (tmpOption.value == datiTabella.idEducatoreRiferimento) {
+						tmpCombo.selectedIndex = i;
+					}
+				}
+			});
+		}
 
 	});
 
@@ -478,9 +526,10 @@ function InsertUpdateUser(insert, idDaPassare) {
 			dataObj[pageControls[i].name] = pageControls[i].value;
 		}
 	}
-
+	console.log(dataObj);
 	// inviamo l'oggetto dataObj al file php
 	$.post(PHPURL, dataObj, function (data) {
+		console.log(dataObj);
 	});
 
 	var dialogTitolo;

@@ -29,7 +29,11 @@
       }
       else if (isset($_POST['table']))
       {
-          CompilaTabella();
+          CompilaTabella($_POST['table']);
+      }
+      else if (isset($_POST['comboEdRif']))
+      {
+          CompilaTabella($_POST['comboEdRif']);
       }
       else
       {
@@ -46,10 +50,8 @@
   }
 
   // Restituisce un array di dati estratti dalla tabella del database MySQL
-  function CompilaTabella()
+  function CompilaTabella($tableName)
   {
-      // nome della tabella mySQL
-      $tableName = $_POST["table"];
 
       // Apriamo il collegamento col database
       $db = new PDO('mysql:host=localhost;dbname=dbnidocellini', 'root', 'mysql231278');
