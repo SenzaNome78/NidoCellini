@@ -438,8 +438,7 @@ function MostraDettagli(insert) {
 
 
 		$('#btnRegBadge').on('click', function (event) {
-			console.log(document.getElementById("idEducatoreRiferimento").length);
-			//RegBadge(idDaPassare);
+			RegBadge(idDaPassare);
 		});
 
 		$('#btnAnnullaModal').on('click', function (event) {
@@ -539,8 +538,7 @@ function InsertUpdateUser(insert, idDaPassare) {
 		// Attiviamo il pulsante per registrare un nuovo badge
 		document.getElementById("btnRegBadge").disabled = false;
 		$("#tipBtnRegBadgeSpan").html("Registra un nuovo badge per questo utente");
-		// document.getElementById("tipBtnRegBadgeSpan").innerHTML = "";
-
+		
 		// Stringhe usate nel dialog informativo
 		dialogTitolo = titoloModalUserInserted;
 		dialogTesto = testoModalUserInserted;
