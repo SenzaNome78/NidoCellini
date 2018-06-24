@@ -1,10 +1,7 @@
 
 @font-face{
 	font-family: 'nidoCelliniFont';
-    /* src: url('../assets/font/luckiestguy-regular.ttf'); */
     src: url('../assets/font/concertone-regular.woff2');
-    /* src: url('../assets/font/concertone-regular.ttf'); */
-    /* src: url('concertone-regular.ttf'); */
 }
 
 .navbar-brand {
@@ -81,7 +78,7 @@
     overflow-y: initial !important
 }
 .modal-Edit-body{
-    height: 75vh !important;
+    height: 85vh !important;
     overflow-y: auto !important
 }
 /* FINE MODAL */
