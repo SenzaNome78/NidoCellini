@@ -74,7 +74,8 @@
   
 /* Modal per modificare le voci delle tabelle */
 .modal-Edit-dialog{
-    overflow-y: initial !important;
+	overflow-y: initial !important;
+	margin-top: 0;
 }
 .modal-Edit-body{
 	height: 78vh !important;
@@ -107,6 +108,7 @@
 	padding-bottom: 0.5rem;
 	overflow-y: scroll;
 }
+
 
 
 .stileModalErrore{

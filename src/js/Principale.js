@@ -258,7 +258,7 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 			dom: 'ftlip', // ordine degli elementi visualizzati della tabella
 
 
-			scrollY: 400, // la tabella avrà una barra di scorrimento
+			scrollY: 360, // la tabella avrà una barra di scorrimento
 			scrollCollapse: true, // la barra di scorrimento verticale sparisce se non necessaria
 			// scrollResize: true,
 			paging: false, // non dividiamo la tabella in più pagine
