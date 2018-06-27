@@ -109,6 +109,10 @@
           // Per ogni campo da aggiungere alla stringa SQL
           foreach ($_POST as $key => $value)
           {
+              if ($value === "")
+              {
+                  $value = NULL;
+              }
               if (substr($key, 0, 5) !== "param")
               {
                   $recordsToInsert .= $key . ", ";
@@ -138,12 +142,20 @@
           // Per ogni campo da aggiungere alla stringa SQL
           foreach ($_POST as $key => $value)
           {
+              if ($value === "")
+              {
+                  $value = "NULL";
+              }
               if (substr($key, 0, 5) !== "param")
               {
                   $SqlString .= $key . " = ";
                   if ($value === "") // il campo da inserire è vuoto
                   {
                       $SqlString .= "'" . "" . "'" . ", ";
+                  }
+                  else if ($value === "NULL") // Dobbiamo inserire un NULL, quindi niente virgolette
+                  {
+                      $SqlString .= $value . ", ";
                   }
                   else // il campo da inserire contiene qualcosa
                   {

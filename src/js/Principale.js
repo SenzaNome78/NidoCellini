@@ -460,23 +460,33 @@ function MostraDettagli(insert) {
 		if (ruolo === "B") {
 			$.ajax({
 				url: PHPURL,
-				// async: false,
 				method: "POST",
 				data: "comboEdRif=vwcomboedrif"
 
 			}).done(function (data) {
+				// combobox educatori di riferimento
 				var tmpCombo = document.getElementById("idEducatoreRiferimento");
+				// Prima di tutto svuotiamo la combobox
 				tmpCombo.length = 0;
+				// contiene una voce da aggiungere alla combobox
 				var tmpOption;
+
+				// Per primo inseriamo una voce vuota per indicare "nessun educatore di rif"
+				tmpOption = document.createElement("option");
+				tmpOption.value = "";
+				tmpOption.text = "";
+				tmpCombo.add(tmpOption);
+
+				// Per ogni educatore presente inseriamo una nuova voce
 				for (let i = 0; i < data.length; i++) {
 					tmpOption = document.createElement("option");
 					tmpOption.value = data[i].idEducatoreRiferimento;
 					tmpOption.text = data[i].nomeCognRif;
 					tmpCombo.add(tmpOption);
 
-
+					// Se stiamo MODIFICANDO selezioniamo l'educatore di riferimento
 					if (insert == false && tmpOption.value == datiTabella.idEducatoreRiferimento) {
-						tmpCombo.selectedIndex = i;
+						tmpCombo.selectedIndex = i+1;
 					}
 				}
 			});
@@ -591,7 +601,6 @@ function RegBadge(idUtente) {
 	$('#modalRegStatus').modal({ backdrop: 'static' });
 
 	// La finestra modal puo' essere chiusa solo con i pulsanti
-
 	document.getElementById('btnCloseModal').style.display = "none";
 	document.getElementById('btnStopBadgeRegModal').style.display = "inline";
 
