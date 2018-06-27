@@ -16,8 +16,7 @@
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-
-  // url per il lettore presenze a cui passiamo i paramentri necessari
+  // URL per il lettore presenze a cui passiamo i paramentri necessari
   $url = "http://192.168.0.6/NewBadge.html?nome=$NomeDaReg&ruolo=$RuoloDaReg&sesso=$SessoDaReg";
 
   // usiamo curl per comunicare col lettore rfid
@@ -33,6 +32,7 @@
   // Assegnamo a questa variabile quello che passiamo al client
   // che reagirà di conseguenza
   $rfidResponse = "";
+
   if ($execResult === false) // Connessione non riuscita
   {
       $rfidResponse = "ConnErr";
@@ -59,7 +59,7 @@
 
           foreach ($dbResult as $key => $value)
           {
-              // Se il seriale dell'utente in questa iterazione
+              // Se il seriale dell'utente in questo passaggio
               // è uguale al seriale del nuovo badge
               // lo impostiamo a NULL
               if ($value['seriale'] === $serialeRegistrato)
@@ -83,7 +83,7 @@
 
           foreach ($dbResult as $key => $value)
           {
-              // Se il seriale dell'utente in questa iterazione
+              // Se il seriale dell'utente in questo passaggio
               // è uguale al seriale del nuovo badge
               // lo impostiamo a NULL
               if ($value['seriale'] === $serialeRegistrato)

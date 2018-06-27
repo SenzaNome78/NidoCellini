@@ -39,6 +39,13 @@ const MYSQL_VIEW_PRESENZE_EDUCATORI = "vwpresenzeeducatori";
 // la variabile pageName contiene il nome della pagina html (non il titolo)
 var pageName = location.pathname.split("/").slice(-1)[0]
 
+// Variabile di stato della funzione RegBadge
+var regBadgeSuccesso = false; 
+
+var datiTabella;
+var idDaPassare;
+var idNuovoUtente;
+
 // Funzione estrae i parametri dall'url e li restituisce come oggetto
 // Usa la funzione di supporto transformToAssocArray
 function getSearchParameters() {
@@ -242,6 +249,8 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 
 			columns: colonne, // le colonne della tabella, passate come parametro
 
+			"order": [[1, "asc"]],
+
 			responsive: true, // la tabella si ridimensiona con la larghezza della finestra
 
 			rowId: idKey, // nome della chiave primaria della nostra tabella
@@ -323,12 +332,9 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 	// Posiziona i pulsanti in basso alla tabella
 	// tbTabella.buttons().container().prependTo($('#TabellaCorrente_wrapper'));
 	tbTabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
-	// tbTabella.buttons().container().appendTo($('#TabellaCorrente_info'));
 
 	// Nasconde la prima colonna (id)
 	tbTabella.column(0).visible(false);
-
-
 }
 
 // Cancella le voci selezionate
@@ -360,9 +366,6 @@ function CancellaVoci(idKey) {
 	});
 }
 
-var datiTabella;
-var idDaPassare;
-
 // Apre il modal per modificare l'utente
 function MostraDettagli(insert) {
 	// Eliminiamo i vecchi event handlers per non avere ripetute chiamate
@@ -371,6 +374,9 @@ function MostraDettagli(insert) {
 	$('#btnAnnullaModal').off('click');
 	$('#modalDialogUpdateUser').off('show.bs.modal');
 	$('#modalDialogUpdateUser').off('shown.bs.modal');
+
+	// $("#checkBadgeGreen").hide();
+	// $("#checkBadgeRed").show();
 
 	// Event handler per quando il modal sta per essere aperto
 	$('#modalDialogUpdateUser').on('show.bs.modal', function (event) {
@@ -388,6 +394,7 @@ function MostraDettagli(insert) {
 		else // MODIFICA
 		{
 			document.getElementById("btnRegBadge").disabled = false;
+
 			$("#modalDialogUpdateUserLabel").html("Modificare i dati e premere Salva");
 			$("#tipbtnModUserSpan").html("Salva le modifiche apportate");
 			$("#tipBtnRegBadgeSpan").html("Registra un nuovo badge per questo utente");
@@ -401,6 +408,31 @@ function MostraDettagli(insert) {
 			// datiTabella: i campi e i valori del record selezionato nella tabella
 			var controlli = document.getElementById(formName).elements;
 			datiTabella = tbTabella.rows({ selected: true }).data()[0];
+
+			// Se l'utente non è associato ad un badge visualizziamo
+			// il relativo check mark (doppio if per sapere se B o Ed)
+			if (ruolo == "B") {
+				if (datiTabella["serialeBambino"] != null) {
+
+					// $("#checkBadgeRed").hide();
+					// $("#checkBadgeGreen").show();
+				}
+				else {
+					// $("#checkBadgeGreen").hide();
+					// $("#checkBadgeRed").show();
+				}
+			}
+			else if (ruolo == "E") {
+				if (datiTabella["serialeEducatore"] != null) {
+
+					// $("#checkBadgeRed").hide();
+					// $("#checkBadgeGreen").show();
+				}
+				else {
+					// $("#checkBadgeGreen").hide();
+					// $("#checkBadgeRed").show();
+				}
+			}
 
 			idDaPassare = datiTabella[idDb];
 
@@ -423,7 +455,6 @@ function MostraDettagli(insert) {
 
 			$('#btnModUser').on('click', function (event) {
 				if (InsertUpdateUser(true, 0)) {
-					//$('#modalDialogUpdateUser').modal('hide');
 				}
 			});
 		}
@@ -431,25 +462,36 @@ function MostraDettagli(insert) {
 
 			$('#btnModUser').on('click', function (event) {
 				if (InsertUpdateUser(false, idDaPassare)) {
-					//$('#modalDialogUpdateUser').modal('hide');
 				}
 			});
 		}
 
 
 		$('#btnRegBadge').on('click', function (event) {
-			RegBadge(idDaPassare);
+			if (insert) {
+				RegBadge(idNuovoUtente);
+				if (regBadgeSuccesso)
+				{
+					$("#checkBadgeGreen").show();
+					$("#checkBadgeRed").hide();
+				}
+			}
+			else {
+				RegBadge(idDaPassare);
+				if (regBadgeSuccesso)
+				{
+					$("#checkBadgeGreen").show();
+					$("#checkBadgeRed").hide();
+				}
+			}
 		});
-
+		
 		$('#btnAnnullaModal').on('click', function (event) {
 			event.preventDefault();
 			$('#btnModUser').off('click');
 			$('#btnRegBadge').off('click');
-			$('#btnAnnullaModal').off('click');
-			$('#modalDialogUpdateUser').modal('hide');
-
+			$('#btnAnnullaModal').off('click');	
 		});
-
 	});
 
 	// Event handler per quando il modal è stato aperto. Lo usiamo se l'utente
@@ -486,11 +528,14 @@ function MostraDettagli(insert) {
 
 					// Se stiamo MODIFICANDO selezioniamo l'educatore di riferimento
 					if (insert == false && tmpOption.value == datiTabella.idEducatoreRiferimento) {
-						tmpCombo.selectedIndex = i+1;
+						tmpCombo.selectedIndex = i + 1;
 					}
 				}
 			});
 		}
+
+		document.getElementById(inputName).focus();
+
 
 	});
 
@@ -514,10 +559,10 @@ function InsertUpdateUser(insert, idDaPassare) {
 	var dataObj = {}; // Oggetto contenente tutti i controlli che ci servono e i loro valori
 
 	if (insert === true) {
-		dataObj["paramInsertOrUpdate"] = "insert"; // Indica alla funzione php di eseguire un update
+		dataObj["paramInsertOrUpdate"] = "insert"; // Indica alla funzione php di eseguire un insert
 	}
 	else {
-		dataObj["paramInsertOrUpdate"] = "update"; // Indica alla funzione php di eseguire un insert
+		dataObj["paramInsertOrUpdate"] = "update"; // Indica alla funzione php di eseguire un update
 		dataObj["paramId"] = idDaPassare; // Id del record mysql da modificare
 	}
 
@@ -536,10 +581,11 @@ function InsertUpdateUser(insert, idDaPassare) {
 			dataObj[pageControls[i].name] = pageControls[i].value;
 		}
 	}
-	console.log(dataObj);
 	// inviamo l'oggetto dataObj al file php
 	$.post(PHPURL, dataObj, function (data) {
-		console.log(dataObj);
+		if (insert) {
+			idNuovoUtente = data;
+		}
 	});
 
 	var dialogTitolo;
@@ -549,7 +595,7 @@ function InsertUpdateUser(insert, idDaPassare) {
 		// Attiviamo il pulsante per registrare un nuovo badge
 		document.getElementById("btnRegBadge").disabled = false;
 		$("#tipBtnRegBadgeSpan").html("Registra un nuovo badge per questo utente");
-		
+
 		// Stringhe usate nel dialog informativo
 		dialogTitolo = titoloModalUserInserted;
 		dialogTesto = testoModalUserInserted;
@@ -577,12 +623,13 @@ $('#btnStopBadgeRegModal').on('click', function () {
 	$.get(url);
 });
 
-
 function RegBadge(idUtente) {
 	if (!document.getElementById(formName).checkValidity()) {
 		document.getElementById(formName).reportValidity();
 		return false;
 	}
+
+	var RegBadgesuccesso = false; // Variabile di stato della funzione
 
 	// Passiamo l'url allo script php per la richiesta al lettore rfid
 	var url = ".\\php\\NewBadge.php?command=newBadge" +
@@ -590,7 +637,7 @@ function RegBadge(idUtente) {
 		"&ruolo=" + ruolo +
 		"&sesso=" + $("#" + inputSesso).val() +
 		"&idKey=" + idDb +
-		"&id=" + idDaPassare +
+		"&id=" + idUtente +
 		"&paramTable=" + tableMySql;
 
 	// Visualizziamo un messaggio per invitare ad avvicinare un badge al lettore
@@ -600,7 +647,7 @@ function RegBadge(idUtente) {
 	$('#modalRegStatusBody').html(testoModalAttesa);
 	$('#modalRegStatus').modal({ backdrop: 'static' });
 
-	// La finestra modal puo' essere chiusa solo con i pulsanti
+	// La finestra modal può essere chiusa solo con i pulsanti
 	document.getElementById('btnCloseModal').style.display = "none";
 	document.getElementById('btnStopBadgeRegModal').style.display = "inline";
 
@@ -618,6 +665,18 @@ function RegBadge(idUtente) {
 						console.log("Data: " + data);
 						console.log("badgeRegStatus: " + data);
 
+						// Cambiamo il checkbox a verde
+						tbTabella.ajax.reload();
+						
+						
+						// jQuery('#checkBadgeGreen').css('visibility','visible');
+						// jQuery('#checkBadgeRed').css('visibility', 'hidden');
+						// $("#checkBadgeRed").hide();
+						// $("#checkBadgeGreen").show();
+						// $("#btnAnnullaModal").show();
+
+						// console.log($("#checkBadgeGreen"));
+						regBadgeSuccesso = true;
 					}
 					else if (data.search("F=ScriviNuovoBadge") != -1) {
 						$('#modalRegStatusBody').addClass('stileModalErrore');
@@ -677,9 +736,9 @@ function RegBadge(idUtente) {
 			}
 		});
 
-
 	$('#modalRegStatusBody').removeClass('stileModalErrore');
 	$('#modalRegStatusBody').removeClass('stileModalSuccesso');
+
 }
 
 // Carichiamo la navbar in alto
@@ -690,4 +749,3 @@ $.get("nav-top.html", function (data) {
 	$("#Nav" + pageName.split(".")[0]).addClass('active');
 }
 );
-

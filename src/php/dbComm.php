@@ -130,6 +130,10 @@
           $fieldsToInsert  = rtrim($fieldsToInsert, ", ");
 
           $SqlString .= $recordsToInsert . ") VALUES (" . $fieldsToInsert . ")";
+
+          $db->exec($SqlString);
+          $lastId = $db->lastInsertId();
+          echo $lastId;
       }
       // Facciamo un UPDATE
       else if ($_POST["paramInsertOrUpdate"] === "update")
@@ -174,9 +178,9 @@
           {
               $SqlString .= " WHERE idtbeducatori = $id";
           }
-      }
 
-      $db->exec($SqlString);
+          $db->exec($SqlString);
+      }
   }
 
   function AddRandomRecords()

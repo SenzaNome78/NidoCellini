@@ -182,6 +182,39 @@
 	margin: 0.5em;
 }
 
+/* Classe per gli input codice fiscale */
+.InputCodFis{
+	text-transform: uppercase;
+}
+
+/* Formato dei placeholder */
+.form-control::-moz-placeholder {
+	color: rgba(124, 124, 124, 0.5);
+	text-transform: none;
+}
+.form-control:-ms-input-placeholder {
+	color: rgba(124, 124, 124, 0.5);
+	text-transform: none;
+}
+.form-control::-webkit-input-placeholder {
+	color: rgba(124, 124, 124, 0.5);
+	text-transform: none;
+}
+
+/* Stili pulsante e checkmark di registrazione badge */
+#btnRegBadge{
+	padding-top:6px; 
+}
+
+
+.svgCheck{
+	width: 2em;
+	vertical-align: middle !important;
+	/* display: inline-flex; */
+	/* align-self: center; */
+  }
+
+
 /* TABELLE */
 
 /* Stile delle righe delle tabelle */
@@ -228,12 +261,3 @@
 
 /* FINE TABELLE */
 
-.form-control::-moz-placeholder {
-	color: rgba(124, 124, 124, 0.5);
-}
-.form-control:-ms-input-placeholder {
-	color: rgba(124, 124, 124, 0.5);
-}
-.form-control::-webkit-input-placeholder {
-	color: rgba(124, 124, 124, 0.5);
-}
