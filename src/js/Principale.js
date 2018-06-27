@@ -39,8 +39,6 @@ const MYSQL_VIEW_PRESENZE_EDUCATORI = "vwpresenzeeducatori";
 // la variabile pageName contiene il nome della pagina html (non il titolo)
 var pageName = location.pathname.split("/").slice(-1)[0]
 
-// Variabile di stato della funzione RegBadge
-var regBadgeSuccesso = false; 
 
 var datiTabella;
 var idDaPassare;
@@ -375,8 +373,8 @@ function MostraDettagli(insert) {
 	$('#modalDialogUpdateUser').off('show.bs.modal');
 	$('#modalDialogUpdateUser').off('shown.bs.modal');
 
-	// $("#checkBadgeGreen").hide();
-	// $("#checkBadgeRed").show();
+	$("#checkBadgeGreen").hide();
+	$("#checkBadgeRed").show();
 
 	// Event handler per quando il modal sta per essere aperto
 	$('#modalDialogUpdateUser').on('show.bs.modal', function (event) {
@@ -414,23 +412,23 @@ function MostraDettagli(insert) {
 			if (ruolo == "B") {
 				if (datiTabella["serialeBambino"] != null) {
 
-					// $("#checkBadgeRed").hide();
-					// $("#checkBadgeGreen").show();
+					$("#checkBadgeRed").hide();
+					$("#checkBadgeGreen").show();
 				}
 				else {
-					// $("#checkBadgeGreen").hide();
-					// $("#checkBadgeRed").show();
+					$("#checkBadgeGreen").hide();
+					$("#checkBadgeRed").show();
 				}
 			}
 			else if (ruolo == "E") {
 				if (datiTabella["serialeEducatore"] != null) {
 
-					// $("#checkBadgeRed").hide();
-					// $("#checkBadgeGreen").show();
+					$("#checkBadgeRed").hide();
+					$("#checkBadgeGreen").show();
 				}
 				else {
-					// $("#checkBadgeGreen").hide();
-					// $("#checkBadgeRed").show();
+					$("#checkBadgeGreen").hide();
+					$("#checkBadgeRed").show();
 				}
 			}
 
@@ -470,27 +468,18 @@ function MostraDettagli(insert) {
 		$('#btnRegBadge').on('click', function (event) {
 			if (insert) {
 				RegBadge(idNuovoUtente);
-				if (regBadgeSuccesso)
-				{
-					$("#checkBadgeGreen").show();
-					$("#checkBadgeRed").hide();
-				}
 			}
 			else {
 				RegBadge(idDaPassare);
-				if (regBadgeSuccesso)
-				{
-					$("#checkBadgeGreen").show();
-					$("#checkBadgeRed").hide();
-				}
 			}
 		});
-		
+
 		$('#btnAnnullaModal').on('click', function (event) {
 			event.preventDefault();
 			$('#btnModUser').off('click');
 			$('#btnRegBadge').off('click');
-			$('#btnAnnullaModal').off('click');	
+			$('#btnAnnullaModal').off('click');
+			$('#modalDialogUpdateUser').modal('hide');
 		});
 	});
 
@@ -629,8 +618,6 @@ function RegBadge(idUtente) {
 		return false;
 	}
 
-	var RegBadgesuccesso = false; // Variabile di stato della funzione
-
 	// Passiamo l'url allo script php per la richiesta al lettore rfid
 	var url = ".\\php\\NewBadge.php?command=newBadge" +
 		"&nome=" + $("#" + inputName).val() +
@@ -662,21 +649,13 @@ function RegBadge(idUtente) {
 						$('#modalRegStatusBody').addClass('stileModalSuccesso');
 						$('#modalRegStatusBody').html(testoModalSuccessoBadge);
 						$('#modalRegStatusBody').removeClass('stileModalErrore');
-						console.log("Data: " + data);
-						console.log("badgeRegStatus: " + data);
+
+						tbTabella.ajax.reload();
 
 						// Cambiamo il checkbox a verde
-						tbTabella.ajax.reload();
-						
-						
-						// jQuery('#checkBadgeGreen').css('visibility','visible');
-						// jQuery('#checkBadgeRed').css('visibility', 'hidden');
-						// $("#checkBadgeRed").hide();
-						// $("#checkBadgeGreen").show();
-						// $("#btnAnnullaModal").show();
+						$("#checkBadgeRed").hide();
+						$("#checkBadgeGreen").show();
 
-						// console.log($("#checkBadgeGreen"));
-						regBadgeSuccesso = true;
 					}
 					else if (data.search("F=ScriviNuovoBadge") != -1) {
 						$('#modalRegStatusBody').addClass('stileModalErrore');
