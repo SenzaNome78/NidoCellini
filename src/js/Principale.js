@@ -260,7 +260,7 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 
 			scrollY: 400, // la tabella avrà una barra di scorrimento
 			scrollCollapse: true, // la barra di scorrimento verticale sparisce se non necessaria
-			scrollResize: true,
+			// scrollResize: true,
 			paging: false, // non dividiamo la tabella in più pagine
 
 			// In questa sezione ho tradotto le varie voci della tabella in italiano
@@ -410,7 +410,7 @@ function MostraDettagli(insert) {
 			// Se l'utente non è associato ad un badge visualizziamo
 			// il relativo check mark (doppio if per sapere se B o Ed)
 			if (ruolo == "B") {
-				if (datiTabella["serialeBambino"] != null) {
+				if (datiTabella["seriale"] != null) {
 
 					$("#checkBadgeRed").hide();
 					$("#checkBadgeGreen").show();
