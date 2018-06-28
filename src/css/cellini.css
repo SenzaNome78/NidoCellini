@@ -212,12 +212,50 @@
 .svgCheck{
 	width: 2em;
 	vertical-align: middle !important;
-	/* display: inline-flex; */
-	/* align-self: center; */
+
   }
 
 
 /* TABELLE */
+
+/* TEST per scrollbar dentro la tabella */
+.dataTables_scrollHeadInner{
+	border-bottom-color: #126e7c;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	
+	background-color: #e9ecefcc;
+}
+.dataTables_wrapper .dataTables_scroll {
+	border: 2px solid #126e7c;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+div.dataTables_scrollHead table.dataTable {
+	margin-bottom: 0 !important;
+	margin-top: 0 !important;
+	border: 0 !important;
+}
+
+.dataTables_scrollBody {
+	/* overflow-x: hidden !important;
+	 border-top: 1px solid #ccc; */
+}
+
+
+.table {
+border-left:0px !important;
+border-right:0px !important;
+}
+
+.table th {
+border-bottom: 0 !important;
+}
+/* FINE TEST per scrollbar dentro la tabella */
+
 
 /* Stile delle righe delle tabelle */
 .rowLista{
@@ -234,7 +272,7 @@
 
 /* Parte esterna delle tabelle */
 .ContentLista{
-	border-color: rgba(111, 111, 111, 0.5);
+	border-color: #6f6f6f80;
 	border-width: 0.3px;
 	border-style: solid;
 	padding: 0px;
@@ -242,7 +280,7 @@
 }
 
 .btn-secondary{
-	background-color: rgb(18, 110, 124);
+	background-color: #126e7c;
 }
 
 .btn-secondary:hover{
@@ -263,3 +301,11 @@
 
 /* FINE TABELLE */
 
+/* Messaggio per schermi piccoli */
+.msgSchermiPiccoli{
+	padding: 0.2em;
+	border: 0.2em solid #0c4a53;
+	background-color: #126e7c;
+	color: white;
+	border-radius: 0.2em;
+}

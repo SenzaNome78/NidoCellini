@@ -12,10 +12,10 @@
 			// "url": "http://127.0.0.1/NidoCellini/src/ElencoBambini.html",
 			// "url": "http://127.0.0.1/NidoCellini/src/ElencoBambini.html?command=new",
 			// "url": "http://127.0.0.1/NidoCellini/src/ElencoEducatori.html",
-			"url": "http://127.0.0.1/NidoCellini/src/ElencoEducatori.html?command=new.html",
+			// "url": "http://127.0.0.1/NidoCellini/src/ElencoEducatori.html?command=new.html",
 			// "url": "http://127.0.0.1/NidoCellini/src/PresenzeBambini.html",
 			// "url": "http://127.0.0.1/NidoCellini/src/PresenzeEducatori.html",
-			// "url": "http://127.0.0.1/NidoCellini/src/Home.html",
+			"url": "http://127.0.0.1/NidoCellini/src/Home.html",
 		
 			"webRoot": "${workspaceFolder}",
 			"disableNetworkCache": true
