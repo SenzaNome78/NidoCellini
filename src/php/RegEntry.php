@@ -58,10 +58,10 @@
                   $idUser = $value["idtbbambini"];
 
                   $sqlInsert = "INSERT INTO tbpresenze_bambini"
-                      . " (idPresenzeBambini, presBambiniData, presBambiniOrarioIn, presBambiniOrarioOut, "
-                      . "presBambiniGiustifMancataEntrata, idBambino_presenza)"
+                      . " (idPresenzeBambini, presBambiniData, presBambiniOrarioIn,"
+                      . " presBambiniOrarioOut, idBambino_presenza)"
                       . " VALUES "
-                      . "(DEFAULT, '$giorno', '$ora', NULL, NULL, '$idUser')";
+                      . "(DEFAULT, '$giorno', '$ora', NULL, '$idUser')";
 
                   $serialePresente = true;
 
@@ -72,10 +72,10 @@
                   $idUser = $value["idtbeducatori"];
 
                   $sqlInsert = "INSERT INTO tbpresenze_educatori"
-                      . " (idPresenzeEducatori, presEducatoriData, presEducatoriOrarioIn, presEducatoriOrarioOut, "
-                      . "presEducatoriGiustifMancataEntrata, idEducatore_presenza)"
+                      . " (idPresenzeEducatori, presEducatoriData, presEducatoriOrarioIn,"
+                      . " presEducatoriOrarioOut, idEducatore_presenza)"
                       . " VALUES "
-                      . "(DEFAULT, '$giorno', '$ora', NULL, NULL, '$idUser')";
+                      . "(DEFAULT, '$giorno', '$ora', NULL, '$idUser')";
 
                   $serialePresente = true;
 
