@@ -240,12 +240,6 @@ div.dataTables_scrollHead table.dataTable {
 	border: 0 !important;
 }
 
-.dataTables_scrollBody {
-	/* overflow-x: hidden !important;
-	 border-top: 1px solid #ccc; */
-}
-
-
 .table {
 border-left:0px !important;
 border-right:0px !important;
