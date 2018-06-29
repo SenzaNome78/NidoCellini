@@ -4,6 +4,7 @@
   // Indica la funzione da eseguire
   $paramCommand = isset($_GET['command']) ? $_GET['command'] : '';
 
+  echo "TERS";
   // Passiamo il comando all'ESP8266
   if ($paramCommand !== '')
   {
@@ -11,7 +12,7 @@
 
       curl_setopt($ch, CURLOPT_URL, "http://192.168.0.6/Diagnostica.html");
       curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, "command=$paramCommand£");
+      curl_setopt($ch, CURLOPT_POSTFIELDS, "command=$paramCommand");
 
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
