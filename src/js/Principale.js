@@ -262,7 +262,7 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 			scrollCollapse: true, // la barra di scorrimento verticale sparisce se non necessaria
 			scrollResize: true,
 			paging: false, // non dividiamo la tabella in più pagine
-
+ 
 			// In questa sezione ho tradotto le varie voci della tabella in italiano
 			language: {
 				select: {
