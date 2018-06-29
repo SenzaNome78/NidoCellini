@@ -10,6 +10,13 @@ $("#btnResetEsp").on("click", function () {
 	SendReset();
 });
 
+$("#btnAzzeraPresenzeEsp").on("click", function () {
+	AzzeraPresenze();
+});
+
+// Riavvia il lettore di badge
+// Per un bug, dopo un upload del firmware
+// è necessario fare un power cycle
 function SendReset()
 {
 	var urlToSend = PHPURL;
@@ -19,6 +26,21 @@ function SendReset()
 		url: urlToSend,
 		data: { 
 			'command': 'reset'
+		}
+	});
+}
+
+// Azzera le presenze giornaliere contenute
+// nel lettore di badge
+function AzzeraPresenze()
+{
+	var urlToSend = PHPURL;
+	
+	$.ajax({
+		method: "POST",
+		url: urlToSend,
+		data: { 
+			'command': 'azzeraPresenze'
 		}
 	});
 }
