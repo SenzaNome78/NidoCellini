@@ -728,3 +728,10 @@ $.get("nav-top.html", function (data) {
 	$("#Nav" + pageName.split(".")[0]).addClass('active');
 }
 );
+
+// Carichiamo il messaggio di avvertimento
+// se lo schermo è troppo stretto
+$.get("SchermoPiccolo.html", function (data) {
+	$("#SchermoPiccoloCheck").replaceWith(data);
+}
+);
