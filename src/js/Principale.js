@@ -133,6 +133,7 @@ $(document).ready(function () {
 			{ data: idDb },
 			{ data: "nomeCognomeBambino" },
 			{ data: "presBambiniData" },
+			{ data: "presDataFormat" },
 			{ data: "presBambiniOrarioIn" },
 			{ data: "presBambiniOrarioOut" }
 		], false);
@@ -146,6 +147,7 @@ $(document).ready(function () {
 			{ data: idDb },
 			{ data: "nomeCognomeEducatore" },
 			{ data: "presEducatoriData" },
+			{ data: "presDataFormat" },
 			{ data: "presEducatoriOrarioIn" },
 			{ data: "presEducatoriOrarioOut" }
 		], false);
@@ -247,22 +249,18 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 
 			columns: colonne, // le colonne della tabella, passate come parametro
 
-			"order": [[1, "asc"]],
-
-			responsive: true, // la tabella si ridimensiona con la larghezza della finestra
+			rowGroup: {dataSrc:""},
 
 			rowId: idKey, // nome della chiave primaria della nostra tabella
 
 			select: true, // plugin per selezionare le voci della tabella
-
+			responsive: true, // la tabella si ridimensiona con la larghezza della finestra
 			dom: 'ftlip', // ordine degli elementi visualizzati della tabella
-
-
 			scrollY: 360, // la tabella avrà una barra di scorrimento
 			scrollCollapse: true, // la barra di scorrimento verticale sparisce se non necessaria
 			scrollResize: true,
 			paging: false, // non dividiamo la tabella in più pagine
- 
+
 			// In questa sezione ho tradotto le varie voci della tabella in italiano
 			language: {
 				select: {
@@ -322,6 +320,9 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 		]
 	});
 
+	// Nasconde la prima colonna (id)
+	tbTabella.column(0).visible(false);
+
 	// Rimuoviamo il pulsante per modificare le voci, se richiesto
 	if (vociMod == false) {
 		tbTabella.button('btnModifica:name').remove();
@@ -331,8 +332,27 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 	// tbTabella.buttons().container().prependTo($('#TabellaCorrente_wrapper'));
 	tbTabella.buttons().container().appendTo($('#TabellaCorrente_wrapper'));
 
-	// Nasconde la prima colonna (id)
-	tbTabella.column(0).visible(false);
+
+	// Ordiniamo la tabella, usando come discriminante il
+	// nome della pagina html
+	if (pageName === "ElencoBambini.html") {
+		tbTabella.order(["1", 'asc']).draw();
+	}
+	else if (pageName === "ElencoEducatori.html") {
+		tbTabella.order(["1", 'asc']).draw();
+	}
+	else if (pageName === "PresenzeBambini.html") {
+		tbTabella.column(2).visible(false);
+		tbTabella.order.fixed({ pre: [3, 'asc'] });
+		tbTabella.rowGroup().dataSrc("presDataFormat", 'asc');
+		tbTabella.order(["1", "asc"]).draw();
+	}
+	else if (pageName === "PresenzeEducatori.html") {
+		tbTabella.column(2).visible(false);
+		tbTabella.order.fixed({ pre: [3, 'asc'] });
+		tbTabella.rowGroup().dataSrc("presDataFormat", 'asc');
+		tbTabella.order(["1", "asc"]).draw();
+	}
 }
 
 // Cancella le voci selezionate
