@@ -275,9 +275,9 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 				},
 				info: "Visualizza _START_ di _END_ (_TOTAL_ totali). ",
 				infoFiltered: " Totale senza filtri: <b>_MAX_ voci</b>",
-				infoEmpty: "Tabella vuota. Prova a rimuovere i filtri.",
+				infoEmpty: "Tabella vuota.",
 				search: "Applica filtro: ",
-				zeroRecords: "Tabella vuota.<br>Prova a rimuovere i filtri o contatta l'amministratore di sistema",
+				zeroRecords: "Tabella vuota.",
 				lengthMenu: "Visualizza _MENU_ voci per pagina",
 				paginate: {
 					first: "Prima pagina",
