@@ -116,9 +116,9 @@
               if (substr($key, 0, 5) !== "param")
               {
                   $recordsToInsert .= $key . ", ";
-                  if ($value === "")
+                  if ($value === "" or $value === NULL)
                   {
-                      $fieldsToInsert .= "'" . "" . "'" . ", ";
+                      $fieldsToInsert .= "NULL" . ", ";
                   }
                   else
                   {
@@ -153,13 +153,9 @@
               if (substr($key, 0, 5) !== "param")
               {
                   $SqlString .= $key . " = ";
-                  if ($value === "") // il campo da inserire è vuoto
+                  if ($value === "" or $value === "NULL") // il campo da inserire è vuoto
                   {
-                      $SqlString .= "'" . "" . "'" . ", ";
-                  }
-                  else if ($value === "NULL") // Dobbiamo inserire un NULL, quindi niente virgolette
-                  {
-                      $SqlString .= $value . ", ";
+                      $SqlString .= "NULL" . ", ";
                   }
                   else // il campo da inserire contiene qualcosa
                   {
