@@ -132,10 +132,9 @@ $(document).ready(function () {
 		CompilaTabella(viewMySql, idDb, [
 			{ data: idDb },
 			{ data: "nomeCognomeBambino" },
-			{ data: "presBambiniData" },
-			{ data: "presDataFormat" },
 			{ data: "presBambiniOrarioIn" },
-			{ data: "presBambiniOrarioOut" }
+			{ data: "presBambiniOrarioOut" },
+			{ data: "presDataFormat" }
 		], false);
 	}
 	else if (pageName === "PresenzeEducatori.html") {
@@ -146,10 +145,9 @@ $(document).ready(function () {
 		CompilaTabella(viewMySql, idDb, [
 			{ data: idDb },
 			{ data: "nomeCognomeEducatore" },
-			{ data: "presEducatoriData" },
-			{ data: "presDataFormat" },
 			{ data: "presEducatoriOrarioIn" },
-			{ data: "presEducatoriOrarioOut" }
+			{ data: "presEducatoriOrarioOut" },
+			{ data: "presDataFormat" }
 		], false);
 	}
 	else if (pageName === "Home.html") {
@@ -342,16 +340,14 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 		tbTabella.order(["1", 'asc']).draw();
 	}
 	else if (pageName === "PresenzeBambini.html") {
-		tbTabella.column(2).visible(false);
-		tbTabella.order.fixed({ pre: [3, 'asc'] });
-		tbTabella.rowGroup().dataSrc("presDataFormat", 'asc');
-		tbTabella.order(["1", "asc"]).draw();
+		tbTabella.order.fixed({ pre: [4, 'desc'] });
+		tbTabella.rowGroup().dataSrc("presDataFormat", 'desc');
+		tbTabella.order(["2", "asc"]).draw();
 	}
 	else if (pageName === "PresenzeEducatori.html") {
-		tbTabella.column(2).visible(false);
-		tbTabella.order.fixed({ pre: [3, 'asc'] });
-		tbTabella.rowGroup().dataSrc("presDataFormat", 'asc');
-		tbTabella.order(["1", "asc"]).draw();
+		tbTabella.order.fixed({ pre: [4, 'desc'] });
+		tbTabella.rowGroup().dataSrc("presDataFormat", 'desc');
+		tbTabella.order(["2", "asc"]).draw();
 	}
 }
 
@@ -483,7 +479,6 @@ function MostraDettagli(insert) {
 				}
 			});
 		}
-
 
 		$('#btnRegBadge').on('click', function (event) {
 			if (insert) {
@@ -743,9 +738,6 @@ function RegBadge(idUtente) {
 // Carichiamo la navbar in alto
 $.get("nav-top.html", function (data) {
 	$("#nav-top").replaceWith(data);
-
-	// Rendiamo attiva la voce della barra superiore relativa alla pagina attuale
-	$("#Nav" + pageName.split(".")[0]).addClass('active');
 }
 );
 

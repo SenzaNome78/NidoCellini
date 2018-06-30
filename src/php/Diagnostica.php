@@ -1,6 +1,8 @@
 <?php
 
-  // In questo script metto varie funzioni di diagnostica
+  // Script legato alle funzioni di diagnostica.
+  // Si limita a passare il parametro ricevuto dal browser web
+  // al lettore rfid che gestirà le relative funzioni
   // Indica la funzione da eseguire
   $paramCommand = isset($_POST['command']) ? $_POST['command'] : '';
 

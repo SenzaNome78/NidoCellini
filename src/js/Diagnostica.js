@@ -48,8 +48,5 @@ function AzzeraPresenze()
 // Carichiamo la navbar in alto
 $.get("nav-top.html", function (data) {
 	$("#nav-top").replaceWith(data);
-
-	// Rendiamo attiva la voce della barra superiore relativa alla pagina attuale
-	$("#Nav" + pageName.split(".")[0]).addClass('active');
 }
 );

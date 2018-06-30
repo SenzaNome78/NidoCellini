@@ -1,8 +1,10 @@
 <?php
 
-  session_start();
-
-  //Classe vuota per la query dati
+  // In questo script avviene il dialogo principale
+  // tra il browser web e il database mySQL
+  // Sono presenti le funzioni per compilare una tabella e
+  // per inserire, modificare e cancellare un utente
+  //Classe vuota per contenere i risultati della query PDO
   class RecordClass
   {
 
@@ -14,29 +16,25 @@
   }
 
   try
-  {
+  { // Analizzo i parametri POST per avviare la funzione richiesta
       if (isset($_POST['deleteId']))
-      {
+      {   // Cancelliamo uno o più record
           DeleteRecord();
       }
-      else if (isset($_POST['random']))
-      {
-          AddRandomRecords();
-      }
       else if (isset($_POST['paramInsertOrUpdate']))
-      {
+      { // Inseriamo o modifichiamo un utente
           InsertUpdateUser();
       }
       else if (isset($_POST['table']))
-      {
+      {   // compiliamo una tabella
           CompilaTabella($_POST['table']);
       }
       else if (isset($_POST['comboEdRif']))
-      {
+      {   // compiliamo la combobox degli educatori di riferimento
           CompilaTabella($_POST['comboEdRif']);
       }
       else
-      {
+      {   // Chiave sconosciuta, stampiamo un messaggio di errore
           foreach ($_REQUEST as $key => $value)
           {
               echo "chiave: " . $key . ' - ' . $value . '</br>';
@@ -73,12 +71,12 @@
       echo json_encode($result);
   }
 
+  // Cancelliamo uno o più utenti o presenze
   function DeleteRecord()
   {
       $db = new PDO('mysql:host=localhost;dbname=dbnidocellini', 'root', 'mysql231278');
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-
 
       $tableName = $_POST["table"];
       $deleteId  = $_POST["deleteId"];
@@ -90,14 +88,13 @@
 
   function InsertUpdateUser()
   {
-      //paramInsertOrUpdate
+
       $db = new PDO('mysql:host=localhost;dbname=dbnidocellini', 'root', 'mysql231278');
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
       $tableName = $_POST["paramTable"];
       $ruolo     = $_POST["paramRuolo"];
-
 
       // Compilo la stringa SQL per INSERIRE un nuovo utente
       if ($_POST["paramInsertOrUpdate"] === "insert")
@@ -116,11 +113,11 @@
               if (substr($key, 0, 5) !== "param")
               {
                   $recordsToInsert .= $key . ", ";
-                  if ($value === "" or $value === NULL)
+                  if ($value === "" or $value === NULL) // il campo da inserire è vuoto
                   {
                       $fieldsToInsert .= "NULL" . ", ";
                   }
-                  else
+                  else // il campo da inserire contiene qualcosa
                   {
                       $fieldsToInsert .= "'" . $value . "'" . ", ";
                   }
@@ -177,16 +174,4 @@
 
           $db->exec($SqlString);
       }
-  }
-
-  function AddRandomRecords()
-  {
-      $db = new PDO('mysql:host=localhost;dbname=dbnidocellini', 'root', 'mysql231278');
-      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-
-
-      $tableName = $_POST["table"];
-      $execSQL   = "call dbnidocellini.CreateRandom();";
-      $db->exec($execSQL);
   }

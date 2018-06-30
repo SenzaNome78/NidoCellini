@@ -3,9 +3,6 @@
   // Questo script è usato nel processo di registrazione di un nuovo
   // badge quando l'utente clicca sul pulsante
   // "interrompere registrazione badge"
-
-  $commandParam = isset($_GET['command']) ? $_GET['command'] : '';
-
   // Ci colleghiamo al Lettore di presenze, alla pagina fittizia Inter.html
   $url = "http://192.168.0.6:8080/Interr.html?command=interr";
 
@@ -21,11 +18,13 @@
 
   curl_close($ch);
 
+  // Siamo riusciti ad interrompere la registrazione sul
+  // lettore rfid, restituiamo una stringa al browser web
   if ($execResult === "InterrOk")
   {
       echo "InterrOk";
   }
-  else
+  else // Si è verificato qualche errore, lo notifichiamo al browser
   {
       echo "InterrErr";
       echo $err;

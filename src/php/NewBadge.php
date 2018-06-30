@@ -3,13 +3,13 @@
   // In questo script PHP ci occupiamo della registrazione di un nuovo badge
   // Associamo a ogni variabile PHP i parametri passati
   // dal lettore rfid
-  $commandParam = isset($_GET['command']) ? $_GET['command'] : '';
-  $NomeDaReg    = isset($_GET['nome']) ? $_GET['nome'] : '';
-  $RuoloDaReg   = isset($_GET['ruolo']) ? $_GET['ruolo'] : '';
-  $SessoDaReg   = isset($_GET['sesso']) ? $_GET['sesso'] : '';
-  $idUtente     = isset($_GET['id']) ? $_GET['id'] : '';
-  $idKey        = isset($_GET['idKey']) ? $_GET['idKey'] : '';
-  $tableName    = isset($_GET['paramTable']) ? $_GET['paramTable'] : '';
+
+  $NomeDaReg  = isset($_GET['nome']) ? $_GET['nome'] : '';
+  $RuoloDaReg = isset($_GET['ruolo']) ? $_GET['ruolo'] : '';
+  $SessoDaReg = isset($_GET['sesso']) ? $_GET['sesso'] : '';
+  $idUtente   = isset($_GET['id']) ? $_GET['id'] : '';
+  $idKey      = isset($_GET['idKey']) ? $_GET['idKey'] : '';
+  $tableName  = isset($_GET['paramTable']) ? $_GET['paramTable'] : '';
 
   // Collegamento al database Mysql
   $db = new PDO('mysql:host=localhost;dbname=dbnidocellini', 'root', 'mysql231278');
@@ -123,6 +123,9 @@
   }
 
   curl_close($ch);
+
+  // Restituiamo al browser web il risultato
+  // della scrittura del badge
   echo $rfidResponse;
 
 
