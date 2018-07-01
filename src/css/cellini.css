@@ -64,6 +64,9 @@
 .dropdown-toggle{
 	color: rgb(0, 0, 0) !important;
 }
+.dropdown-toggle:hover{
+	color: rgb(255, 255, 255) !important;
+}
 
 /* Modal */
 .modal-big {
@@ -207,11 +210,9 @@
 	padding-top:6px; 
 }
 
-
 .svgCheck{
 	width: 2em;
 	vertical-align: middle !important;
-
   }
 
 

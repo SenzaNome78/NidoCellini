@@ -90,6 +90,8 @@ $(document).ready(function () {
 		container: 'body'
 	});
 
+	// Inizializiamo variabili e compiliamo la tabella
+	// usando come discriminante il nome della file html
 	if (pageName === "ElencoBambini.html") {
 		ruolo = "B";
 		tableMySql = MYSQL_TABLE_BAMBINI;
@@ -105,7 +107,6 @@ $(document).ready(function () {
 			{ data: "dataNascitaBambinoFormat" },
 			{ data: "educRif" }
 		], true);
-
 	} else if (pageName === "ElencoEducatori.html") {
 		ruolo = "E";
 		tableMySql = MYSQL_TABLE_EDUCATORI;
@@ -134,7 +135,8 @@ $(document).ready(function () {
 			{ data: "nomeCognomeBambino" },
 			{ data: "presBambiniOrarioIn" },
 			{ data: "presBambiniOrarioOut" },
-			{ data: "presDataFormat" }
+			{ data: "presDataFormat" },
+			{ data: "presBambiniData" }
 		], false);
 	}
 	else if (pageName === "PresenzeEducatori.html") {
@@ -147,7 +149,8 @@ $(document).ready(function () {
 			{ data: "nomeCognomeEducatore" },
 			{ data: "presEducatoriOrarioIn" },
 			{ data: "presEducatoriOrarioOut" },
-			{ data: "presDataFormat" }
+			{ data: "presDataFormat" },
+			{ data: "presEducatoriData" }
 		], false);
 	}
 	else if (pageName === "Home.html") {
@@ -340,12 +343,14 @@ function CompilaTabella(dbTabella, idKey, colonne, vociMod) {
 		tbTabella.order(["1", 'asc']).draw();
 	}
 	else if (pageName === "PresenzeBambini.html") {
-		tbTabella.order.fixed({ pre: [4, 'desc'] });
+		tbTabella.column(5).visible(false);
+		tbTabella.order.fixed({ pre: [5, 'desc'] });
 		tbTabella.rowGroup().dataSrc("presDataFormat", 'desc');
 		tbTabella.order(["2", "asc"]).draw();
 	}
 	else if (pageName === "PresenzeEducatori.html") {
-		tbTabella.order.fixed({ pre: [4, 'desc'] });
+		tbTabella.column(5).visible(false);
+		tbTabella.order.fixed({ pre: [5, 'desc'] });
 		tbTabella.rowGroup().dataSrc("presDataFormat", 'desc');
 		tbTabella.order(["2", "asc"]).draw();
 	}
@@ -382,7 +387,7 @@ function CancellaVoci(idKey) {
 
 // Apre il modal per modificare l'utente
 function MostraDettagli(insert) {
-	// Eliminiamo i vecchi event handlers per non avere ripetute chiamate
+	// Eliminiamo i vecchi event handlers per non avere chiamate ripetute
 	$('#btnModUser').off('click');
 	$('#btnRegBadge').off('click');
 	$('#btnAnnullaModal').off('click');
